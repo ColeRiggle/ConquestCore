@@ -1,0 +1,5 @@
+name: CraftersConquest
+version: 1.0.0
+author: Sqi
+main: com.craftersconquest.core.ConquestCore
+api-version: 1.14
