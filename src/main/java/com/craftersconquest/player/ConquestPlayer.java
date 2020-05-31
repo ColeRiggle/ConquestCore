@@ -1,5 +1,13 @@
 package com.craftersconquest.player;
 
-public class ConquestPlayer {
+import com.craftersconquest.objects.Bounty;
+import com.craftersconquest.objects.Guild;
 
+public abstract class ConquestPlayer {
+
+    public abstract boolean hasGuild();
+
+    public abstract Guild getGuild();
+
+    public abstract Bounty getBounty();
 }

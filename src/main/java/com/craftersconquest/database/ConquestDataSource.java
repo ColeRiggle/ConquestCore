@@ -5,6 +5,9 @@ import com.craftersconquest.player.ConquestPlayer;
 
 public abstract class ConquestDataSource {
 
+    abstract public void open();
+    abstract public void close();
+
     abstract public ConquestPlayer loadPlayer(String UUID);
     abstract public Guild loadGuild(String name);
 
