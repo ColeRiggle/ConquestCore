@@ -1,20 +1,20 @@
-package com.craftersconquest.objects;
+package com.craftersconquest.objects.skill;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Skill {
+public class Skill {
 
     private double xp;
     private SkillLevel level;
     private final List<SkillReward> rewards;
-    private final String abilityName;
+    private final SkillAbility ability;
 
-    private Skill(double xp, SkillLevel level, List<SkillReward> rewards, String abilityName) {
+    protected Skill(double xp, int level, List<SkillReward> rewards, SkillAbility ability) {
         this.xp = xp;
-        this.level = level;
+        this.level = SkillLevel.fromInt(level);
         this.rewards = rewards;
-        this.abilityName = abilityName;
+        this.ability = ability;
     }
 
     public double getXp() {
@@ -40,13 +40,10 @@ public abstract class Skill {
         return currentRewards;
     }
 
-    public String getAbilityName() {
-        return abilityName;
+    public SkillAbility getAbilityName() {
+        return ability;
     }
 
-//    public static Skill fromXpAndLevel(double xp, int level) {
-//        return new Skill(xp, SkillLevel.fromInt(level));
-//    }
 
     private enum SkillLevel {
         ZERO(0, 0, 0),
