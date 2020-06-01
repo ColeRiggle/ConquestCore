@@ -40,14 +40,15 @@ public class SQLTableInitializer {
     private void addTableFields(SQLTable table) {
         for (String column : table.getColumns()) {
             try {
-
                 String sql = "ALTER TABLE `" + table.getTableName() + "` ADD COLUMN " + column;
 
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.executeUpdate();
 
             } catch (SQLException exception) {
-                Bukkit.getLogger().severe("Error B");
+                if (exception.getErrorCode() != 1060) {
+                    Bukkit.getLogger().severe("Error B: " + exception.toString());
+                }
             }
         }
 

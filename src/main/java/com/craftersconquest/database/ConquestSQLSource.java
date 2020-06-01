@@ -4,7 +4,6 @@ import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.core.ConquestSettings;
 import com.craftersconquest.objects.Guild;
 import com.craftersconquest.player.ConquestPlayer;
-import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.Bukkit;
 

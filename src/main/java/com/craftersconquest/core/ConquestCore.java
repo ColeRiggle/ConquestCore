@@ -15,7 +15,7 @@ public class ConquestCore extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        dataSource.close();
     }
 
 }

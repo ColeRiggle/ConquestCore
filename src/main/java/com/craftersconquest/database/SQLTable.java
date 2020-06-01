@@ -1,34 +1,28 @@
 package com.craftersconquest.database;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public interface SQLTable {
+public class SQLTable {
 
-    String getTableName();
-    String getCreationCommand();
-    List<String> getColumns();
-}
+    private final String tableName;
+    private final String creationCommand;
+    private final List<String> columns;
 
-class PlayersTable implements SQLTable {
+    public SQLTable(String tableName, String creationCommand, List<String> columns) {
+        this.tableName = tableName;
+        this.creationCommand = creationCommand;
+        this.columns = columns;
+    }
 
-    @Override
     public String getTableName() {
-        return "players";
+        return tableName;
     }
 
-    @Override
     public String getCreationCommand() {
-        return "CREATE TABLE IF NOT EXISTS " + getTableName() + " ("
-                + "`UUID` VARCHAR(32) NOT NULL,"
-                + "PRIMARY KEY (`UUID`)"
-                + ")";
+        return creationCommand;
     }
 
-    @Override
     public List<String> getColumns() {
-        List<String> columns = new ArrayList<>();
-        columns.add("`coins` int(11)  DEFAULT 0");
         return columns;
     }
 }
