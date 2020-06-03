@@ -3,17 +3,17 @@ package com.craftersconquest.player;
 import com.craftersconquest.core.ConquestCore;
 import org.bukkit.Bukkit;
 
-import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ConquestPlayerCache {
 
     private final ConquestCore instance;
-    private final HashMap<UUID, ConquestPlayer> cachedPlayers;
+    private final ConcurrentHashMap<UUID, ConquestPlayer> cachedPlayers;
 
     public ConquestPlayerCache(ConquestCore instance) {
         this.instance = instance;
-        cachedPlayers = new HashMap<>();
+        cachedPlayers = new ConcurrentHashMap<>();
         scheduleAutoSave();
     }
 
@@ -28,7 +28,7 @@ public class ConquestPlayerCache {
     }
 
     public ConquestPlayer getCachedConquestPlayer(UUID playerUUID) {
-        if (!cacheContains(playerUUID)) {
+        if (!cachedPlayers.contains(playerUUID)) {
             addPlayer(playerUUID);
         }
 
@@ -36,18 +36,17 @@ public class ConquestPlayerCache {
     }
 
     public void addPlayer(UUID playerUUID) {
-        if (!cacheContains(playerUUID)) {
-            cachedPlayers.put(playerUUID, instance.getDataSource().loadPlayer(playerUUID));
-        }
-    }
-
-    private boolean cacheContains(UUID playerUUID) {
-        return cachedPlayers.containsKey(playerUUID);
+        Bukkit.getLogger().info("Adding: " + playerUUID + " to the cache.");
+        ConquestPlayer player = instance.getDataSource().loadPlayer(playerUUID);
+        cachedPlayers.putIfAbsent(playerUUID, player);
+        Bukkit.getLogger().info("Size: " + cachedPlayers.size());
     }
 
     public void removePlayer(UUID playerUUID) {
-        savePlayer(getCachedConquestPlayer(playerUUID));
-        cachedPlayers.remove(playerUUID);
+        if (cachedPlayers.contains(playerUUID)) {
+            savePlayer(getCachedConquestPlayer(playerUUID));
+            cachedPlayers.remove(playerUUID);
+        }
     }
 
     private void savePlayer(ConquestPlayer player) {

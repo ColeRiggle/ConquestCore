@@ -32,7 +32,6 @@ public class ConquestPlayerCacheManager implements Component {
     }
 
     public void addToCache(UUID playerUUID) {
-        Bukkit.getLogger().info("Adding: " + playerUUID + " to the cache.");
         cache.addPlayer(playerUUID);
     }
 

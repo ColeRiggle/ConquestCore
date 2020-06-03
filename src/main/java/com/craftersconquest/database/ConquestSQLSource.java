@@ -6,6 +6,7 @@ import com.craftersconquest.core.utility.Errors;
 import com.craftersconquest.objects.Guild;
 import com.craftersconquest.objects.skill.SkillFactory;
 import com.craftersconquest.player.ConquestPlayer;
+import com.craftersconquest.player.OfflineConquestPlayer;
 import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.Bukkit;
 
@@ -13,8 +14,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -80,17 +79,17 @@ public class ConquestSQLSource extends ConquestDataSource {
 
         // Create player object from database values
 
-        return null;
+        return new OfflineConquestPlayer(playerUUID, null, null, null);
     }
 
     private boolean databaseContainsPlayer(UUID playerUUID) {
-        PreparedStatement preparedStatement = createPreparedStatement("SELECT EXISTS (SELECT * FROM players WHERE UUID='"
-                + playerUUID.toString() + "' LIMIT 1)");
-
-        ResultSet resultSet = executeSQLStatementWithResult(preparedStatement);
-
-        try {
-            return resultSet.getBoolean(1);
+        try (Connection connection = getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT EXISTS (SELECT * FROM players WHERE UUID='"
+                    + playerUUID.toString() + "' LIMIT 1)");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                return resultSet.getBoolean(1);
+            }
         } catch (SQLException exception) {
             Bukkit.getLogger().log(Level.SEVERE, Errors.SQLStatementError, exception);
         }
@@ -98,34 +97,6 @@ public class ConquestSQLSource extends ConquestDataSource {
         return false;
     }
 
-    private PreparedStatement createPreparedStatement(String statement) {
-        try {
-            PreparedStatement preparedStatement = getConnection().prepareStatement(statement);
-            return preparedStatement;
-        } catch (SQLException exception) {
-            Bukkit.getLogger().log(Level.SEVERE, Errors.SQLStatementError, exception);
-        }
-
-        return null;
-    }
-
-    private void executeSQLStatement(PreparedStatement preparedStatement) {
-        try {
-            preparedStatement.executeUpdate();
-        } catch (SQLException exception) {
-            Bukkit.getLogger().log(Level.SEVERE, Errors.SQLStatementError, exception);
-        }
-    }
-
-    private ResultSet executeSQLStatementWithResult(PreparedStatement preparedStatement) {
-        try {
-            return preparedStatement.executeQuery();
-        } catch (SQLException exception) {
-            Bukkit.getLogger().log(Level.SEVERE, Errors.SQLStatementError, exception);
-        }
-
-        return null;
-    }
 
     private void createPlayerInDatabase(UUID playerUUID) {
         addPlayerToPlayersTable(playerUUID);
@@ -133,24 +104,24 @@ public class ConquestSQLSource extends ConquestDataSource {
     }
 
     private void addPlayerToPlayersTable(UUID playerUUID) {
-        try {
-            PreparedStatement preparedStatement = createPreparedStatement("REPLACE INTO players (UUID,coins) VALUES(?,?)");
+        try (Connection connection = getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("REPLACE INTO players (UUID,credits) VALUES(?,?)");
             preparedStatement.setString(1, playerUUID.toString());
             preparedStatement.setInt(2, 0);
-            executeSQLStatement(preparedStatement);
+            preparedStatement.execute();
         } catch (SQLException exception) {
             Bukkit.getLogger().log(Level.SEVERE, Errors.SQLStatementError, exception);
         }
     }
 
     private void addPlayerToSkillsTable(UUID playerUUID) {
-        try {
+        try (Connection connection = getConnection()) {
             for (String skillPrefix : (new SkillFactory()).getTypes()) {
-                PreparedStatement preparedStatement = createPreparedStatement("REPLACE INTO skills (id,level,xp) VALUES(?,?,?)");
+                PreparedStatement preparedStatement = connection.prepareStatement("REPLACE INTO skills (id,level,xp) VALUES(?,?,?)");
                 preparedStatement.setString(1, playerUUID.toString() + "_" + skillPrefix);
                 preparedStatement.setInt(2, 0);
                 preparedStatement.setDouble(3, 0.0);
-                executeSQLStatement(preparedStatement);
+                preparedStatement.execute();
             }
         } catch (SQLException exception) {
             Bukkit.getLogger().log(Level.SEVERE, Errors.SQLStatementError, exception);

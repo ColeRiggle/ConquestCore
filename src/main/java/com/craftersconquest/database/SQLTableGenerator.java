@@ -18,7 +18,7 @@ public class SQLTableGenerator {
         columns.add("`credits` int(11) DEFAULT 0");
 
         return new SQLTable("players", "CREATE TABLE IF NOT EXISTS players ("
-                + "`UUID` VARCHAR(32) NOT NULL,"
+                + "`UUID` VARCHAR(48) NOT NULL,"
                 + "PRIMARY KEY (`UUID`)"
                 + ")", columns);
     }
@@ -26,10 +26,10 @@ public class SQLTableGenerator {
     private SQLTable generateSkillsTable() {
         List<String> columns = new ArrayList<>();
         columns.add("`level` int(11) DEFAULT 0");
-        columns.add("`xp` double(12)");
+        columns.add("`xp` double(35,5) DEFAULT 0.0");
 
         return new SQLTable("skills", "CREATE TABLE IF NOT EXISTS skills ("
-                + "`id` VARCHAR(32) NOT NULL,"
+                + "`id` VARCHAR(48) NOT NULL,"
                 + "PRIMARY KEY (`id`)"
                 + ")", columns);
     }

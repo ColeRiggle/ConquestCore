@@ -5,23 +5,22 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerJoinListener implements Listener {
+public class PlayerQuitListener implements Listener {
 
     private final ConquestCore instance;
 
-    public PlayerJoinListener(ConquestCore instance) {
+    public PlayerQuitListener(ConquestCore instance) {
         this.instance = instance;
     }
 
-
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onAsyncPlayerPreLoginEvent(AsyncPlayerPreLoginEvent event) {
+    public void onPlayerQuitEvent(PlayerQuitEvent event) {
         Bukkit.getServer().getScheduler().runTaskAsynchronously(instance, new Runnable() {
             @Override
             public void run() {
-                instance.getCacheManager().addToCache(event.getUniqueId());
+                instance.getCacheManager().removeFromCache(event.getPlayer().getUniqueId());
             }
         });
     }
