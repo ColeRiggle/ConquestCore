@@ -40,8 +40,8 @@ public class Skill {
         return currentRewards;
     }
 
-    public SkillAbility getAbilityName() {
-        return ability;
+    public String getAbilityName() {
+        return ability.toString().toLowerCase();
     }
 
 

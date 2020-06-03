@@ -20,4 +20,15 @@ public class SkillFactory {
         rewards.add(SkillReward.fromLevelAndDescription(8, "Quarry Floor 4"));
         return rewards;
     }
+
+    public List<String> getTypes() {
+        List<String> types = new ArrayList<>();
+        types.add("mining");
+        types.add("farming");
+        types.add("foraging");
+        types.add("combat");
+        types.add("enchanting");
+        types.add("crime");
+        return types;
+    }
 }

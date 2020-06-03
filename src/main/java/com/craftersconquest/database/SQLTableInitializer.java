@@ -40,6 +40,9 @@ public class SQLTableInitializer {
     private void addTableFields(SQLTable table) {
         for (String column : table.getColumns()) {
             try {
+
+                Bukkit.getLogger().info("Attempting to add table field...");
+
                 String sql = "ALTER TABLE `" + table.getTableName() + "` ADD COLUMN " + column;
 
                 PreparedStatement statement = connection.prepareStatement(sql);
