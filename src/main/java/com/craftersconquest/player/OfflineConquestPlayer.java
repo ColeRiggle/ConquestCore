@@ -52,11 +52,6 @@ public class OfflineConquestPlayer extends ConquestPlayer {
     }
 
     @Override
-    public Skill getCrimeSkill() {
-        return skills.get(5);
-    }
-
-    @Override
     public boolean hasGuild() {
         return guild != null;
     }

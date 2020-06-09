@@ -1,7 +1,7 @@
 package com.craftersconquest.object.skill;
 
-import com.craftersconquest.object.skill.types.Type;
-import com.craftersconquest.object.skill.types.TypeFactory;
+import com.craftersconquest.object.skill.type.Type;
+import com.craftersconquest.object.skill.type.TypeFactory;
 
 public class SkillFactory {
 

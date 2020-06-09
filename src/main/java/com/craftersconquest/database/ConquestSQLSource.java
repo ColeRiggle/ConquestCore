@@ -6,7 +6,7 @@ import com.craftersconquest.core.utility.Errors;
 import com.craftersconquest.object.Guild;
 import com.craftersconquest.object.skill.Skill;
 import com.craftersconquest.object.skill.SkillFactory;
-import com.craftersconquest.object.skill.types.TypeFactory;
+import com.craftersconquest.object.skill.type.TypeFactory;
 import com.craftersconquest.player.ConquestPlayer;
 import com.craftersconquest.player.OfflineConquestPlayer;
 import com.zaxxer.hikari.HikariDataSource;

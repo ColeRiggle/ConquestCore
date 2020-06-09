@@ -47,14 +47,14 @@ public class SkillsManager {
     }
 
     private void addRewardIfProper(TrackedBlockBreak event, Skill skill) {
-        if (skill.isTrackedMaterial(event.getMaterial())) {
+        if (skill.getType().tracks(event.getMaterial())) {
             addSkillXpAndCheckForLevelChanges(event, skill);
         }
     }
 
     private void addSkillXpAndCheckForLevelChanges(TrackedBlockBreak event, Skill skill) {
         Material material = event.getMaterial();
-        final double gainedXp = skill.getMaterialWorth(material);
+        final double gainedXp = skill.getType().getValue(material);
 
         final int initialLevel = skill.getLevel();
         skill.addXp(gainedXp);

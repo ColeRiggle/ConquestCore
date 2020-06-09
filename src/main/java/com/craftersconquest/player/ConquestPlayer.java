@@ -19,7 +19,6 @@ public abstract class ConquestPlayer {
         skills.add(getForagingSkill());
         skills.add(getEnchantingSkill());
         skills.add(getCombatSkill());
-        skills.add(getCrimeSkill());
         return skills;
     }
 
@@ -28,7 +27,6 @@ public abstract class ConquestPlayer {
     public abstract Skill getForagingSkill();
     public abstract Skill getEnchantingSkill();
     public abstract Skill getCombatSkill();
-    public abstract Skill getCrimeSkill();
 
     public abstract boolean hasGuild();
     public abstract Guild getGuild();

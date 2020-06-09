@@ -1,4 +1,4 @@
-package com.craftersconquest.object.skill.types;
+package com.craftersconquest.object.skill.type;
 
 import com.craftersconquest.object.skill.Ability;
 import com.craftersconquest.object.skill.Reward;
