@@ -1,11 +1,13 @@
 package com.craftersconquest.core;
 
+import com.craftersconquest.blocklist.Blocklist;
 import com.craftersconquest.database.ConquestDataSource;
 import com.craftersconquest.database.ConquestSQLSource;
 import com.craftersconquest.listeners.ListenerManager;
 import com.craftersconquest.objects.Component;
 import com.craftersconquest.player.ConquestPlayer;
-import com.craftersconquest.player.ConquestPlayerCacheManager;
+import com.craftersconquest.player.cache.ConquestPlayerCacheManager;
+import com.craftersconquest.skills.SkillsManager;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,6 +23,8 @@ public class ConquestCore extends JavaPlugin {
 
     private final ConquestPlayerCacheManager cacheManager = new ConquestPlayerCacheManager(this);
     private final ListenerManager listenerManager = new ListenerManager(this);
+    private final SkillsManager skillsManager = new SkillsManager(this);
+    private final Blocklist blocklist = new Blocklist(this);
 
     @Override
     public void onEnable() {
@@ -59,5 +63,9 @@ public class ConquestCore extends JavaPlugin {
     public ConquestPlayerCacheManager getCacheManager() {
         return cacheManager;
     }
+
+    public SkillsManager getSkillsManager() { return skillsManager; }
+
+    public Blocklist getBlocklist() { return blocklist; }
 
 }

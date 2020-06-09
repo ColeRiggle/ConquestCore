@@ -1,7 +1,9 @@
-package com.craftersconquest.player;
+package com.craftersconquest.player.cache;
 
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.objects.Component;
+import com.craftersconquest.player.ConquestPlayer;
+import com.craftersconquest.player.cache.ConquestPlayerCache;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -38,5 +40,7 @@ public class ConquestPlayerCacheManager implements Component {
     public void removeFromCache(UUID playerUUID) {
         cache.removePlayer(playerUUID);
     }
+
+    public ConquestPlayer getConquestPlayer(UUID playerUUID) { return cache.getCachedConquestPlayer(playerUUID); }
 
 }

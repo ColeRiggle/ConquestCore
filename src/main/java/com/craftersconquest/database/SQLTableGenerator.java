@@ -10,6 +10,7 @@ public class SQLTableGenerator {
         tables.add(generatePlayersTable());
         tables.add(generateBlocklistTable());
         tables.add(generateSkillsTable());
+        tables.add(generateBountiesTable());
         return tables;
     }
 
@@ -34,9 +35,20 @@ public class SQLTableGenerator {
                 + ")", columns);
     }
 
+    private SQLTable generateBountiesTable() {
+        List<String> columns = new ArrayList<>();
+        columns.add("`kills` int(11) DEFAULT 0");
+        columns.add("`amount` double(35,5) DEFAULT 0.0");
+
+        return new SQLTable("players", "CREATE TABLE IF NOT EXISTS bounties ("
+                + "`UUID` VARCHAR(32) NOT NULL,"
+                + "PRIMARY KEY (`UUID`)"
+                + ")", columns);
+    }
+
     private SQLTable generateBlocklistTable() {
         return new SQLTable("players", "CREATE TABLE IF NOT EXISTS blocklist ("
-                + "`location` VARCHAR(32) NOT NULL,"
+                + "`location` VARCHAR(80) NOT NULL,"
                 + "PRIMARY KEY (`location`)"
                 + ")", List.of());
     }

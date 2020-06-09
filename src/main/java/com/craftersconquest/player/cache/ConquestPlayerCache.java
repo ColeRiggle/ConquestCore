@@ -1,6 +1,7 @@
-package com.craftersconquest.player;
+package com.craftersconquest.player.cache;
 
 import com.craftersconquest.core.ConquestCore;
+import com.craftersconquest.player.ConquestPlayer;
 import org.bukkit.Bukkit;
 
 import java.util.UUID;
@@ -20,15 +21,17 @@ public class ConquestPlayerCache {
     private void scheduleAutoSave() {
         Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(instance, new Runnable() {
             public void run() {
+                Bukkit.getLogger().info("Saving player cache");
                 for (ConquestPlayer player : cachedPlayers.values()) {
                     savePlayer(player);
                 }
+                Bukkit.getLogger().info("Successfully saved player cache");
             }
         }, 200, 3600);
     }
 
     public ConquestPlayer getCachedConquestPlayer(UUID playerUUID) {
-        if (!cachedPlayers.contains(playerUUID)) {
+        if (!cachedPlayers.containsKey(playerUUID)) {
             addPlayer(playerUUID);
         }
 

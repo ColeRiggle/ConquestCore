@@ -1,20 +1,32 @@
 package com.craftersconquest.objects.skill;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Skill {
 
+    private final String name;
     private double xp;
     private SkillLevel level;
     private final List<SkillReward> rewards;
     private final SkillAbility ability;
+    private final HashMap<Material, Double> tracked;
 
-    protected Skill(double xp, int level, List<SkillReward> rewards, SkillAbility ability) {
+    protected Skill(String name, double xp, int level, List<SkillReward> rewards, SkillAbility ability, HashMap<Material, Double> tracked) {
+        this.name = name;
         this.xp = xp;
         this.level = SkillLevel.fromInt(level);
         this.rewards = rewards;
         this.ability = ability;
+        this.tracked = tracked;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public double getXp() {
@@ -22,7 +34,24 @@ public class Skill {
     }
 
     public void addXp(double amount) {
-        xp += amount;
+        final double potentialAmount = xp + amount;
+
+        if (potentialAmount > getRequiredXpForNextLevel()) {
+            final double remainder = potentialAmount - getRequiredXpForNextLevel();
+            incrementLevel();
+            addXp(remainder);
+        } else {
+            xp += amount;
+        }
+    }
+
+    private void incrementLevel() {
+        level = SkillLevel.fromInt(level.numericalValue + 1);
+        xp = 0;
+    }
+
+    public int getRequiredXpForNextLevel() {
+        return SkillLevel.fromInt(level.numericalValue + 1).requiredXp;
     }
 
     public int getLevel() {
@@ -40,10 +69,18 @@ public class Skill {
         return currentRewards;
     }
 
+    public boolean isTrackedMaterial(Material material) {
+        Bukkit.getLogger().info(tracked.toString());
+        return tracked.containsKey(material);
+    }
+
+    public double getMaterialWorth(Material material) {
+        return tracked.get(material);
+    }
+
     public String getAbilityName() {
         return ability.toString().toLowerCase();
     }
-
 
     private enum SkillLevel {
         ZERO(0, 0, 0),

@@ -15,7 +15,6 @@ public class PlayerJoinListener implements Listener {
         this.instance = instance;
     }
 
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onAsyncPlayerPreLoginEvent(AsyncPlayerPreLoginEvent event) {
         Bukkit.getServer().getScheduler().runTaskAsynchronously(instance, new Runnable() {

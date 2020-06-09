@@ -4,6 +4,7 @@ import com.craftersconquest.objects.Bounty;
 import com.craftersconquest.objects.Guild;
 import com.craftersconquest.objects.skill.Skill;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,32 +29,32 @@ public class OfflineConquestPlayer extends ConquestPlayer {
 
     @Override
     public Skill getMiningSkill() {
-        return null;
+        return skills.get(0);
     }
 
     @Override
     public Skill getFarmingSkill() {
-        return null;
+        return skills.get(1);
     }
 
     @Override
     public Skill getForagingSkill() {
-        return null;
+        return skills.get(2);
     }
 
     @Override
     public Skill getEnchantingSkill() {
-        return null;
+        return skills.get(3);
     }
 
     @Override
     public Skill getCombatSkill() {
-        return null;
+        return skills.get(4);
     }
 
     @Override
     public Skill getCrimeSkill() {
-        return null;
+        return skills.get(5);
     }
 
     @Override

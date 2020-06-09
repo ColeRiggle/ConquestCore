@@ -19,6 +19,9 @@ public class ListenerManager implements Component {
     private void registerListeners() {
         instance.getServer().getPluginManager().registerEvents(new PlayerJoinListener(instance), instance);
         instance.getServer().getPluginManager().registerEvents(new PlayerQuitListener(instance), instance);
+        instance.getServer().getPluginManager().registerEvents(new BlockBreakListener(instance), instance);
+        instance.getServer().getPluginManager().registerEvents(new BlockPlaceListener(instance), instance);
+        instance.getServer().getPluginManager().registerEvents(new SkillLevelUpEventListener(instance), instance);
     }
 
     @Override
