@@ -3,9 +3,10 @@ package com.craftersconquest.database;
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.core.ConquestSettings;
 import com.craftersconquest.core.utility.Errors;
-import com.craftersconquest.objects.Guild;
-import com.craftersconquest.objects.skill.Skill;
-import com.craftersconquest.objects.skill.SkillFactory;
+import com.craftersconquest.object.Guild;
+import com.craftersconquest.object.skill.Skill;
+import com.craftersconquest.object.skill.SkillFactory;
+import com.craftersconquest.object.skill.types.TypeFactory;
 import com.craftersconquest.player.ConquestPlayer;
 import com.craftersconquest.player.OfflineConquestPlayer;
 import com.zaxxer.hikari.HikariDataSource;
@@ -124,7 +125,7 @@ public class ConquestSQLSource extends ConquestDataSource {
 
     private void addPlayerToSkillsTable(UUID playerUUID) {
         try (Connection connection = getConnection()) {
-            for (String skillPrefix : (new SkillFactory()).getTypes()) {
+            for (String skillPrefix : TypeFactory.TYPES) {
                 PreparedStatement preparedStatement = connection.prepareStatement("REPLACE INTO skills (id,level,xp) VALUES(?,?,?)");
                 preparedStatement.setString(1, playerUUID.toString() + "_" + skillPrefix);
                 preparedStatement.setInt(2, 0);
@@ -141,7 +142,7 @@ public class ConquestSQLSource extends ConquestDataSource {
         List<Skill> skills = new ArrayList<>();
         SkillFactory skillFactory = new SkillFactory();
 
-        for (String skillPrefix : (new SkillFactory()).getTypes()) {
+        for (String skillPrefix : TypeFactory.TYPES) {
             String databasePrefix = playerUUID.toString() + "_" + skillPrefix;
             double xp = getDouble("skills", "id", databasePrefix, "xp");
             int level = getInt("skills", "id", databasePrefix, "level");
@@ -243,7 +244,7 @@ public class ConquestSQLSource extends ConquestDataSource {
     }
 
     private void saveSkill(ConquestPlayer player, Skill skill) {
-        String databasePrefix = player.getUUID().toString() + "_" + skill.getName();
+        String databasePrefix = player.getUUID().toString() + "_" + skill.getType().getName();
         setDouble("skills", "id", databasePrefix, "xp", skill.getXp());
         setInt("skills", "id", databasePrefix, "level", skill.getLevel());
     }

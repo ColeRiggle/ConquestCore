@@ -1,6 +1,5 @@
 package com.craftersconquest.skills;
 
-import com.craftersconquest.objects.skill.Skill;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

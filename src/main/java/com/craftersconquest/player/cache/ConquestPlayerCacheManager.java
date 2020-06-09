@@ -1,9 +1,8 @@
 package com.craftersconquest.player.cache;
 
 import com.craftersconquest.core.ConquestCore;
-import com.craftersconquest.objects.Component;
+import com.craftersconquest.object.Component;
 import com.craftersconquest.player.ConquestPlayer;
-import com.craftersconquest.player.cache.ConquestPlayerCache;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

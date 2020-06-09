@@ -4,7 +4,7 @@ import com.craftersconquest.blocklist.Blocklist;
 import com.craftersconquest.database.ConquestDataSource;
 import com.craftersconquest.database.ConquestSQLSource;
 import com.craftersconquest.listeners.ListenerManager;
-import com.craftersconquest.objects.Component;
+import com.craftersconquest.object.Component;
 import com.craftersconquest.player.ConquestPlayer;
 import com.craftersconquest.player.cache.ConquestPlayerCacheManager;
 import com.craftersconquest.skills.SkillsManager;

@@ -1,4 +1,4 @@
-package com.craftersconquest.objects;
+package com.craftersconquest.object;
 
 public interface Component {
     public abstract void onEnable();

@@ -1,17 +1,17 @@
-package com.craftersconquest.objects.skill;
+package com.craftersconquest.object.skill;
 
-public class SkillReward {
+public class Reward {
 
     private final int level;
     private final String description;
 
-    private SkillReward(int level, String description) {
+    private Reward(int level, String description) {
         this.level = level;
         this.description = description;
     }
 
-    public static SkillReward fromLevelAndDescription(int level, String description) {
-        return new SkillReward(level, description);
+    public static Reward fromLevelAndDescription(int level, String description) {
+        return new Reward(level, description);
     }
 
     public int getLevel() {

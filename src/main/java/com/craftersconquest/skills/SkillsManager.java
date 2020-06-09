@@ -1,14 +1,12 @@
 package com.craftersconquest.skills;
 
 import com.craftersconquest.core.ConquestCore;
-import com.craftersconquest.objects.skill.Skill;
+import com.craftersconquest.object.skill.Skill;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
-
-import java.util.List;
 
 public class SkillsManager {
 

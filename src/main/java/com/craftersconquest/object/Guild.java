@@ -1,4 +1,4 @@
-package com.craftersconquest.objects;
+package com.craftersconquest.object;
 
 public class Guild {
 

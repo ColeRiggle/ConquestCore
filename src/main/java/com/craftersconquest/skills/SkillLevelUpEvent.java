@@ -1,6 +1,6 @@
 package com.craftersconquest.skills;
 
-import com.craftersconquest.objects.skill.Skill;
+import com.craftersconquest.object.skill.Skill;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

@@ -1,7 +1,7 @@
 package com.craftersconquest.listeners;
 
 import com.craftersconquest.core.ConquestCore;
-import com.craftersconquest.objects.Component;
+import com.craftersconquest.object.Component;
 
 public class ListenerManager implements Component {
 

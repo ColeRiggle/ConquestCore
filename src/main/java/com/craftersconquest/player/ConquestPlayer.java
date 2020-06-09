@@ -1,8 +1,8 @@
 package com.craftersconquest.player;
 
-import com.craftersconquest.objects.Bounty;
-import com.craftersconquest.objects.Guild;
-import com.craftersconquest.objects.skill.Skill;
+import com.craftersconquest.object.Bounty;
+import com.craftersconquest.object.Guild;
+import com.craftersconquest.object.skill.Skill;
 
 import java.util.ArrayList;
 import java.util.List;
