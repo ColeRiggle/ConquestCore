@@ -19,6 +19,8 @@ public final class Messaging {
         sendLineMessage(recipient, ChatColor.GRAY);
     }
 
+    public static final String INDENT = "     ";
+
     public static void sendLineMessage(CommandSender recipient, ChatColor color) {
         recipient.sendMessage(ChatColor.RESET + "" + color + ChatColor.STRIKETHROUGH +
                 "----------------------------------------------------");

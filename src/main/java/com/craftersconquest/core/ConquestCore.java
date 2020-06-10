@@ -5,32 +5,37 @@ import com.craftersconquest.database.ConquestDataSource;
 import com.craftersconquest.database.ConquestSQLSource;
 import com.craftersconquest.listeners.ListenerManager;
 import com.craftersconquest.object.Component;
-import com.craftersconquest.player.ConquestPlayer;
 import com.craftersconquest.player.cache.ConquestPlayerCacheManager;
 import com.craftersconquest.skills.SkillsManager;
-import org.bukkit.OfflinePlayer;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ConquestCore extends JavaPlugin {
 
     private final ConquestDataSource dataSource = new ConquestSQLSource(this);
-    private final HashMap<OfflinePlayer, ConquestPlayer> conquestPlayers = new HashMap<>();
     private final List<Component> components = new ArrayList<>();
 
     private final ConquestPlayerCacheManager cacheManager = new ConquestPlayerCacheManager(this);
     private final ListenerManager listenerManager = new ListenerManager(this);
     private final SkillsManager skillsManager = new SkillsManager(this);
     private final Blocklist blocklist = new Blocklist(this);
+    private Economy economy;
 
     @Override
     public void onEnable() {
         dataSource.open();
+        setupEconomy();
         registerComponents();
         enableComponents();
+    }
+
+    private void setupEconomy() {
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        economy = rsp.getProvider();
     }
 
     private void registerComponents() {
@@ -67,5 +72,7 @@ public class ConquestCore extends JavaPlugin {
     public SkillsManager getSkillsManager() { return skillsManager; }
 
     public Blocklist getBlocklist() { return blocklist; }
+
+    public Economy getEconomy() { return economy; }
 
 }

@@ -1,7 +1,6 @@
 package com.craftersconquest.listeners;
 
 import com.craftersconquest.core.ConquestCore;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,9 +16,6 @@ public class BlockBreakListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreakEvent(BlockBreakEvent event) {
-
         instance.getSkillsManager().onValidBlockBreak(event);
-        Bukkit.getLogger().info("TYPE: " + event.getBlock().getType().toString());
-
     }
 }

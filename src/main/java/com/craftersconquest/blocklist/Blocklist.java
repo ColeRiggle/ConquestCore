@@ -21,12 +21,9 @@ public class Blocklist {
 
     public void addIfNecessary(Material material, Location location) {
         if (isTracked(material)) {
-            Bukkit.getServer().getScheduler().runTaskAsynchronously(instance, new Runnable() {
-                @Override
-                public void run() {
-                    if (isTracked(material)) {
-                        add(location);
-                    }
+            Bukkit.getServer().getScheduler().runTaskAsynchronously(instance, () -> {
+                if (isTracked(material) && !location.getWorld().getName().equals("Badlands")) {
+                    add(location);
                 }
             });
         }
@@ -41,11 +38,7 @@ public class Blocklist {
     }
 
     public void remove(Location location) {
-        Bukkit.getServer().getScheduler().runTaskAsynchronously(instance, new Runnable() {
-            @Override
-            public void run() {
-                instance.getDataSource().removeFromBlocklist(location);
-            }
-        });
+        Bukkit.getServer().getScheduler().runTaskAsynchronously(instance,
+                () -> instance.getDataSource().removeFromBlocklist(location));
     }
 }

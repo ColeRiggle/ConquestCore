@@ -13,4 +13,13 @@ public enum Ability {
     Ability(String abilityDescription) {
         this.abilityDescription = abilityDescription;
     }
+
+    public String getAbilityName() {
+        String baseName = this.toString();
+        return baseName.substring(0, 1).toUpperCase() + baseName.substring(1).toLowerCase();
+    }
+
+    public String getAbilityDescription() {
+        return abilityDescription;
+    }
 }

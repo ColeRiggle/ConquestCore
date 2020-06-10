@@ -8,6 +8,8 @@ public class Skill {
     private double xp;
     private Level level;
 
+    private final static double MULTIPLIER = 2.0;
+
     protected Skill(Type type, double xp, int level) {
         this.type = type;
         this.xp = xp;
@@ -47,8 +49,20 @@ public class Skill {
         return level.numericalValue;
     }
 
+    public double getMultiplier() {
+        return getMultiplierForLevel(level.numericalValue);
+    }
+
+    public double getMultiplierForLevel(int level) {
+        return MULTIPLIER * level;
+    }
+
+    public int getCoinReward(int level) {
+        return Level.fromInt(level).coinReward;
+    }
+
     private enum Level {
-        ZERO(0, 0, 0),
+        STARTING(0, 0, 0),
         I(1, 50, 25),
         II (2, 60, 50),
         III (3, 70, 100),
@@ -73,7 +87,8 @@ public class Skill {
         XXII (22, 17000, 3500),
         XXIII (23, 19500, 4000),
         XXIV (24, 25000, 4500),
-        XXV (25, 30000, 5500);
+        XXV (25, 30000, 5500),
+        XXVI (26, 30000000, 0);
 
         int numericalValue;
         int requiredXp;
@@ -88,5 +103,9 @@ public class Skill {
         public static Level fromInt(int value) {
             return Level.values()[value];
         }
+    }
+
+    public static String getRomanizedLevel(int level) {
+        return Level.fromInt(level).toString();
     }
 }

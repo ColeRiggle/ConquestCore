@@ -20,8 +20,8 @@ public class TypeFactory {
 
     private final static List<Reward> MINING_REWARDS =
             new ArrayList<>(List.of(
-                    Reward.fromLevelAndDescription(1, "Mine Stone"),
-                    Reward.fromLevelAndDescription(1, "Mine Coal Ore"),
+                    Reward.fromLevelAndDescription(0, "Mine Stone"),
+                    Reward.fromLevelAndDescription(0, "Mine Coal Ore"),
                     Reward.fromLevelAndDescription(3, "Mine Iron Ore"),
                     Reward.fromLevelAndDescription(5, "Mine Lapis Ore"),
                     Reward.fromLevelAndDescription(7, "Mine Redstone Ore"),
@@ -48,8 +48,8 @@ public class TypeFactory {
 
     private final static List<Reward> FARMING_REWARDS =
             new ArrayList<>(List.of(
-                    Reward.fromLevelAndDescription(1, "Harvest Wheat"),
-                    Reward.fromLevelAndDescription(2, "Harvest Potatoes"),
+                    Reward.fromLevelAndDescription(0, "Harvest Wheat"),
+                    Reward.fromLevelAndDescription(1, "Harvest Potatoes"),
                     Reward.fromLevelAndDescription(3, "Harvest Carrots"),
                     Reward.fromLevelAndDescription(3, "Harvest Beetroot"),
                     Reward.fromLevelAndDescription(5, "Harvest Melons"),
@@ -76,7 +76,7 @@ public class TypeFactory {
 
     private final static List<Reward> FORAGING_REWARDS =
             new ArrayList<>(List.of(
-                    Reward.fromLevelAndDescription(1, "Chop Oak Trees"),
+                    Reward.fromLevelAndDescription(0, "Chop Oak Trees"),
                     Reward.fromLevelAndDescription(3, "Chop Birch Trees"),
                     Reward.fromLevelAndDescription(5, "Chop Spruce Trees"),
                     Reward.fromLevelAndDescription(5, "Chop Dark Oak Trees"),
@@ -102,11 +102,11 @@ public class TypeFactory {
 
     private static final Map<Material,Double> COMBAT_TRACKED = Map.ofEntries();
 
-    private static final Type MINING = new Type("mining", Ability.EXCAVATOR, MINING_REWARDS, MINING_TRACKED);
-    private static final Type FARMING = new Type("farming", Ability.HARVESTER, FARMING_REWARDS, FARMING_TRACKED);
-    private static final Type FORAGING = new Type("foraging", Ability.FORAGER, FORAGING_REWARDS, FORAGING_TRACKED);
-    private static final Type ENCHANTING = new Type("foraging", Ability.SORCERER, ENCHANTING_REWARDS, ENCHANTING_TRACKED);
-    private static final Type COMBAT = new Type("combat", Ability.OUTLAW, COMBAT_REWARDS, COMBAT_TRACKED);
+    private static final Type MINING = new Type("Mining", Ability.EXCAVATOR, MINING_REWARDS, MINING_TRACKED);
+    private static final Type FARMING = new Type("Farming", Ability.HARVESTER, FARMING_REWARDS, FARMING_TRACKED);
+    private static final Type FORAGING = new Type("Foraging", Ability.FORAGER, FORAGING_REWARDS, FORAGING_TRACKED);
+    private static final Type ENCHANTING = new Type("Enchanting", Ability.SORCERER, ENCHANTING_REWARDS, ENCHANTING_TRACKED);
+    private static final Type COMBAT = new Type("Combat", Ability.OUTLAW, COMBAT_REWARDS, COMBAT_TRACKED);
 
     public Type getType(String name) {
         switch (name) {

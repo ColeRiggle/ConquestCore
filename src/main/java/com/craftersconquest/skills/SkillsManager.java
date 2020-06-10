@@ -8,6 +8,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 
+import java.util.List;
+
 public class SkillsManager {
 
     private final ConquestCore instance;
@@ -20,12 +22,12 @@ public class SkillsManager {
         TrackedBlockBreak trackedBlockBreakEvent =
                 new TrackedBlockBreak(event.getPlayer(), event.getBlock().getType(), event.getBlock().getLocation());
 
-        Bukkit.getScheduler().runTaskAsynchronously(instance, new Runnable() {
-            @Override
-            public void run() {
-                if (!isBlocked(trackedBlockBreakEvent.getLocation())) {
-                    onNonBlocklistBlockBreak(trackedBlockBreakEvent);
-                }
+        Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
+            Location location = trackedBlockBreakEvent.getLocation();
+            if (!isBlocked(location)) {
+                onNonBlocklistBlockBreak(trackedBlockBreakEvent);
+            } else {
+                instance.getBlocklist().remove(location);
             }
         });
     }
@@ -36,14 +38,11 @@ public class SkillsManager {
 
     private void onNonBlocklistBlockBreak(TrackedBlockBreak event) {
         Player player = event.getPlayer();
-        //List<Skill> skills = instance.getCacheManager().getConquestPlayer(player.getUniqueId()).getSkills();
+        List<Skill> skills = instance.getCacheManager().getConquestPlayer(player.getUniqueId()).getSkills();
 
-        Skill skill = instance.getCacheManager().getConquestPlayer(player.getUniqueId()).getMiningSkill();
-
-//        for (Skill skill : skills) {
-            Material material = event.getMaterial();
+        for (Skill skill : skills) {
             addRewardIfProper(event, skill);
-//        }
+        }
     }
 
     private void addRewardIfProper(TrackedBlockBreak event, Skill skill) {
