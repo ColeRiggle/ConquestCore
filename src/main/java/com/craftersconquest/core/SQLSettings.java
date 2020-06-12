@@ -1,8 +1,8 @@
 package com.craftersconquest.core;
 
-public final class ConquestSettings {
+public final class SQLSettings {
 
-    private ConquestSettings() {}
+    private SQLSettings() {}
 
     public static String getSQLHostName() {
         return "3.125.78.128";

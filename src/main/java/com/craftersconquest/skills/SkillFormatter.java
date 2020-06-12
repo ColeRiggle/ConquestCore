@@ -4,11 +4,18 @@ import com.craftersconquest.util.Formatting;
 import com.craftersconquest.messaging.Messaging;
 import com.craftersconquest.object.skill.Reward;
 import com.craftersconquest.object.skill.Skill;
+import com.craftersconquest.util.NumbersUtil;
 import org.bukkit.ChatColor;
 
 import java.util.List;
 
 public class SkillFormatter {
+
+    public String getXpGainMessage(Skill skill, double xpGain) {
+        return ChatColor.GREEN + "+" + NumbersUtil.formatDouble(xpGain) + " " +
+                skill.getType().getName() + " XP (" + NumbersUtil.formatDouble(skill.getXp()) +
+                "/" + NumbersUtil.formatDouble(skill.getRequiredXpForNextLevel()) + ")";
+    }
 
     public String getLevelDescription(Skill skill, int level) {
         StringBuilder message = new StringBuilder();

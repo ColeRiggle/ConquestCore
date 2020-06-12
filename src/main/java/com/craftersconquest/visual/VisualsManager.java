@@ -1,6 +1,8 @@
 package com.craftersconquest.visual;
 
 import com.craftersconquest.core.ConquestCore;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
 public class VisualsManager {
@@ -11,15 +13,7 @@ public class VisualsManager {
         this.instance = instance;
     }
 
-    private void scheduleUpdaters() {
-
-    }
-
-    public void addPlayer(Player player) {
-
-    }
-
-    public void removePlayer(Player player) {
-
+    public void sendActionBarMessage(Player player, String message) {
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
     }
 }

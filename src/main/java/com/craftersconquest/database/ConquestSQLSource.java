@@ -1,7 +1,7 @@
 package com.craftersconquest.database;
 
 import com.craftersconquest.core.ConquestCore;
-import com.craftersconquest.core.ConquestSettings;
+import com.craftersconquest.core.SQLSettings;
 import com.craftersconquest.util.Errors;
 import com.craftersconquest.object.Guild;
 import com.craftersconquest.object.skill.Skill;
@@ -35,11 +35,11 @@ public class ConquestSQLSource extends ConquestDataSource {
 
     public ConquestSQLSource(ConquestCore conquestCore) {
         this.conquestCore = conquestCore;
-        hostname = ConquestSettings.getSQLHostName();
-        port = ConquestSettings.getSQLPort();
-        databaseName = ConquestSettings.getSQLDatabaseName();
-        username = ConquestSettings.getSQLUsername();
-        password = ConquestSettings.getSQLPassword();
+        hostname = SQLSettings.getSQLHostName();
+        port = SQLSettings.getSQLPort();
+        databaseName = SQLSettings.getSQLDatabaseName();
+        username = SQLSettings.getSQLUsername();
+        password = SQLSettings.getSQLPassword();
     }
 
     private void setupConnection() {

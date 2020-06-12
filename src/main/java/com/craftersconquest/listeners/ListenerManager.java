@@ -2,13 +2,16 @@ package com.craftersconquest.listeners;
 
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.object.Component;
+import com.craftersconquest.skills.SkillFormatter;
 
 public class ListenerManager implements Component {
 
     private final ConquestCore instance;
+    private final SkillFormatter formatter;
 
     public ListenerManager(ConquestCore instance) {
         this.instance = instance;
+        formatter = new SkillFormatter();
     }
 
     @Override
@@ -21,7 +24,8 @@ public class ListenerManager implements Component {
         instance.getServer().getPluginManager().registerEvents(new PlayerQuitListener(instance), instance);
         instance.getServer().getPluginManager().registerEvents(new BlockBreakListener(instance), instance);
         instance.getServer().getPluginManager().registerEvents(new BlockPlaceListener(instance), instance);
-        instance.getServer().getPluginManager().registerEvents(new SkillLevelUpEventListener(instance), instance);
+        instance.getServer().getPluginManager().registerEvents(new SkillLevelUpEventListener(instance, formatter), instance);
+        instance.getServer().getPluginManager().registerEvents(new SkillXpGainEventListener(instance, formatter), instance);
     }
 
     @Override

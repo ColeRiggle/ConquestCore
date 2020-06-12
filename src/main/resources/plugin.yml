@@ -3,4 +3,4 @@ version: 1.0.0
 author: Sqi
 main: com.craftersconquest.core.ConquestCore
 api-version: 1.14
-softdepend: [Vault, Multiverse-Core, EssentialsX]
+softdepend: [Vault, Multiverse-Core, Essentials]

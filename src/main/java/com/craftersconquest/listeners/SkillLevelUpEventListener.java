@@ -16,9 +16,9 @@ public class SkillLevelUpEventListener implements Listener {
     private final ConquestCore instance;
     private final SkillFormatter formatter;
 
-    public SkillLevelUpEventListener(ConquestCore instance) {
+    public SkillLevelUpEventListener(ConquestCore instance, SkillFormatter formatter) {
         this.instance = instance;
-        this.formatter = new SkillFormatter();
+        this.formatter = formatter;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

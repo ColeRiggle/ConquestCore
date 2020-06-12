@@ -4,6 +4,12 @@ public final class Settings {
 
     private Settings() { }
 
-    public static final String RPG_WORLD_NAME = "Badlands";
+    public static final int DAYS_PER_YEAR = 1600;
+
+    public static final int SEASONS_COUNT = 4;
+
+    public static final int DAYS_PER_SEASON = DAYS_PER_YEAR / SEASONS_COUNT;
+
+    public static final String RPG_WORLD_NAME = "Lobby";
 
 }

@@ -57,6 +57,10 @@ public class SkillsManager {
 
         final int initialLevel = skill.getLevel();
         skill.addXp(gainedXp);
+
+        SkillXpGainEvent skillXpGainEvent = new SkillXpGainEvent(event.getPlayer(), skill, gainedXp);
+        Bukkit.getScheduler().runTask(instance, () -> Bukkit.getPluginManager().callEvent(skillXpGainEvent));
+
         final int newLevel = skill.getLevel();
 
         for (int level = initialLevel; level < newLevel; level++) {

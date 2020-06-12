@@ -27,9 +27,11 @@ public class ConquestPlayerCacheManager implements Component {
 
     @Override
     public void onDisable() {
+        Bukkit.getLogger().info("Saving player cache on disable...");
         for (Player player : Bukkit.getOnlinePlayers()) {
             cache.removePlayer(player.getUniqueId());
         }
+        Bukkit.getLogger().info("Save complete.");
     }
 
     public void addToCache(UUID playerUUID) {
