@@ -1,6 +1,6 @@
 package com.craftersconquest.skills;
 
-import com.craftersconquest.core.utility.Formatting;
+import com.craftersconquest.util.Formatting;
 import com.craftersconquest.messaging.Messaging;
 import com.craftersconquest.object.skill.Reward;
 import com.craftersconquest.object.skill.Skill;

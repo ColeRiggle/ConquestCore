@@ -2,10 +2,12 @@ package com.craftersconquest.listeners;
 
 import com.craftersconquest.core.ConquestCore;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerJoinListener implements Listener {
 
@@ -23,5 +25,11 @@ public class PlayerJoinListener implements Listener {
                 instance.getCacheManager().addToCache(event.getUniqueId());
             }
         });
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerJoinEvent(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        instance.getScoreboardManager().addPlayer(player);
     }
 }

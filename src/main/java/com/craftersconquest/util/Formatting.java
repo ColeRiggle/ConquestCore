@@ -1,4 +1,4 @@
-package com.craftersconquest.core.utility;
+package com.craftersconquest.util;
 
 public final class Formatting {
 

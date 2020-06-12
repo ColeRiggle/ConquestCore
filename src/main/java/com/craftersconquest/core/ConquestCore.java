@@ -7,6 +7,7 @@ import com.craftersconquest.listeners.ListenerManager;
 import com.craftersconquest.object.Component;
 import com.craftersconquest.player.cache.ConquestPlayerCacheManager;
 import com.craftersconquest.skills.SkillsManager;
+import com.craftersconquest.visual.ScoreboardManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,6 +24,8 @@ public class ConquestCore extends JavaPlugin {
     private final ListenerManager listenerManager = new ListenerManager(this);
     private final SkillsManager skillsManager = new SkillsManager(this);
     private final Blocklist blocklist = new Blocklist(this);
+    private final ScoreboardManager scoreboardManager = new ScoreboardManager(this);
+
     private Economy economy;
 
     @Override
@@ -41,6 +44,7 @@ public class ConquestCore extends JavaPlugin {
     private void registerComponents() {
         components.add(cacheManager);
         components.add(listenerManager);
+        components.add(scoreboardManager);
     }
 
     private void enableComponents() {
@@ -72,6 +76,8 @@ public class ConquestCore extends JavaPlugin {
     public SkillsManager getSkillsManager() { return skillsManager; }
 
     public Blocklist getBlocklist() { return blocklist; }
+
+    public ScoreboardManager getScoreboardManager() { return scoreboardManager; }
 
     public Economy getEconomy() { return economy; }
 
