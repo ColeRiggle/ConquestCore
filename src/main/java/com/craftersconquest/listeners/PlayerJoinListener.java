@@ -1,6 +1,7 @@
 package com.craftersconquest.listeners;
 
 import com.craftersconquest.core.ConquestCore;
+import com.craftersconquest.menu.ConquestMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,5 +32,6 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         instance.getScoreboardManager().addPlayer(player);
+        ConquestMenu.INVENTORY.open(player);
     }
 }

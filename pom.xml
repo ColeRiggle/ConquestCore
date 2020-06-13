@@ -17,6 +17,11 @@
 
     <repositories>
         <repository>
+            <id>my-local-repo</id>
+            <url>file://${basedir}/lib/repo</url>
+        </repository>
+
+        <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
@@ -25,6 +30,7 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+
     </repositories>
 
     <dependencies>
@@ -69,6 +75,15 @@
             <version>1.7</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>de.domedd.developerapi</groupId>
+            <artifactId>DeveloperAPI</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/DeveloperAPI.jar</systemPath>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -107,7 +122,6 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
 
