@@ -1,5 +1,7 @@
 package com.craftersconquest.object;
 
+import com.craftersconquest.object.currency.Currency;
+
 public class Cost {
 
     private final Currency currency;
