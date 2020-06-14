@@ -1,7 +1,6 @@
 package com.craftersconquest.menu;
 
 import com.craftersconquest.util.InventoryUtil;
-import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
@@ -11,7 +10,7 @@ import org.bukkit.entity.Player;
 public class ConquestMenu implements InventoryProvider {
 
     public final static SmartInventory INVENTORY = SmartInventory.builder()
-            .id("conquestMeny")
+            .id("conquestMenu")
             .provider(new ConquestMenu())
             .size(3, 9)
             .title(ChatColor.RED + "Conquest Menu")

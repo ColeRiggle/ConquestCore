@@ -1,6 +1,6 @@
-package com.craftersconquest.object;
+package com.craftersconquest.object.shop;
 
-import com.craftersconquest.object.currency.Currency;
+import com.craftersconquest.object.shop.currency.Currency;
 
 public class Cost {
 

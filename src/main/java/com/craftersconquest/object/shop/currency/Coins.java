@@ -1,4 +1,4 @@
-package com.craftersconquest.object.currency;
+package com.craftersconquest.object.shop.currency;
 
 import com.craftersconquest.core.ConquestCore;
 import org.bukkit.entity.Player;
