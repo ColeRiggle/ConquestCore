@@ -9,4 +9,6 @@ public abstract class Currency {
     abstract public void withdraw(Player player, double amount);
 
     abstract public void deposit(Player player, double amount);
+
+    abstract public String getUnit(double quantity);
 }

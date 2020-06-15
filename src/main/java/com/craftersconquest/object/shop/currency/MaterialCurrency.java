@@ -1,12 +1,13 @@
 package com.craftersconquest.object.shop.currency;
 
+import com.craftersconquest.object.Unit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class MaterialCurrency extends ItemBasedCurrency {
 
-    public MaterialCurrency(Material material) {
-        super(getItemFromMaterial(material));
+    public MaterialCurrency(Material material, Unit unit) {
+        super(getItemFromMaterial(material), unit);
     }
 
     private static ItemStack getItemFromMaterial(Material material) {

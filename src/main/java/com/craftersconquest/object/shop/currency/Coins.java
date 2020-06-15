@@ -1,11 +1,13 @@
 package com.craftersconquest.object.shop.currency;
 
 import com.craftersconquest.core.ConquestCore;
+import com.craftersconquest.object.Unit;
 import org.bukkit.entity.Player;
 
 public class Coins extends Currency {
 
     private final ConquestCore instance;
+    private final static Unit unit = new Unit("Coin", "Coins");
 
     public Coins(ConquestCore instance) {
         this.instance = instance;
@@ -25,4 +27,10 @@ public class Coins extends Currency {
     public void deposit(Player player, double amount) {
         instance.getEconomy().depositPlayer(player, amount);
     }
+
+    @Override
+    public String getUnit(double quantity) {
+        return unit.getUnit(quantity);
+    }
+
 }

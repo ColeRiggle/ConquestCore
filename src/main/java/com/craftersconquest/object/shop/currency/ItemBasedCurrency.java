@@ -1,5 +1,6 @@
 package com.craftersconquest.object.shop.currency;
 
+import com.craftersconquest.object.Unit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -7,9 +8,11 @@ import org.bukkit.inventory.ItemStack;
 public abstract class ItemBasedCurrency extends Currency {
 
     private final ItemStack item;
+    private final Unit unit;
 
-    public ItemBasedCurrency(ItemStack item) {
+    public ItemBasedCurrency(ItemStack item, Unit unit) {
         this.item = item;
+        this.unit = unit;
     }
 
     protected ItemStack getItem() {
@@ -64,5 +67,10 @@ public abstract class ItemBasedCurrency extends Currency {
         playerInventory.addItem(item);
 
         item.setAmount(oldAmount);
+    }
+
+    @Override
+    public String getUnit(double quantity) {
+        return unit.getUnit(quantity);
     }
 }

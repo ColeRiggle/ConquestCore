@@ -1,11 +1,12 @@
 package com.craftersconquest.object.shop.currency;
 
+import com.craftersconquest.object.Unit;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemStackCurrency extends ItemBasedCurrency {
 
-    public ItemStackCurrency(ItemStack item) {
-        super(item);
+    public ItemStackCurrency(ItemStack item, Unit unit) {
+        super(item, unit);
     }
 
     @Override
