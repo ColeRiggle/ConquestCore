@@ -7,8 +7,8 @@ import java.util.List;
 
 public class ItemStackShopItem extends ShopItem {
 
-    public ItemStackShopItem(Cost cost, ItemStack item) {
-        super(cost, item);
+    public ItemStackShopItem(String name, Cost cost, ItemStack item) {
+        super(name, cost, item);
     }
 
     @Override

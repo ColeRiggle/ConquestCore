@@ -11,6 +11,7 @@ public class SQLTableGenerator {
         tables.add(generateBlocklistTable());
         tables.add(generateSkillsTable());
         tables.add(generateBountiesTable());
+        tables.add(generateItemsTable());
         return tables;
     }
 
@@ -51,5 +52,15 @@ public class SQLTableGenerator {
                 + "`location` VARCHAR(80) NOT NULL,"
                 + "PRIMARY KEY (`location`)"
                 + ")", List.of());
+    }
+
+    private SQLTable generateItemsTable() {
+        List<String> columns = new ArrayList<>();
+        columns.add("`base_representation` VARCHAR(200)");
+
+        return new SQLTable("items", "CREATE TABLE IF NOT EXISTS items ("
+                + "`id` VARCHAR(32) NOT NULL,"
+                + "PRIMARY KEY (`location`)"
+                + ")", columns);
     }
 }

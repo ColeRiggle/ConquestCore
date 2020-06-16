@@ -8,8 +8,8 @@ import java.util.List;
 
 public class MaterialShopItem extends ShopItem {
 
-    public MaterialShopItem(Cost cost, Material material) {
-        super(cost, new ItemStack(material));
+    public MaterialShopItem(String name, Cost cost, Material material) {
+        super(name, cost, new ItemStack(material));
     }
 
     @Override

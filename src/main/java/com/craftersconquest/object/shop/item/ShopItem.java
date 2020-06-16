@@ -10,20 +10,26 @@ import java.util.List;
 
 public abstract class ShopItem {
 
+    private final String name;
     private final Cost cost;
     private final ItemStack item;
 
-    public ShopItem(Cost cost, ItemStack item) {
+    public ShopItem(String name, Cost cost, ItemStack item) {
+        this.name = name;
         this.cost = cost;
         this.item = item;
     }
 
-    public static ShopItem ofTypeWithCost(Material material, Cost cost) {
-        return new MaterialShopItem(cost, material);
+    public static ShopItem ofTypeWithCost(String name, Material material, Cost cost) {
+        return new MaterialShopItem(name, cost, material);
     }
 
-    public static ShopItem ofItemStackWithCost(ItemStack item, Cost cost) {
-        return new ItemStackShopItem(cost, item);
+    public static ShopItem ofItemStackWithCost(String name, ItemStack item, Cost cost) {
+        return new ItemStackShopItem(name, cost, item);
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Cost getCost() {
@@ -50,7 +56,7 @@ public abstract class ShopItem {
 
         String unit = cost.getCurrency().getUnit(cost.getPrice());
 
-        baseLore.add(ChatColor.GRAY + "Buy price: " + ChatColor.RED +
+        baseLore.add(ChatColor.GRAY + "Buy price: " + ChatColor.GOLD +
                 NumbersUtil.formatDouble(cost.getPrice()) + " " + unit);
 
         baseLore.add("");

@@ -84,6 +84,12 @@
             <systemPath>${basedir}/lib/DeveloperAPI.jar</systemPath>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.shynixn.headdatabase</groupId>
+            <artifactId>hdb-api</artifactId>
+            <version>1.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

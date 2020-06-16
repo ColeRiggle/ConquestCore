@@ -29,6 +29,11 @@ public class InventoryUtil {
                     setDisplayName(ChatColor.RED + "Close").
                     build();
 
+    public static final ItemStack BACK =
+            new ItemBuilder(Material.OAK_DOOR, 1).
+                    setDisplayName(ChatColor.RED + "Back").
+                    build();
+
     public static void fillSmartInventory(InventoryContents inventoryContents) {
         inventoryContents.fill(ClickableItem.empty(DEFAULT_ITEM));
     }

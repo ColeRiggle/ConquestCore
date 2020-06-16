@@ -45,14 +45,14 @@ public class PlayerJoinListener implements Listener {
         Currency currency = new Coins(instance);
         Cost cost = Cost.fromCurrencyAndPrice(currency, 100);
 
-        ShopItem apple = ShopItem.ofTypeWithCost(Material.APPLE, cost);
-        ShopItem spruce = ShopItem.ofTypeWithCost(Material.SPRUCE_LOG, cost);
-        ShopItem oak = ShopItem.ofTypeWithCost(Material.OAK_LOG, cost);
-        ShopItem acacia = ShopItem.ofTypeWithCost(Material.ACACIA_LOG, cost);
-        ShopItem birch = ShopItem.ofTypeWithCost(Material.BIRCH_LOG, cost);
-        ShopItem darkOak = ShopItem.ofTypeWithCost(Material.DARK_OAK_LOG, cost);
-        ShopItem jungle = ShopItem.ofTypeWithCost(Material.JUNGLE_LOG, cost);
-        ShopItem boat = ShopItem.ofTypeWithCost(Material.OAK_BOAT, cost);
+        ShopItem apple = ShopItem.ofTypeWithCost("Apple", Material.APPLE, cost);
+        ShopItem spruce = ShopItem.ofTypeWithCost("Spruce Log", Material.SPRUCE_LOG, cost);
+        ShopItem oak = ShopItem.ofTypeWithCost("Oak Log", Material.OAK_LOG, cost);
+        ShopItem acacia = ShopItem.ofTypeWithCost("Acacia Log", Material.ACACIA_LOG, cost);
+        ShopItem birch = ShopItem.ofTypeWithCost("Birch Log", Material.BIRCH_LOG, cost);
+        ShopItem darkOak = ShopItem.ofTypeWithCost("Dark Oak Log", Material.DARK_OAK_LOG, cost);
+        ShopItem jungle = ShopItem.ofTypeWithCost("Jungle Log", Material.JUNGLE_LOG, cost);
+        ShopItem boat = ShopItem.ofTypeWithCost("Oak Boat", Material.OAK_BOAT, cost);
 
         shop.addItem(apple);
         shop.addItem(spruce);

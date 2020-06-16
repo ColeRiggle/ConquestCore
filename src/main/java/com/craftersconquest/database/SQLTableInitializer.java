@@ -27,10 +27,12 @@ public class SQLTableInitializer {
     private void createTables() {
         for (SQLTable table : generator.getTables()) {
             try {
+                Bukkit.getLogger().info("Creating table: " + table.getName());
+
                 Statement statement = connection.createStatement();
                 statement.executeUpdate(table.getCreationCommand());
             } catch (SQLException exception) {
-                Bukkit.getLogger().severe("Error A");
+                Bukkit.getLogger().severe("Error while creating tables: " + exception.toString());
             }
 
             addTableFields(table);
@@ -40,17 +42,16 @@ public class SQLTableInitializer {
     private void addTableFields(SQLTable table) {
         for (String column : table.getColumns()) {
             try {
+                Bukkit.getLogger().info("Adding table column: " + column);
 
-                Bukkit.getLogger().info("Attempting to add table field...");
-
-                String sql = "ALTER TABLE `" + table.getTableName() + "` ADD COLUMN " + column;
+                String sql = "ALTER TABLE `" + table.getName() + "` ADD COLUMN " + column;
 
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.executeUpdate();
 
             } catch (SQLException exception) {
                 if (exception.getErrorCode() != 1060) {
-                    Bukkit.getLogger().severe("Error B: " + exception.toString());
+                    Bukkit.getLogger().severe("Error while adding fields: " + exception.toString());
                 }
             }
         }

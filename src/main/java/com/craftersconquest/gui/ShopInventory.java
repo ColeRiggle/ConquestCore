@@ -6,7 +6,9 @@ import com.craftersconquest.util.InventoryUtil;
 import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.*;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 
 import java.util.List;
 
@@ -21,12 +23,12 @@ public class ShopInventory implements ConquestInventory, InventoryProvider {
         inventory = SmartInventory.builder()
                 .id(shop.getName())
                 .provider(this)
-                .size(getOptimalRowCount(), 9)
+                .size(calculateOptimalRowCount(), 9)
                 .title(shop.getName())
                 .build();
     }
 
-    private int getOptimalRowCount() {
+    private int calculateOptimalRowCount() {
         return shop.getItems().size() <= 7 ? 3 : 4;
     }
 
@@ -47,14 +49,24 @@ public class ShopInventory implements ConquestInventory, InventoryProvider {
 
     private void fillWithItems(Pagination pagination) {
         List<ShopItem> shopItems = shop.getItems();
-
         ClickableItem[] clickableItems = new ClickableItem[shopItems.size()];
 
         for (int index = 0; index < clickableItems.length; index++) {
-            clickableItems[index] = ClickableItem.empty(shopItems.get(index).getDisplayItemStack());
+            clickableItems[index] = createClickableItemFromShopItem(shopItems.get(index));
         }
 
         pagination.setItems(clickableItems);
+    }
+
+    private ClickableItem createClickableItemFromShopItem(ShopItem item) {
+        return ClickableItem.of(item.getDisplayItemStack(), e -> onShopItemClick(e, item));
+    }
+
+    private void onShopItemClick(InventoryClickEvent event, ShopItem item) {
+        Player player = (Player) event.getWhoClicked();
+
+        TransactionInventory transactionInventory = new TransactionInventory(inventory, item);
+        transactionInventory.getInventory().open(player);
     }
 
     private void addNavigationButtons(Player player, Pagination pagination, InventoryContents inventoryContents) {
