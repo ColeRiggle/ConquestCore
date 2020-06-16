@@ -56,11 +56,11 @@ public class SQLTableGenerator {
 
     private SQLTable generateItemsTable() {
         List<String> columns = new ArrayList<>();
-        columns.add("`base_representation` VARCHAR(200)");
+        columns.add("`base_representation` VARCHAR(2000)");
 
         return new SQLTable("items", "CREATE TABLE IF NOT EXISTS items ("
-                + "`id` VARCHAR(32) NOT NULL,"
-                + "PRIMARY KEY (`location`)"
+                + "`id` VARCHAR(60) NOT NULL,"
+                + "PRIMARY KEY (`id`)"
                 + ")", columns);
     }
 }

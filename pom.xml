@@ -14,7 +14,6 @@
     <artifactId>ConquestCore</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-
     <repositories>
         <repository>
             <id>my-local-repo</id>
@@ -36,7 +35,7 @@
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
+            <artifactId>spigot</artifactId>
             <version>1.14.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
@@ -89,6 +88,8 @@
             <artifactId>hdb-api</artifactId>
             <version>1.0</version>
         </dependency>
+
+
 
     </dependencies>
 

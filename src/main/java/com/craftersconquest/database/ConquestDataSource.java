@@ -11,6 +11,9 @@ public abstract class ConquestDataSource {
     abstract public void open();
     abstract public void close();
 
+    abstract public String getStoredItem(String id);
+    abstract public void addStoredItem(String id, String data);
+
     abstract public ConquestPlayer loadPlayer(UUID playerUUID);
     abstract public void savePlayer(ConquestPlayer player);
     abstract public Guild loadGuild(String name);

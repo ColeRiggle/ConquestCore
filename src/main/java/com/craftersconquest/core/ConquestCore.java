@@ -4,6 +4,7 @@ import com.craftersconquest.blocklist.Blocklist;
 import com.craftersconquest.database.Configuration;
 import com.craftersconquest.database.ConquestDataSource;
 import com.craftersconquest.database.ConquestSQLSource;
+import com.craftersconquest.items.ItemManager;
 import com.craftersconquest.listeners.ListenerManager;
 import com.craftersconquest.object.Component;
 import com.craftersconquest.player.cache.ConquestPlayerCacheManager;
@@ -31,6 +32,7 @@ public class ConquestCore extends JavaPlugin {
     private final Blocklist blocklist = new Blocklist(this);
     private final ScoreboardManager scoreboardManager = new ScoreboardManager(this);
     private final VisualsManager visualsManager = new VisualsManager(this);
+    private final ItemManager itemManager = new ItemManager(this);
     private final TimeManager timeManager = new TimeManager(this);
 
     private Economy economy;
@@ -56,6 +58,7 @@ public class ConquestCore extends JavaPlugin {
         components.add(cacheManager);
         components.add(listenerManager);
         components.add(scoreboardManager);
+        components.add(itemManager);
     }
 
     private void enableComponents() {
@@ -95,6 +98,8 @@ public class ConquestCore extends JavaPlugin {
     public VisualsManager getVisualsManager() { return visualsManager; }
 
     public TimeManager getTimeManager() { return timeManager; }
+
+    public ItemManager getItemManager() { return itemManager; }
 
     public Economy getEconomy() { return economy; }
 

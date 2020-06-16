@@ -77,6 +77,24 @@ public class ConquestSQLSource extends ConquestDataSource {
     }
 
     @Override
+    public String getStoredItem(String id) {
+        return getString("items", "id", id, "base_representation");
+    }
+
+    @Override
+    public void addStoredItem(String id, String data) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("REPLACE INTO items (id,base_representation) VALUES(?,?)");
+            preparedStatement.setString(1, id);
+            preparedStatement.setString(2, data);
+            preparedStatement.execute();
+        } catch (SQLException exception) {
+            Bukkit.getLogger().log(Level.SEVERE, Errors.SQLStatementError, exception);
+        }
+    }
+
+    @Override
     public ConquestPlayer loadPlayer(UUID playerUUID) {
         if (!databaseContainsPlayer(playerUUID)) {
             createPlayerInDatabase(playerUUID);
