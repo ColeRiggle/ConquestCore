@@ -12,6 +12,10 @@ public class MaterialShopItem extends ShopItem {
         super(name, cost, new ItemStack(material));
     }
 
+    public MaterialShopItem(String name, Cost cost, Material material, int maxQuantity) {
+        super(name, cost, new ItemStack(material), maxQuantity);
+    }
+
     @Override
     public List<String> getBaseLore() {
         return new ArrayList<>();

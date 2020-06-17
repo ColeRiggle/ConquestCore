@@ -7,6 +7,7 @@ import com.craftersconquest.util.InventoryUtil;
 import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.*;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
@@ -76,7 +77,9 @@ public class ShopInventory implements ConquestInventory, InventoryProvider {
                     e -> inventory.open(player, pagination.previous().getPage())));
         }
 
-        if (pagination.getPageItems().length > 14) {
+        int itemCount = shop.getItems().size();
+        int page = pagination.getPage();
+        if (itemCount - (page * 14) > 14) {
             inventoryContents.set(3, 5, ClickableItem.of(InventoryUtil.NEXT_PAGE_BUTTON,
                     e -> inventory.open(player, pagination.next().getPage())));
         }
@@ -86,8 +89,12 @@ public class ShopInventory implements ConquestInventory, InventoryProvider {
     }
 
     private void configurePagination(Pagination pagination, InventoryContents inventoryContents) {
-        pagination.setItemsPerPage(14);
+        pagination.setItemsPerPage(calculateOptimalItems());
         pagination.addToIterator(getOptimalIterator(inventoryContents));
+    }
+
+    private int calculateOptimalItems() {
+        return shop.getItems().size() <= 7 ? 7 : 14;
     }
 
     private SlotIterator getOptimalIterator(InventoryContents inventoryContents) {

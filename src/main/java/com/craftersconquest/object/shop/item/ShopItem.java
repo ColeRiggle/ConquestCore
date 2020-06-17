@@ -13,15 +13,29 @@ public abstract class ShopItem {
     private final String name;
     private final Cost cost;
     private final ItemStack item;
+    private final int maxQuantity;
 
     public ShopItem(String name, Cost cost, ItemStack item) {
+        this(name ,cost, item, item.getType().getMaxStackSize());
+    }
+
+    public ShopItem(String name, Cost cost, ItemStack item, int maxQuantity) {
         this.name = name;
         this.cost = cost;
         this.item = item;
+        this.maxQuantity = maxQuantity;
+    }
+
+    public static ShopItem ofTypeWithCostAndMaxQuantity(String name, Material material, Cost cost, int maxQuantity) {
+        return new MaterialShopItem(name, cost, material, maxQuantity);
     }
 
     public static ShopItem ofTypeWithCost(String name, Material material, Cost cost) {
         return new MaterialShopItem(name, cost, material);
+    }
+
+    public static ShopItem ofItemStackWithCostAndMaxQuantity(String name, ItemStack item, Cost cost, int maxQuantity) {
+        return new ItemStackShopItem(name, cost, item, maxQuantity);
     }
 
     public static ShopItem ofItemStackWithCost(String name, ItemStack item, Cost cost) {
@@ -34,6 +48,10 @@ public abstract class ShopItem {
 
     public Cost getCost() {
         return cost;
+    }
+
+    public int getMaxQuantity() {
+        return maxQuantity;
     }
 
     protected ItemStack getItemStack() {
@@ -62,6 +80,29 @@ public abstract class ShopItem {
         baseLore.add("");
 
         baseLore.add(ChatColor.GRAY + "Left-click to purchase");
+
+        return baseLore;
+    }
+
+    public ItemStack getTransactionItemStack(int quantity) {
+        item.setAmount(quantity);
+        ItemBuilder transactionItemBuilder = new ItemBuilder(item);
+        transactionItemBuilder.setLore(getTransactionLore(quantity));
+
+        return transactionItemBuilder.build();
+    }
+
+    private List<String> getTransactionLore(int quantity) {
+        List<String> baseLore = getBaseLore();
+        baseLore.add("");
+
+        String unit = cost.getCurrency().getUnit(cost.getPrice());
+
+        baseLore.add(ChatColor.GRAY + "Unit price: " + ChatColor.GOLD +
+                NumbersUtil.formatDouble(cost.getPrice()) + " " + unit);
+
+        baseLore.add(ChatColor.GRAY + "Total price: " +
+                ChatColor.GOLD + NumbersUtil.formatDouble(cost.getPrice() * quantity) + " " + unit);
 
         return baseLore;
     }

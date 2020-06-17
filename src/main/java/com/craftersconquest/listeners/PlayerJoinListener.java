@@ -2,7 +2,6 @@ package com.craftersconquest.listeners;
 
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.gui.ShopInventory;
-import com.craftersconquest.menu.ConquestMenu;
 import com.craftersconquest.object.shop.Shop;
 import com.craftersconquest.object.shop.currency.Coins;
 import com.craftersconquest.object.shop.currency.Currency;
@@ -54,6 +53,14 @@ public class PlayerJoinListener implements Listener {
         ShopItem jungle = ShopItem.ofTypeWithCost("Jungle Log", Material.JUNGLE_LOG, cost);
         ShopItem boat = ShopItem.ofTypeWithCost("Oak Boat", Material.OAK_BOAT, cost);
 
+        ShopItem blue = ShopItem.ofTypeWithCost("Blue", Material.BLUE_WOOL, cost);
+        ShopItem red = ShopItem.ofTypeWithCost("Red", Material.RED_WOOL, cost);
+        ShopItem green = ShopItem.ofTypeWithCost("Green", Material.GREEN_WOOL, cost);
+        ShopItem orange = ShopItem.ofTypeWithCost("Orange", Material.ORANGE_WOOL, cost);
+        ShopItem yellow = ShopItem.ofTypeWithCost("Yellow", Material.YELLOW_WOOL, cost);
+        ShopItem purple = ShopItem.ofTypeWithCost("Purple", Material.PURPLE_WOOL, cost);
+        ShopItem black = ShopItem.ofTypeWithCost("Black", Material.BLACK_WOOL, cost);
+
         shop.addItem(apple);
         shop.addItem(spruce);
         shop.addItem(oak);
@@ -62,6 +69,14 @@ public class PlayerJoinListener implements Listener {
         shop.addItem(darkOak);
         shop.addItem(jungle);
         shop.addItem(boat);
+
+        shop.addItem(blue);
+        shop.addItem(red);
+        shop.addItem(green);
+        shop.addItem(orange);
+        shop.addItem(yellow);
+        shop.addItem(purple);
+        shop.addItem(black);
 
 
         ShopInventory inventory = new ShopInventory(instance, shop);

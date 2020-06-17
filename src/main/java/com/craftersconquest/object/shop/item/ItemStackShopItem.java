@@ -11,6 +11,10 @@ public class ItemStackShopItem extends ShopItem {
         super(name, cost, item);
     }
 
+    public ItemStackShopItem(String name, Cost cost, ItemStack item, int maxQuantity) {
+        super(name, cost, item, maxQuantity);
+    }
+
     @Override
     public List<String> getBaseLore() {
         if (getItemStack().getItemMeta() != null && getItemStack().getItemMeta().getLore() != null) {
