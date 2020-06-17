@@ -64,7 +64,7 @@ public class PlayerJoinListener implements Listener {
         shop.addItem(boat);
 
 
-        ShopInventory inventory = new ShopInventory(shop);
+        ShopInventory inventory = new ShopInventory(instance, shop);
         inventory.getInventory().open(player);
     }
 }

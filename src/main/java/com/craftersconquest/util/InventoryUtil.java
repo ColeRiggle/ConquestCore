@@ -6,6 +6,10 @@ import fr.minuskube.inv.content.InventoryContents;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class InventoryUtil {
 
@@ -36,5 +40,22 @@ public class InventoryUtil {
 
     public static void fillSmartInventory(InventoryContents inventoryContents) {
         inventoryContents.fill(ClickableItem.empty(DEFAULT_ITEM));
+    }
+
+    public static ArrayList<String> createLore(String... lore) {
+        ArrayList<String> finalLore = new ArrayList<>();
+        for (String line : lore) {
+            finalLore.add(ChatColor.GRAY + line);
+        }
+        return finalLore;
+    }
+
+    public static SkullMeta createSkullMeta(ItemStack item, String displayName, String... lore) {
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+
+        meta.setDisplayName(displayName);
+        meta.setLore(Arrays.asList(lore));
+
+        return meta;
     }
 }

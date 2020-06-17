@@ -1,12 +1,12 @@
 package com.craftersconquest.gui;
 
+import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.object.shop.Shop;
 import com.craftersconquest.object.shop.item.ShopItem;
 import com.craftersconquest.util.InventoryUtil;
 import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.*;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
@@ -14,12 +14,13 @@ import java.util.List;
 
 public class ShopInventory implements ConquestInventory, InventoryProvider {
 
+    private final ConquestCore instance;
     private final SmartInventory inventory;
     private final Shop shop;
 
-    public ShopInventory(Shop shop) {
+    public ShopInventory(ConquestCore instance, Shop shop) {
+        this.instance = instance;
         this.shop = shop;
-
         inventory = SmartInventory.builder()
                 .id(shop.getName())
                 .provider(this)
@@ -65,7 +66,7 @@ public class ShopInventory implements ConquestInventory, InventoryProvider {
     private void onShopItemClick(InventoryClickEvent event, ShopItem item) {
         Player player = (Player) event.getWhoClicked();
 
-        TransactionInventory transactionInventory = new TransactionInventory(inventory, item);
+        TransactionInventory transactionInventory = new TransactionInventory(instance, inventory, item);
         transactionInventory.getInventory().open(player);
     }
 

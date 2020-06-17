@@ -44,13 +44,8 @@ public class ItemManager implements Component {
         commandExecutor = new ItemCommandExecutor(instance);
     }
 
-    // Three important public interface elements
-    // 1. load() - loads existing items from the database
-    // 2. generate() - pulls items from internet if necessary and stores them in the database
-    // 3. getItem(String id) - pulls the correct item from the cached database
-
     public ItemStack getItem(String id) {
-        return null;
+        return items.get(id).clone();
     }
 
     private void load() {
