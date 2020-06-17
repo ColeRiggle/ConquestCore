@@ -1,13 +1,13 @@
-package com.craftersconquest.gui;
+package com.craftersconquest.gui.shop;
 
 import com.craftersconquest.core.ConquestCore;
+import com.craftersconquest.gui.ConquestInventory;
 import com.craftersconquest.object.shop.Shop;
 import com.craftersconquest.object.shop.item.ShopItem;
 import com.craftersconquest.util.InventoryUtil;
 import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.*;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
@@ -79,12 +79,14 @@ public class ShopInventory implements ConquestInventory, InventoryProvider {
 
         int itemCount = shop.getItems().size();
         int page = pagination.getPage();
+        int closeRow = 2;
         if (itemCount - (page * 14) > 14) {
             inventoryContents.set(3, 5, ClickableItem.of(InventoryUtil.NEXT_PAGE_BUTTON,
                     e -> inventory.open(player, pagination.next().getPage())));
+            closeRow = 3;
         }
 
-        inventoryContents.set(3, 4, ClickableItem.of(InventoryUtil.CLOSE,
+        inventoryContents.set(closeRow, 4, ClickableItem.of(InventoryUtil.CLOSE,
                 e -> e.getWhoClicked().closeInventory()));
     }
 

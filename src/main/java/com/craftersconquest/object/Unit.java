@@ -1,7 +1,5 @@
 package com.craftersconquest.object;
 
-import org.bukkit.Bukkit;
-
 public class Unit {
 
     private final String singular;

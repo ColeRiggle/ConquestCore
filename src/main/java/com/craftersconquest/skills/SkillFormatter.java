@@ -7,6 +7,7 @@ import com.craftersconquest.object.skill.Skill;
 import com.craftersconquest.util.NumbersUtil;
 import org.bukkit.ChatColor;
 
+import java.util.AbstractQueue;
 import java.util.List;
 
 public class SkillFormatter {
@@ -21,7 +22,7 @@ public class SkillFormatter {
         StringBuilder message = new StringBuilder();
 
         final double previousMultiplier = skill.getMultiplierForLevel(level - 1);
-        final double currentMultiplier = skill.getMultiplier();
+        final double currentMultiplier = skill.getMultiplierForLevel(level);
         final String abilityName = skill.getType().getAbility().getAbilityName();
 
         message.append(ChatColor.GREEN + "  " + ChatColor.BOLD + "Rewards" + ChatColor.RESET + "\n");
@@ -41,5 +42,17 @@ public class SkillFormatter {
         }
 
         return message.toString();
+    }
+
+    public String getProgressBar(Skill skill) {
+        double currentXp = skill.getXp();
+        double necessaryXp = skill.getRequiredXpForNextLevel();
+
+        String bar = "";
+        bar += Formatting.getBarRepresentation((int) currentXp, (int) necessaryXp,
+                18, ChatColor.AQUA, ChatColor.GRAY);
+        bar += " " + Formatting.getPartsAndTotal((int) currentXp, (int) necessaryXp,
+                ChatColor.GRAY, ChatColor.AQUA);
+        return bar;
     }
 }

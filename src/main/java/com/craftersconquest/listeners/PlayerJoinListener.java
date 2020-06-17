@@ -1,7 +1,7 @@
 package com.craftersconquest.listeners;
 
 import com.craftersconquest.core.ConquestCore;
-import com.craftersconquest.gui.ShopInventory;
+import com.craftersconquest.gui.menu.MenuInventory;
 import com.craftersconquest.object.shop.Shop;
 import com.craftersconquest.object.shop.currency.Coins;
 import com.craftersconquest.object.shop.currency.Currency;
@@ -78,8 +78,12 @@ public class PlayerJoinListener implements Listener {
         shop.addItem(purple);
         shop.addItem(black);
 
+//        ShopInventory inventory = new ShopInventory(instance, shop);
+//        inventory.getInventory().open(player);
 
-        ShopInventory inventory = new ShopInventory(instance, shop);
+        MenuInventory inventory = new MenuInventory(instance);
         inventory.getInventory().open(player);
+
+        instance.getMenuManager().givePlayerMenu(player);
     }
 }

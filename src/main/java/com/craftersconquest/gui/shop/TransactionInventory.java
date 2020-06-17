@@ -1,6 +1,7 @@
-package com.craftersconquest.gui;
+package com.craftersconquest.gui.shop;
 
 import com.craftersconquest.core.ConquestCore;
+import com.craftersconquest.gui.ConquestInventory;
 import com.craftersconquest.messaging.Messaging;
 import com.craftersconquest.object.shop.item.Cost;
 import com.craftersconquest.object.shop.item.ShopItem;

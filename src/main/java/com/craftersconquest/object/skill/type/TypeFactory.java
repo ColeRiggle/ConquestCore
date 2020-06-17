@@ -3,6 +3,7 @@ package com.craftersconquest.object.skill.type;
 import com.craftersconquest.object.skill.Ability;
 import com.craftersconquest.object.skill.Reward;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,11 +103,11 @@ public class TypeFactory {
 
     private static final Map<Material,Double> COMBAT_TRACKED = Map.ofEntries();
 
-    private static final Type MINING = new Type("Mining", Ability.EXCAVATOR, MINING_REWARDS, MINING_TRACKED);
-    private static final Type FARMING = new Type("Farming", Ability.HARVESTER, FARMING_REWARDS, FARMING_TRACKED);
-    private static final Type FORAGING = new Type("Foraging", Ability.FORAGER, FORAGING_REWARDS, FORAGING_TRACKED);
-    private static final Type ENCHANTING = new Type("Enchanting", Ability.SORCERER, ENCHANTING_REWARDS, ENCHANTING_TRACKED);
-    private static final Type COMBAT = new Type("Combat", Ability.OUTLAW, COMBAT_REWARDS, COMBAT_TRACKED);
+    private static final Type MINING = new Type("Mining", Material.IRON_PICKAXE, Ability.EXCAVATOR, MINING_REWARDS, MINING_TRACKED);
+    private static final Type FARMING = new Type("Farming", Material.STONE_HOE, Ability.HARVESTER, FARMING_REWARDS, FARMING_TRACKED);
+    private static final Type FORAGING = new Type("Foraging", Material.GOLDEN_AXE, Ability.FORAGER, FORAGING_REWARDS, FORAGING_TRACKED);
+    private static final Type ENCHANTING = new Type("Enchanting", Material.ENCHANTED_BOOK, Ability.SORCERER, ENCHANTING_REWARDS, ENCHANTING_TRACKED);
+    private static final Type COMBAT = new Type("Combat", Material.DIAMOND_SWORD, Ability.OUTLAW, COMBAT_REWARDS, COMBAT_TRACKED);
 
     public Type getType(String name) {
         switch (name) {

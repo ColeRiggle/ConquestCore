@@ -106,6 +106,9 @@ public class Skill {
     }
 
     public static String getRomanizedLevel(int level) {
+        if (level == 0) {
+            return "0";
+        }
         return Level.fromInt(level).toString();
     }
 }
