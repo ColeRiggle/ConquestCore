@@ -3,7 +3,7 @@ version: 1.0.0
 author: Sqi
 main: com.craftersconquest.core.ConquestCore
 api-version: 1.14
-softdepend: [Vault, Multiverse-Core, Essentials]
+softdepend: [Vault, Multiverse-Core, Essentials, SlimeWorldManager]
 commands:
   ccadmingenerate:
     description: "Generates custom items."

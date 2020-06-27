@@ -43,7 +43,8 @@ public class MenuInventory implements ConquestInventory, InventoryProvider {
         inventoryContents.set(2, 4, ClickableItem.empty(menuIconGenerator.getGuildIcon()));
         inventoryContents.set(2, 5, ClickableItem.empty(menuIconGenerator.getStreaksIcon()));
         inventoryContents.set(2, 6, ClickableItem.empty(menuIconGenerator.getHelpIcon()));
-        inventoryContents.set(3, 4, ClickableItem.empty(menuIconGenerator.getWorkbenchIcon()));
+        inventoryContents.set(3, 4, ClickableItem.of(menuIconGenerator.getWorkbenchIcon(),
+                e -> player.openWorkbench(null, true)));
 
         inventoryContents.set(5, 4, ClickableItem.of(InventoryUtil.CLOSE,
                 e -> e.getWhoClicked().closeInventory()));

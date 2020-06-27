@@ -30,6 +30,8 @@ public class ListenerManager implements Component {
         instance.getServer().getPluginManager().registerEvents(new PlayerDropItemListener(instance), instance);
         instance.getServer().getPluginManager().registerEvents(new PlayerRespawnListener(instance), instance);
         instance.getServer().getPluginManager().registerEvents(new PlayerInteractListener(instance), instance);
+        instance.getServer().getPluginManager().registerEvents(new InventoryMoveItemListener(instance), instance);
+        instance.getServer().getPluginManager().registerEvents(new InventoryClickListener(instance), instance);
     }
 
     @Override
