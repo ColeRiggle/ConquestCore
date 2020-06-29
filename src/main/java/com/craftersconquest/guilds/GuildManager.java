@@ -34,9 +34,6 @@ public class GuildManager implements Component {
 
     @Override
     public void onEnable() {
-        loader = new GuildWorldLoader();
-        Guild testGuild = new Guild("test_1");
-        loader.load(testGuild);
     }
 
     @Override

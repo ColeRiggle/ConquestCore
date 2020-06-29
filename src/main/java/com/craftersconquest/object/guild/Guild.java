@@ -1,16 +1,22 @@
 package com.craftersconquest.object.guild;
 
+import com.craftersconquest.object.guild.upgrade.Upgrades;
 import com.craftersconquest.player.ConquestPlayer;
 
-import java.util.Date;
 import java.util.List;
 
 public class Guild {
 
-    private final String name;
+    private String name;
+    private String formattedName;
+    private ConquestPlayer owner;
+    private List<ConquestPlayer> members;
+    private Stockpile stockpile;
+    private Upgrades upgrades;
+    private int elo;
+    private War lastWar;
 
-    public Guild(String name) {
-        this.name = name;
+    private Guild() {
     }
 
     public String getName() {
@@ -19,27 +25,96 @@ public class Guild {
 
     public String getFormattedName() { return name; }
 
-    public ConquestPlayer geAtOwner() {
-        return null;
+    public ConquestPlayer getOwner() {
+        return owner;
     }
 
     public List<ConquestPlayer> getMembers() {
-        return null;
+        return members;
     }
 
     public Stockpile getStockpile() {
-        return null;
+        return stockpile;
     }
 
     public Upgrades getUpgrades() {
-        return null;
+        return upgrades;
     }
 
     public int getElo() {
-        return 0;
+        return elo;
     }
 
-    public Date getLastWar() {
-        return null;
+    public War getLastWar() {
+        return lastWar;
+    }
+
+    public static Builder builder() { return new Builder(); }
+
+    public static final class Builder {
+
+        private String name;
+        private String formattedName;
+        private ConquestPlayer owner;
+        private List<ConquestPlayer> members;
+        private Stockpile stockpile;
+        private Upgrades upgrades;
+        private int elo;
+        private War lastWar;
+
+        private Builder() {}
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder formattedName(String formattedName) {
+            this.formattedName = formattedName;
+            return this;
+        }
+
+        public Builder owner(ConquestPlayer owner) {
+            this.owner = owner;
+            return this;
+        }
+
+        public Builder members(List<ConquestPlayer> members) {
+            this.members = members;
+            return this;
+        }
+
+        public Builder stockpile(Stockpile stockpile) {
+            this.stockpile = stockpile;
+            return this;
+        }
+
+        public Builder upgrades(Upgrades upgrades) {
+            this.upgrades = upgrades;
+            return this;
+        }
+
+        public Builder elo(int elo) {
+            this.elo = elo;
+            return this;
+        }
+
+        public Builder lastWar(War lastWar) {
+            this.lastWar = lastWar;
+            return this;
+        }
+
+        public Guild build() {
+            Guild guild = new Guild();
+            guild.name = name;
+            guild.formattedName = formattedName;
+            guild.owner = owner;
+            guild.members = members;
+            guild.stockpile = stockpile;
+            guild.upgrades = upgrades;
+            guild.elo = elo;
+            guild.lastWar = lastWar;
+            return guild;
+        }
     }
 }

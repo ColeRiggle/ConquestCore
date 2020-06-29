@@ -1,4 +1,4 @@
 package com.craftersconquest.object.guild;
 
-public class Upgrades {
+public class War {
 }
