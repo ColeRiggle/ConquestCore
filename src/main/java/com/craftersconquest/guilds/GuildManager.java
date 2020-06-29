@@ -2,7 +2,7 @@ package com.craftersconquest.guilds;
 
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.object.Component;
-import com.craftersconquest.object.Guild;
+import com.craftersconquest.object.guild.Guild;
 
 public class GuildManager implements Component {
 

@@ -2,7 +2,7 @@ package com.craftersconquest.database;
 
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.util.Errors;
-import com.craftersconquest.object.Guild;
+import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.object.skill.Skill;
 import com.craftersconquest.object.skill.SkillFactory;
 import com.craftersconquest.object.skill.type.TypeFactory;

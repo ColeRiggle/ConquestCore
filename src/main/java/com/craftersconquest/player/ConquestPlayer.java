@@ -1,7 +1,7 @@
 package com.craftersconquest.player;
 
 import com.craftersconquest.object.Bounty;
-import com.craftersconquest.object.Guild;
+import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.object.skill.Skill;
 
 import java.util.ArrayList;

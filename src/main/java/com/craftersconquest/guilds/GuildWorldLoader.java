@@ -1,6 +1,6 @@
 package com.craftersconquest.guilds;
 
-import com.craftersconquest.object.Guild;
+import com.craftersconquest.object.guild.Guild;
 import com.grinderwolf.swm.api.exceptions.*;
 import com.grinderwolf.swm.api.loaders.SlimeLoader;
 import com.grinderwolf.swm.api.world.SlimeWorld;

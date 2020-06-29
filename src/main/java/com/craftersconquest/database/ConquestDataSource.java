@@ -1,6 +1,6 @@
 package com.craftersconquest.database;
 
-import com.craftersconquest.object.Guild;
+import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.player.ConquestPlayer;
 import org.bukkit.Location;
 
