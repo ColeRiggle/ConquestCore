@@ -1,6 +1,7 @@
 package com.craftersconquest.object.skill;
 
 import com.craftersconquest.object.Upgradable;
+import com.craftersconquest.object.horse.Tier;
 import com.craftersconquest.object.skill.type.Type;
 
 public class Skill implements Upgradable {
@@ -93,9 +94,11 @@ public class Skill implements Upgradable {
         XXV (25, 30000, 5500),
         XXVI (26, 30000000, 0);
 
-        int numericalValue;
-        int requiredXp;
-        int coinReward;
+        final int numericalValue;
+        final int requiredXp;
+        final int coinReward;
+
+        private static final Level[] levelValues = Level.values();
 
         Level(int numericalValue, int requiredXp, int coinReward) {
             this.numericalValue = numericalValue;
@@ -104,7 +107,7 @@ public class Skill implements Upgradable {
         }
 
         public static Level fromInt(int value) {
-            return Level.values()[value];
+            return levelValues[value];
         }
     }
 

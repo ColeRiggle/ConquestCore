@@ -2,6 +2,7 @@ package com.craftersconquest.listeners;
 
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.gui.menu.MenuInventory;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,10 +30,8 @@ public class PlayerInteractListener implements Listener {
             if (item.equals(menu)) {
                 event.setCancelled(true);
                 new MenuInventory(instance).getInventory().open(player);
-            }
-
-            if (item.getType() == Material.SADDLE) {
-
+            } else if (item.getType() == Material.SADDLE) {
+                instance.getHorseManager().onHorseClick(event);
             }
         }
 

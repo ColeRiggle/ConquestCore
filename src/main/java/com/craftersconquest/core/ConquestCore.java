@@ -5,6 +5,7 @@ import com.craftersconquest.database.Configuration;
 import com.craftersconquest.database.ConquestDataSource;
 import com.craftersconquest.database.ConquestSQLSource;
 import com.craftersconquest.guilds.GuildManager;
+import com.craftersconquest.horses.HorseManager;
 import com.craftersconquest.items.ItemManager;
 import com.craftersconquest.listeners.ListenerManager;
 import com.craftersconquest.menu.MenuManager;
@@ -38,6 +39,7 @@ public class ConquestCore extends JavaPlugin {
     private final MenuManager menuManager = new MenuManager(this);
     private final TimeManager timeManager = new TimeManager(this);
     private final GuildManager guildManager = new GuildManager(this);
+    private final HorseManager horseManager = new HorseManager(this);
 
     private Economy economy;
 
@@ -50,7 +52,7 @@ public class ConquestCore extends JavaPlugin {
 
         Bukkit.getLogger().info(timeManager.getDate().toString());
 
-        dataSource.loadGuild("sqis_guild");
+        //dataSource.loadGuild("sqis_guild");
     }
 
     private void setupEconomy() {
@@ -66,6 +68,7 @@ public class ConquestCore extends JavaPlugin {
         components.add(scoreboardManager);
         components.add(itemManager);
         components.add(guildManager);
+        components.add(horseManager);
     }
 
     private void enableComponents() {
@@ -111,6 +114,8 @@ public class ConquestCore extends JavaPlugin {
     public MenuManager getMenuManager() { return menuManager; }
 
     public GuildManager getGuildManager() { return guildManager; }
+
+    public HorseManager getHorseManager() { return horseManager; }
 
     public Economy getEconomy() { return economy; }
 
