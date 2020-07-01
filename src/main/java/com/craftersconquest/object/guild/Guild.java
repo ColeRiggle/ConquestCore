@@ -1,16 +1,16 @@
 package com.craftersconquest.object.guild;
 
 import com.craftersconquest.object.guild.upgrade.Upgrades;
-import com.craftersconquest.player.ConquestPlayer;
 
 import java.util.List;
+import java.util.UUID;
 
 public class Guild {
 
     private String name;
     private String formattedName;
-    private ConquestPlayer owner;
-    private List<ConquestPlayer> members;
+    private UUID ownerUUID;
+    private List<UUID> memberUUIDs;
     private Stockpile stockpile;
     private Upgrades upgrades;
     private int elo;
@@ -25,12 +25,12 @@ public class Guild {
 
     public String getFormattedName() { return name; }
 
-    public ConquestPlayer getOwner() {
-        return owner;
+    public UUID getOwner() {
+        return ownerUUID;
     }
 
-    public List<ConquestPlayer> getMembers() {
-        return members;
+    public List<UUID> getMembers() {
+        return memberUUIDs;
     }
 
     public Stockpile getStockpile() {
@@ -55,8 +55,8 @@ public class Guild {
 
         private String name;
         private String formattedName;
-        private ConquestPlayer owner;
-        private List<ConquestPlayer> members;
+        private UUID ownerUUID;
+        private List<UUID> memberUUIDs;
         private Stockpile stockpile;
         private Upgrades upgrades;
         private int elo;
@@ -74,13 +74,13 @@ public class Guild {
             return this;
         }
 
-        public Builder owner(ConquestPlayer owner) {
-            this.owner = owner;
+        public Builder ownerUUID(UUID ownerUUID) {
+            this.ownerUUID = ownerUUID;
             return this;
         }
 
-        public Builder members(List<ConquestPlayer> members) {
-            this.members = members;
+        public Builder memberUUIDs(List<UUID> memberUUIDs) {
+            this.memberUUIDs = memberUUIDs;
             return this;
         }
 
@@ -108,8 +108,8 @@ public class Guild {
             Guild guild = new Guild();
             guild.name = name;
             guild.formattedName = formattedName;
-            guild.owner = owner;
-            guild.members = members;
+            guild.ownerUUID = ownerUUID;
+            guild.memberUUIDs = memberUUIDs;
             guild.stockpile = stockpile;
             guild.upgrades = upgrades;
             guild.elo = elo;

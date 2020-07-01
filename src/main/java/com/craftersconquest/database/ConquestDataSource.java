@@ -16,10 +16,12 @@ public abstract class ConquestDataSource {
 
     abstract public ConquestPlayer loadPlayer(UUID playerUUID);
     abstract public void savePlayer(ConquestPlayer player);
-    abstract public Guild loadGuild(String name);
 
     abstract public boolean blocklistContains(Location location);
     abstract public void addToBlocklist(Location location);
     abstract public void removeFromBlocklist(Location location);
+
+    abstract public Guild loadGuild(String name);
+    abstract public void saveGuild(Guild guild);
 
 }

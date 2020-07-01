@@ -25,9 +25,17 @@ public class PlayerInteractListener implements Listener {
         ItemStack item = event.getItem();
         ItemStack menu = instance.getMenuManager().getMenuItemStack();
 
-        if (item != null && item.equals(menu)) {
-            event.setCancelled(true);
-            new MenuInventory(instance).getInventory().open(player);
+        if (item != null) {
+            if (item.equals(menu)) {
+                event.setCancelled(true);
+                new MenuInventory(instance).getInventory().open(player);
+            }
+
+            if (item.getType() == Material.SADDLE) {
+
+            }
         }
+
+
     }
 }

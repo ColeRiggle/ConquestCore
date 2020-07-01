@@ -32,6 +32,8 @@ public class ConquestSQLSource extends ConquestDataSource {
     private final String username;
     private final String password;
 
+    private static final String EMPTY_PLAYER_PLACEHOLDER = "$empty";
+
     public ConquestSQLSource(ConquestCore conquestCore) {
         this.conquestCore = conquestCore;
         hostname = SQLSettings.getSQLHostName();
@@ -272,7 +274,53 @@ public class ConquestSQLSource extends ConquestDataSource {
 
     @Override
     public Guild loadGuild(String name) {
-        return null;
+        if (!databaseContainsGuild(name)) {
+            createGuildInDatabase(name);
+        }
+
+        return readGuild(name);
+    }
+
+    private boolean databaseContainsGuild(String name) {
+        return tableContains("guilds", "name", name);
+    }
+
+    private void createGuildInDatabase(String name) {
+        try (Connection connection = getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("REPLACE INTO guilds " +
+                    "(name,formatted_name,owner_uuid,member_1_uuid,member_2_uuid,member_3_uuid," +
+                    "stockpile_id,upgrades_id,elo,last_war_date) VALUES(?,?,?,?,?,?,?,?,?,?)");
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, name);
+            preparedStatement.setString(3, EMPTY_PLAYER_PLACEHOLDER);
+            preparedStatement.setString(4, EMPTY_PLAYER_PLACEHOLDER);
+            preparedStatement.setString(5, EMPTY_PLAYER_PLACEHOLDER);
+            preparedStatement.setString(6, EMPTY_PLAYER_PLACEHOLDER);
+
+            preparedStatement.setString(7, "stockpile");
+            preparedStatement.setString(8, "upgrades");
+            preparedStatement.setInt(9, 100);
+            preparedStatement.setString(10, "never");
+
+            preparedStatement.execute();
+        } catch (SQLException exception) {
+            Bukkit.getLogger().log(Level.SEVERE, Errors.SQLStatementError, exception);
+        }
+    }
+
+    private Guild readGuild(String name) {
+        String formattedName = getString("guilds", "name", name, "formatted_name");
+//        UUID ownerUUID = UUID.fromString(getString("guilds", "name", name, "owner_uuid"));
+//        UUID firstMemberUUID = UUID.fromString(getString("guilds", "name", name, "member_1_uuid"));
+//        UUID secondMemberUUID = UUID.fromString(getString("guilds", "name", name, "member_2_uuid"));
+//        UUID thirdMemberUUID = UUID.fromString(getString("guilds", "name", name, "member_3_uuid"));
+
+        return Guild.builder().name(name).formattedName(formattedName).build();
+    }
+
+    @Override
+    public void saveGuild(Guild guild) {
+
     }
 
     @Override

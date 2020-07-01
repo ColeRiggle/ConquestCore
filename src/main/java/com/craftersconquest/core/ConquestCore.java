@@ -49,6 +49,8 @@ public class ConquestCore extends JavaPlugin {
         enableComponents();
 
         Bukkit.getLogger().info(timeManager.getDate().toString());
+
+        dataSource.loadGuild("sqis_guild");
     }
 
     private void setupEconomy() {

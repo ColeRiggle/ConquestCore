@@ -1,8 +1,9 @@
 package com.craftersconquest.object.skill;
 
+import com.craftersconquest.object.Upgradable;
 import com.craftersconquest.object.skill.type.Type;
 
-public class Skill {
+public class Skill implements Upgradable {
 
     private final Type type;
     private double xp;
@@ -20,10 +21,12 @@ public class Skill {
         return type;
     }
 
+    @Override
     public double getXp() {
         return xp;
     }
 
+    @Override
     public void addXp(double amount) {
         final double potentialAmount = xp + amount;
 

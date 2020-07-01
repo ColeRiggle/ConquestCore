@@ -77,7 +77,7 @@ public class SQLTableGenerator {
         columns.add("`elo` int(11) DEFAULT 1000");
         columns.add("`last_war_date` VARCHAR(50)");
 
-        return new SQLTable("items", "CREATE TABLE IF NOT EXISTS items ("
+        return new SQLTable("guilds", "CREATE TABLE IF NOT EXISTS guilds ("
                 + "`name` VARCHAR(60) NOT NULL,"
                 + "PRIMARY KEY (`name`)"
                 + ")", columns);
