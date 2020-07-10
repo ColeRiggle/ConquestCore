@@ -23,7 +23,7 @@ public class Guild {
         return name;
     }
 
-    public String getFormattedName() { return name; }
+    public String getFormattedName() { return formattedName; }
 
     public UUID getOwner() {
         return ownerUUID;

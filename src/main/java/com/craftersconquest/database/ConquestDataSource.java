@@ -4,6 +4,7 @@ import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.player.ConquestPlayer;
 import org.bukkit.Location;
 
+import java.util.List;
 import java.util.UUID;
 
 public abstract class ConquestDataSource {
@@ -21,7 +22,7 @@ public abstract class ConquestDataSource {
     abstract public void addToBlocklist(Location location);
     abstract public void removeFromBlocklist(Location location);
 
-    abstract public Guild loadGuild(String name);
-    abstract public void saveGuild(Guild guild);
+    abstract public List<Guild> loadGuilds();
+    abstract public void saveGuilds(List<Guild> guilds);
 
 }

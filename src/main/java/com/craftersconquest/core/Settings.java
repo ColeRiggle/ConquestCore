@@ -12,4 +12,8 @@ public final class Settings {
 
     public static final String RPG_WORLD_NAME = "Lobby";
 
+    public static final String ADMIN_PERMISSION = "com.craftersconquest.admin";
+
+    public static final String PLAYER_PERMISSION = "com.craftersconquest.player";
+
 }

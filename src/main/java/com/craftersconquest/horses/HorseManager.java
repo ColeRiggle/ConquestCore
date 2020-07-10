@@ -3,7 +3,6 @@ package com.craftersconquest.horses;
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.object.Component;
 import com.craftersconquest.object.horse.Horse;
-import com.craftersconquest.object.horse.Tier;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -14,13 +13,17 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+
 
 public class HorseManager implements Component {
 
     private final ConquestCore instance;
     private final HorseConverter converter;
     private final ArrayList<HorseRide> rides;
+
+    private static final double XP_GAIN_PER_SECOND = 30;
 
     public HorseManager(ConquestCore instance) {
         this.instance = instance;
@@ -29,14 +32,11 @@ public class HorseManager implements Component {
     }
 
     private void scheduleTimeTracker() {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new Runnable() {
-            @Override
-            public void run() {
-                for (HorseRide ride : rides) {
-                    Player player = ride.getPlayer();
-                    if (player.getVehicle() != null && player.getVehicle().equals(ride.getHorseEntity())) {
-                        addHorseXp(ride, 20);
-                    }
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, () -> {
+            for (HorseRide ride : rides) {
+                Player player = ride.getPlayer();
+                if (player.getVehicle() != null && player.getVehicle().equals(ride.getHorseEntity())) {
+                    addHorseXp(ride, XP_GAIN_PER_SECOND);
                 }
             }
         }, 20L, 20L);
@@ -65,15 +65,8 @@ public class HorseManager implements Component {
         }
     }
 
-    // Todo:
-    // When the saddle is dropped, end the ride
-    // Prevent players from removing saddles
-
-    private void test() {
-        Horse horse = new Horse("", 1, 10, Tier.I);
-        ItemStack horseItemStack = converter.createItemStackFromHorse(horse);
-        Bukkit.getPlayer("Sqi").getInventory().addItem(horseItemStack);
-    }
+    // Todo
+    // Add support for horse items
 
     public void onHorseClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
@@ -132,4 +125,27 @@ public class HorseManager implements Component {
             iterator.remove();
         }
     }
+
+    public void onSaddleDrop(Player player, ItemStack item) {
+        for (Iterator<HorseRide> iterator = getActiveRides(player).iterator(); iterator.hasNext();) {
+            HorseRide ride = iterator.next();
+            if (ride.getTriggerItem().getItemMeta().equals(item.getItemMeta())) {
+                endRide(ride);
+                iterator.remove();
+            }
+        }
+    }
+
+    private List<HorseRide> getActiveRides(Player player) {
+        List<HorseRide> activeRides = new ArrayList<>();
+
+        for (HorseRide ride : rides) {
+            if (ride.getPlayer().equals(player)) {
+                activeRides.add(ride);
+            }
+        }
+
+        return activeRides;
+    }
+
 }

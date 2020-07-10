@@ -2,6 +2,8 @@ package com.craftersconquest.gui.menu;
 
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.gui.ConquestInventory;
+import com.craftersconquest.object.guild.Guild;
+import com.craftersconquest.player.ConquestPlayer;
 import com.craftersconquest.util.InventoryUtil;
 import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.SmartInventory;
@@ -40,7 +42,8 @@ public class MenuInventory implements ConquestInventory, InventoryProvider {
         inventoryContents.set(2, 2, ClickableItem.of(menuIconGenerator.getSkillsIcon(),
                 e -> openSkillsInventory(player)));
         inventoryContents.set(2, 3, ClickableItem.empty(menuIconGenerator.getQuestsIcon()));
-        inventoryContents.set(2, 4, ClickableItem.empty(menuIconGenerator.getGuildIcon()));
+        inventoryContents.set(2, 4, ClickableItem.of(menuIconGenerator.getGuildIcon(),
+                e-> openGuildInventory(player)));
         inventoryContents.set(2, 5, ClickableItem.empty(menuIconGenerator.getStreaksIcon()));
         inventoryContents.set(2, 6, ClickableItem.empty(menuIconGenerator.getHelpIcon()));
         inventoryContents.set(3, 4, ClickableItem.of(menuIconGenerator.getWorkbenchIcon(),
@@ -52,6 +55,17 @@ public class MenuInventory implements ConquestInventory, InventoryProvider {
 
     private void openSkillsInventory(Player player) {
         (new SkillsInventory(instance, inventory)).getInventory().open(player);
+    }
+
+    private void openGuildInventory(Player player) {
+        ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(player.getUniqueId());
+        Guild guild = conquestPlayer.getGuild();
+
+        if (guild == null) {
+            new CreateGuildInventory(instance, inventory).getInventory().open(player);
+        } else {
+            new MainGuildInventory(instance, inventory).getInventory().open(player);
+        }
     }
 
     @Override

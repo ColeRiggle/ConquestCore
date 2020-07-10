@@ -81,6 +81,6 @@ public class PlayerJoinListener implements Listener {
 //        ShopInventory inventory = new ShopInventory(instance, shop);
 //        inventory.getInventory().open(player);
 
-        instance.getMenuManager().givePlayerMenu(player);
+        instance.getGuildManager().onPlayerJoin(player);
     }
 }

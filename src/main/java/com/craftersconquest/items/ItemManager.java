@@ -26,14 +26,16 @@ public class ItemManager implements Component {
                     "gui_insufficient",
                     "gui_increase",
                     "gui_decrease",
-                    "gui_information"));
+                    "gui_information",
+                    "gui_create"));
 
     private static final Map<String,String> HEAD_DATABASE_ITEMS = Map.ofEntries(
             Map.entry("gui_confirmation", "26419"),
             Map.entry("gui_insufficient", "26417"),
             Map.entry("gui_increase", "10209"),
             Map.entry("gui_decrease", "9351"),
-            Map.entry("gui_information", "24498")
+            Map.entry("gui_information", "24498"),
+            Map.entry("gui_create", "26413")
     );
 
     public ItemManager(ConquestCore instance) {

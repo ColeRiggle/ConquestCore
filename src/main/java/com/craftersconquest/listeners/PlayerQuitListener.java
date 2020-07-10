@@ -30,6 +30,7 @@ public class PlayerQuitListener implements Listener {
     private void onPlayerDisconnect(Player player) {
         instance.getScoreboardManager().removePlayer(player);
         instance.getHorseManager().endPlayerRides(player);
+        instance.getGuildManager().onPlayerQuit(player);
 
         Bukkit.getServer().getScheduler().runTaskAsynchronously(instance,
                 () -> instance.getCacheManager().removeFromCache(player.getUniqueId()));

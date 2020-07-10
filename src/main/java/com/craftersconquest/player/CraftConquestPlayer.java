@@ -7,14 +7,14 @@ import com.craftersconquest.object.skill.Skill;
 import java.util.List;
 import java.util.UUID;
 
-public class OfflineConquestPlayer extends ConquestPlayer {
+public class CraftConquestPlayer extends ConquestPlayer {
 
     private UUID playerUUID;
     private List<Skill> skills;
     private Guild guild;
     private Bounty bounty;
 
-    public OfflineConquestPlayer(UUID playerUUID, List<Skill> skills, Guild guild, Bounty bounty) {
+    public CraftConquestPlayer(UUID playerUUID, List<Skill> skills, Guild guild, Bounty bounty) {
         this.playerUUID = playerUUID;
         this.skills = skills;
         this.guild = guild;
@@ -59,6 +59,11 @@ public class OfflineConquestPlayer extends ConquestPlayer {
     @Override
     public Guild getGuild() {
         return guild;
+    }
+
+    @Override
+    public void setGuild(Guild guild) {
+        this.guild = guild;
     }
 
     @Override

@@ -44,4 +44,6 @@ public class ConquestPlayerCacheManager implements Component {
 
     public ConquestPlayer getConquestPlayer(UUID playerUUID) { return cache.getCachedConquestPlayer(playerUUID); }
 
+    public ConquestPlayer getConquestPlayer(Player player) { return getConquestPlayer(player.getUniqueId()); }
+
 }

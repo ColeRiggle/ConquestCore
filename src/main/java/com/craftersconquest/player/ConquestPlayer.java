@@ -30,5 +30,6 @@ public abstract class ConquestPlayer {
 
     public abstract boolean hasGuild();
     public abstract Guild getGuild();
+    public abstract void setGuild(Guild guild);
     public abstract Bounty getBounty();
 }

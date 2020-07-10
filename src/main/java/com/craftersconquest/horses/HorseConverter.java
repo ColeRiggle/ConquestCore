@@ -24,7 +24,7 @@ public class HorseConverter {
     private final static String JUMP_PREFIX = ChatColor.BLUE + "Jump: ";
     private final static String XP_PREFIX = ChatColor.AQUA + "XP: ";
 
-    // Format
+    // !! Format !!
     // Tier X Horse
     // Custom name
     // Speed

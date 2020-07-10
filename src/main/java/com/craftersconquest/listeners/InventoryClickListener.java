@@ -1,11 +1,13 @@
 package com.craftersconquest.listeners;
 
 import com.craftersconquest.core.ConquestCore;
-import org.bukkit.Bukkit;
+import com.craftersconquest.core.Settings;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.HorseInventory;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryClickListener implements Listener {
@@ -18,10 +20,20 @@ public class InventoryClickListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onInventoryClickEvent(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
         ItemStack item = event.getCurrentItem();
         ItemStack menu = instance.getMenuManager().getMenuItemStack();
-        if (item != null && item.equals(menu)) {
-            event.setCancelled(true);
+
+        if (event.getInventory() instanceof HorseInventory) {
+            if (!player.hasPermission(Settings.ADMIN_PERMISSION)) {
+                event.setCancelled(true);
+            }
+        }
+
+        if (item != null) {
+            if (item.equals(menu)) {
+                event.setCancelled(true);
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ import com.craftersconquest.object.skill.Skill;
 import com.craftersconquest.object.skill.SkillFactory;
 import com.craftersconquest.object.skill.type.TypeFactory;
 import com.craftersconquest.player.ConquestPlayer;
-import com.craftersconquest.player.OfflineConquestPlayer;
+import com.craftersconquest.player.CraftConquestPlayer;
 import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -23,7 +23,7 @@ import java.util.logging.Level;
 
 public class ConquestSQLSource extends ConquestDataSource {
 
-    private final ConquestCore conquestCore;
+    private final ConquestCore instance;
     private HikariDataSource hikari;
 
     private final String hostname;
@@ -33,9 +33,10 @@ public class ConquestSQLSource extends ConquestDataSource {
     private final String password;
 
     private static final String EMPTY_PLAYER_PLACEHOLDER = "$empty";
+    private static final String NO_GUILD_PLACEHOLDER = "$none";
 
-    public ConquestSQLSource(ConquestCore conquestCore) {
-        this.conquestCore = conquestCore;
+    public ConquestSQLSource(ConquestCore instance) {
+        this.instance = instance;
         hostname = SQLSettings.getSQLHostName();
         port = SQLSettings.getSQLPort();
         databaseName = SQLSettings.getSQLDatabaseName();
@@ -102,8 +103,14 @@ public class ConquestSQLSource extends ConquestDataSource {
         }
 
         List<Skill> skills = loadSkills(playerUUID);
+        Guild guild = loadPlayerGuild(playerUUID);
 
-        return new OfflineConquestPlayer(playerUUID, skills, null, null);
+        return new CraftConquestPlayer(playerUUID, skills, guild, null);
+    }
+
+    private Guild loadPlayerGuild(UUID playerUUID) {
+        String guildName = getString("players", "UUID", playerUUID.toString(), "guild");
+        return guildName.equals(NO_GUILD_PLACEHOLDER) ? null : instance.getGuildManager().getGuild(guildName);
     }
 
     private boolean databaseContainsPlayer(UUID playerUUID) {
@@ -133,9 +140,10 @@ public class ConquestSQLSource extends ConquestDataSource {
 
     private void addPlayerToPlayersTable(UUID playerUUID) {
         try (Connection connection = getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("REPLACE INTO players (UUID,credits) VALUES(?,?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("REPLACE INTO players (UUID,guild,credits) VALUES(?,?,?)");
             preparedStatement.setString(1, playerUUID.toString());
-            preparedStatement.setInt(2, 0);
+            preparedStatement.setString(2, NO_GUILD_PLACEHOLDER);
+            preparedStatement.setInt(3, 0);
             preparedStatement.execute();
         } catch (SQLException exception) {
             Bukkit.getLogger().log(Level.SEVERE, Errors.SQLStatementError, exception);
@@ -269,21 +277,50 @@ public class ConquestSQLSource extends ConquestDataSource {
     }
 
     private void saveBasicPlayerInformation(ConquestPlayer player) {
-
+        String guild = player.getGuild() == null ? NO_GUILD_PLACEHOLDER : player.getGuild().getName();
+        setString("players", "guild", "uuid", player.getUUID().toString(), guild);
     }
 
     @Override
-    public Guild loadGuild(String name) {
-        if (!databaseContainsGuild(name)) {
-            createGuildInDatabase(name);
+    public List<Guild> loadGuilds() {
+        List<Guild> guilds = new ArrayList<>();
+
+        try (Connection connection = getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from guilds");
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                guilds.add(readCurrentGuild(resultSet));
+            }
+        } catch (SQLException exception) {
+            Bukkit.getLogger().log(Level.SEVERE, Errors.SQLStatementError, exception);
         }
 
-        return readGuild(name);
+        return guilds;
     }
 
-    private boolean databaseContainsGuild(String name) {
-        return tableContains("guilds", "name", name);
+    private Guild readCurrentGuild(ResultSet resultSet) throws SQLException {
+        String name = resultSet.getString("name");
+        //String name = resultSet.getString("formatted_name");
+//        UUID ownerUUID = UUID.fromString(getString("guilds", "name", name, "owner_uuid"));
+//        UUID firstMemberUUID = UUID.fromString(getString("guilds", "name", name, "member_1_uuid"));
+//        UUID secondMemberUUID = UUID.fromString(getString("guilds", "name", name, "member_2_uuid"));
+//        UUID thirdMemberUUID = UUID.fromString(getString("guilds", "name", name, "member_3_uuid"));
+
+        return Guild.builder().name(name).formattedName(name).build();
     }
+
+//    public Guild loadGuild(String name) {
+//        if (!databaseContainsGuild(name)) {
+//            createGuildInDatabase(name);
+//        }
+//
+//        return readGuild(name);
+//    }
+
+//    private boolean databaseContainsGuild(String name) {
+//        return tableContains("guilds", "name", name);
+//    }
 
     private void createGuildInDatabase(String name) {
         try (Connection connection = getConnection()) {
@@ -308,18 +345,14 @@ public class ConquestSQLSource extends ConquestDataSource {
         }
     }
 
-    private Guild readGuild(String name) {
-        String formattedName = getString("guilds", "name", name, "formatted_name");
-//        UUID ownerUUID = UUID.fromString(getString("guilds", "name", name, "owner_uuid"));
-//        UUID firstMemberUUID = UUID.fromString(getString("guilds", "name", name, "member_1_uuid"));
-//        UUID secondMemberUUID = UUID.fromString(getString("guilds", "name", name, "member_2_uuid"));
-//        UUID thirdMemberUUID = UUID.fromString(getString("guilds", "name", name, "member_3_uuid"));
-
-        return Guild.builder().name(name).formattedName(formattedName).build();
+    @Override
+    public void saveGuilds(List<Guild> guilds) {
+        for (Guild guild : guilds) {
+            saveGuild(guild);
+        }
     }
 
-    @Override
-    public void saveGuild(Guild guild) {
+    private void saveGuild(Guild guild) {
 
     }
 

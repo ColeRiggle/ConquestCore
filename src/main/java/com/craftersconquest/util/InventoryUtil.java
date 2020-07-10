@@ -47,6 +47,20 @@ public class InventoryUtil {
         inventoryContents.fill(ClickableItem.empty(DEFAULT_ITEM));
     }
 
+    public static void borderSmartInventory(InventoryContents inventoryContents) {
+        for (int row = 0; row < inventoryContents.inventory().getRows(); row++) {
+            inventoryContents.set(row, 0, ClickableItem.empty(DEFAULT_ITEM));
+            inventoryContents.set(row, 8, ClickableItem.empty(DEFAULT_ITEM));
+        }
+
+        int row = inventoryContents.inventory().getRows();
+
+        for (int col = 0; col < 9; col++) {
+            inventoryContents.set(0, col, ClickableItem.empty(DEFAULT_ITEM));
+            inventoryContents.set(row - 1, col, ClickableItem.empty(DEFAULT_ITEM));
+        }
+    }
+
     public static ArrayList<String> createLore(String... lore) {
         ArrayList<String> finalLore = new ArrayList<>();
         for (String line : lore) {

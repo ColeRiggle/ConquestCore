@@ -18,6 +18,7 @@ public class SQLTableGenerator {
 
     private SQLTable generatePlayersTable() {
         List<String> columns = new ArrayList<>();
+        columns.add("`guild` VARCHAR(20)");
         columns.add("`credits` int(11) DEFAULT 0");
 
         return new SQLTable("players", "CREATE TABLE IF NOT EXISTS players ("
@@ -68,17 +69,15 @@ public class SQLTableGenerator {
     private SQLTable generateGuildsTable() {
         List<String> columns = new ArrayList<>();
         columns.add("`formatted_name` VARCHAR(75)");
-        columns.add("`owner_uuid` VARCHAR(36)");
-        columns.add("`member_1_uuid` VARCHAR(36)");
-        columns.add("`member_2_uuid` VARCHAR(36)");
-        columns.add("`member_3_uuid` VARCHAR(36)");
+        columns.add("`owner` VARCHAR(36)");
+        columns.add("`members` VARCHAR(148)");
         columns.add("`stockpile_id` VARCHAR(36)");
         columns.add("`upgrades_id` VARCHAR(36)");
-        columns.add("`elo` int(11) DEFAULT 1000");
+        columns.add("`elo` int(11)");
         columns.add("`last_war_date` VARCHAR(50)");
 
         return new SQLTable("guilds", "CREATE TABLE IF NOT EXISTS guilds ("
-                + "`name` VARCHAR(60) NOT NULL,"
+                + "`name` VARCHAR(20) NOT NULL,"
                 + "PRIMARY KEY (`name`)"
                 + ")", columns);
     }

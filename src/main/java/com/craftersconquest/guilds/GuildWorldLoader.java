@@ -28,7 +28,7 @@ public class GuildWorldLoader {
     private final SlimeLoader slimeLoader;
 
     public GuildWorldLoader() {
-        this.loadedGuilds = new ArrayList<>();
+        loadedGuilds = new ArrayList<>();
         worldData = new WorldData();
         worldsConfig = ConfigManager.getWorldConfig();
         slimeLoader = SWMPlugin.getInstance().getLoader(DATASOURCE);
@@ -58,7 +58,8 @@ public class GuildWorldLoader {
 
         } catch (IOException | CorruptedWorldException | WorldInUseException |
                 NewerFormatException | WorldAlreadyExistsException | UnknownWorldException exception) {
-            Bukkit.getLogger().severe("Fatal error occurred while creating: " + worldName + " from copy: " + TEMPLATE_NAME + ".");
+            Bukkit.getLogger().severe("Fatal error occurred while creating: " + worldName + " from copy: " +
+                    TEMPLATE_NAME + "." + exception.toString());
         }
     }
 
@@ -107,5 +108,9 @@ public class GuildWorldLoader {
         World world = Bukkit.getWorld(getStorageName(guild));
         Bukkit.unloadWorld(world, true);
         worldsConfig.getWorlds().put(getStorageName(guild), null);
+    }
+
+    public World getWorld(Guild guild) {
+        return Bukkit.getWorld(getStorageName(guild));
     }
 }
