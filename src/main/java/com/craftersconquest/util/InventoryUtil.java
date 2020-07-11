@@ -8,6 +8,7 @@ import fr.minuskube.inv.content.SlotPos;
 import net.minecraft.server.v1_14_R1.Slot;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -96,10 +97,10 @@ public class InventoryUtil {
         return SlotPos.of(row, column);
     }
 
-    public static ItemStack getPlayerHead(Player player) {
+    public static ItemStack getPlayerHead(OfflinePlayer offlinePlayer) {
         ItemStack item = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) item.getItemMeta();
-        meta.setOwningPlayer(player);
+        meta.setOwningPlayer(offlinePlayer);
         item.setItemMeta(meta);
         return item;
     }

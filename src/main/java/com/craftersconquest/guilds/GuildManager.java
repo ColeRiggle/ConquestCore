@@ -47,6 +47,7 @@ public class GuildManager implements Component {
     }
 
     public void unloadWorld(Guild guild) {
+        Bukkit.getLogger().info("Unloading world for: " + guild.getName());
         loader.unload(guild);
     }
 
@@ -82,7 +83,9 @@ public class GuildManager implements Component {
     public void onPlayerQuit(Player player) {
         ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(player);
         Guild guild = conquestPlayer.getGuild();
-        unloadWorld(guild);
+        if (guild != null) {
+            unloadWorld(guild);
+        }
     }
 
     @Override
@@ -93,6 +96,16 @@ public class GuildManager implements Component {
 
     @Override
     public void onDisable() {
+        Bukkit.getLogger().info("Saving guilds...");
+        instance.getDataSource().saveGuilds(guilds);
+        Bukkit.getLogger().info("Saved guilds.");
 
+        Bukkit.getLogger().info("Unloading guild worlds...");
+        for (Guild guild : guilds) {
+            if (hasWorldLoaded(guild)) {
+                loader.unload(guild);
+            }
+        }
+        Bukkit.getLogger().info("Unloaded guild worlds.");
     }
 }

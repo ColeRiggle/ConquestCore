@@ -2,6 +2,8 @@ package com.craftersconquest.gui.menu;
 
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.gui.ConquestInventory;
+import com.craftersconquest.gui.menu.guild.CreateGuildInventory;
+import com.craftersconquest.gui.menu.guild.MainGuildInventory;
 import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.player.ConquestPlayer;
 import com.craftersconquest.util.InventoryUtil;
@@ -64,8 +66,10 @@ public class MenuInventory implements ConquestInventory, InventoryProvider {
         if (guild == null) {
             new CreateGuildInventory(instance, inventory).getInventory().open(player);
         } else {
-            new MainGuildInventory(instance, inventory).getInventory().open(player);
+            new MainGuildInventory(instance, inventory, guild).getInventory().open(player);
         }
+//
+//        new CreateGuildInventory(instance, inventory).getInventory().open(player);
     }
 
     @Override

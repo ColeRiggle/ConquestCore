@@ -70,14 +70,15 @@ public class SQLTableGenerator {
         List<String> columns = new ArrayList<>();
         columns.add("`formatted_name` VARCHAR(75)");
         columns.add("`owner` VARCHAR(36)");
-        columns.add("`members` VARCHAR(148)");
+        columns.add("`members` VARCHAR(200)");
+        columns.add("`elo` int(11)");
+        columns.add("`forges` VARCHAR(2000)");
         columns.add("`stockpile_id` VARCHAR(36)");
         columns.add("`upgrades_id` VARCHAR(36)");
-        columns.add("`elo` int(11)");
         columns.add("`last_war_date` VARCHAR(50)");
 
         return new SQLTable("guilds", "CREATE TABLE IF NOT EXISTS guilds ("
-                + "`name` VARCHAR(20) NOT NULL,"
+                + "`name` VARCHAR(25) NOT NULL,"
                 + "PRIMARY KEY (`name`)"
                 + ")", columns);
     }

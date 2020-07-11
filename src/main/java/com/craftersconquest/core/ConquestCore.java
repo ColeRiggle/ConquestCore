@@ -53,8 +53,6 @@ public class ConquestCore extends JavaPlugin {
         enableComponents();
 
         Bukkit.getLogger().info(timeManager.getDate().toString());
-
-        (new ItemBuyerInventory(this)).getInventory().open(Bukkit.getPlayer("Sqi"));
     }
 
     private void setupEconomy() {

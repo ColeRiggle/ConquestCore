@@ -26,18 +26,18 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onAsyncPlayerPreLoginEvent(AsyncPlayerPreLoginEvent event) {
-        Bukkit.getServer().getScheduler().runTaskAsynchronously(instance, new Runnable() {
-            @Override
-            public void run() {
-                instance.getCacheManager().addToCache(event.getUniqueId());
-            }
-        });
+        long startTime = System.currentTimeMillis();
+        Bukkit.getServer().getScheduler().runTaskAsynchronously(instance,
+                () -> instance.getCacheManager().addToCache(event.getUniqueId()));
+
+        Bukkit.getLogger().info("Took: " + (System.currentTimeMillis() - startTime));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         instance.getScoreboardManager().addPlayer(player);
+        instance.getMenuManager().givePlayerMenu(player);
 
         Shop shop = new Shop("Sqi's corner");
 

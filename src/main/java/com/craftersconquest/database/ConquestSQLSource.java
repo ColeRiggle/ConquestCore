@@ -32,8 +32,9 @@ public class ConquestSQLSource extends ConquestDataSource {
     private final String username;
     private final String password;
 
-    private static final String EMPTY_PLAYER_PLACEHOLDER = "$empty";
     private static final String NO_GUILD_PLACEHOLDER = "$none";
+
+    private final SQLGuildParser sqlGuildParser;
 
     public ConquestSQLSource(ConquestCore instance) {
         this.instance = instance;
@@ -42,6 +43,7 @@ public class ConquestSQLSource extends ConquestDataSource {
         databaseName = SQLSettings.getSQLDatabaseName();
         username = SQLSettings.getSQLUsername();
         password = SQLSettings.getSQLPassword();
+        sqlGuildParser = new SQLGuildParser();
     }
 
     private void setupConnection() {
@@ -301,48 +303,11 @@ public class ConquestSQLSource extends ConquestDataSource {
 
     private Guild readCurrentGuild(ResultSet resultSet) throws SQLException {
         String name = resultSet.getString("name");
-        //String name = resultSet.getString("formatted_name");
-//        UUID ownerUUID = UUID.fromString(getString("guilds", "name", name, "owner_uuid"));
-//        UUID firstMemberUUID = UUID.fromString(getString("guilds", "name", name, "member_1_uuid"));
-//        UUID secondMemberUUID = UUID.fromString(getString("guilds", "name", name, "member_2_uuid"));
-//        UUID thirdMemberUUID = UUID.fromString(getString("guilds", "name", name, "member_3_uuid"));
+        String formattedName = resultSet.getString("formatted_name");
+        UUID ownerUUID = UUID.fromString(resultSet.getString("owner"));
+        List<UUID> memberUUIDs = sqlGuildParser.readMembers(resultSet.getString("members"));
 
-        return Guild.builder().name(name).formattedName(name).build();
-    }
-
-//    public Guild loadGuild(String name) {
-//        if (!databaseContainsGuild(name)) {
-//            createGuildInDatabase(name);
-//        }
-//
-//        return readGuild(name);
-//    }
-
-//    private boolean databaseContainsGuild(String name) {
-//        return tableContains("guilds", "name", name);
-//    }
-
-    private void createGuildInDatabase(String name) {
-        try (Connection connection = getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("REPLACE INTO guilds " +
-                    "(name,formatted_name,owner_uuid,member_1_uuid,member_2_uuid,member_3_uuid," +
-                    "stockpile_id,upgrades_id,elo,last_war_date) VALUES(?,?,?,?,?,?,?,?,?,?)");
-            preparedStatement.setString(1, name);
-            preparedStatement.setString(2, name);
-            preparedStatement.setString(3, EMPTY_PLAYER_PLACEHOLDER);
-            preparedStatement.setString(4, EMPTY_PLAYER_PLACEHOLDER);
-            preparedStatement.setString(5, EMPTY_PLAYER_PLACEHOLDER);
-            preparedStatement.setString(6, EMPTY_PLAYER_PLACEHOLDER);
-
-            preparedStatement.setString(7, "stockpile");
-            preparedStatement.setString(8, "upgrades");
-            preparedStatement.setInt(9, 100);
-            preparedStatement.setString(10, "never");
-
-            preparedStatement.execute();
-        } catch (SQLException exception) {
-            Bukkit.getLogger().log(Level.SEVERE, Errors.SQLStatementError, exception);
-        }
+        return Guild.builder().name(name).formattedName(formattedName).ownerUUID(ownerUUID).memberUUIDs(memberUUIDs).build();
     }
 
     @Override
@@ -353,7 +318,23 @@ public class ConquestSQLSource extends ConquestDataSource {
     }
 
     private void saveGuild(Guild guild) {
-
+        try (Connection connection = getConnection()) {
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("REPLACE INTO guilds (name,formatted_name,owner,members,elo,forges,stockpile_id,upgrades_id,last_war_date) " +
+                                    "VALUES(?,?,?,?,?,?,?,?,?,?)");
+            preparedStatement.setString(1, guild.getName());
+            preparedStatement.setString(2, guild.getFormattedName());
+            preparedStatement.setString(3, guild.getOwner().toString());
+            preparedStatement.setString(4, sqlGuildParser.serializeMembers(guild.getMembers()));
+            preparedStatement.setInt(5, 1000);
+            preparedStatement.setString(6, "");
+            preparedStatement.setString(7, "id");
+            preparedStatement.setString(8, "id");
+            preparedStatement.setString(9, "never");
+            preparedStatement.execute();
+        } catch (SQLException exception) {
+            Bukkit.getLogger().log(Level.SEVERE, Errors.SQLStatementError, exception);
+        }
     }
 
     @Override

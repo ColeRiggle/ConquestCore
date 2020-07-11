@@ -19,6 +19,7 @@ public class ItemManager implements Component {
     private final ItemConverter converter;
     private final HashMap<String, ItemStack> items;
     private final ItemCommandExecutor commandExecutor;
+    private final PlayerHeadCache playerHeadCache;
 
     private final static List<String> REGULAR_ITEMS =
             new ArrayList<>(List.of(
@@ -44,6 +45,7 @@ public class ItemManager implements Component {
         converter = new ItemConverter();
         items = new HashMap<>();
         commandExecutor = new ItemCommandExecutor(instance);
+        playerHeadCache = new PlayerHeadCache(instance);
     }
 
     public ItemStack getItem(String id) {
@@ -98,6 +100,10 @@ public class ItemManager implements Component {
         } catch (IOException ioException) {
             Bukkit.getLogger().info("Error occurred while saving item: " + id + ": " + ioException.toString());
         }
+    }
+
+    public PlayerHeadCache getPlayerHeadCache() {
+        return playerHeadCache;
     }
 
     @Override

@@ -16,4 +16,6 @@ public final class Settings {
 
     public static final String PLAYER_PERMISSION = "com.craftersconquest.player";
 
+    public static final int MAX_GUILD_MEMBERS = 4;
+
 }

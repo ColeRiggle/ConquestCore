@@ -52,7 +52,7 @@ public class GuildWorldLoader {
         String worldName = getStorageName(guild);
 
         try {
-            SlimeWorld slimeWorld = SWMPlugin.getInstance().loadWorld(slimeLoader, TEMPLATE_NAME, false,
+            SlimeWorld slimeWorld = SWMPlugin.getInstance().loadWorld(slimeLoader, TEMPLATE_NAME, true,
                     worldData.toPropertyMap()).clone(worldName, slimeLoader);
             generateWorld(slimeWorld, worldName);
 
@@ -107,7 +107,8 @@ public class GuildWorldLoader {
         loadedGuilds.remove(guild);
         World world = Bukkit.getWorld(getStorageName(guild));
         Bukkit.unloadWorld(world, true);
-        worldsConfig.getWorlds().put(getStorageName(guild), null);
+        worldsConfig.getWorlds().remove(getStorageName(guild));
+        worldsConfig.save();
     }
 
     public World getWorld(Guild guild) {

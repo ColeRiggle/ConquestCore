@@ -25,8 +25,16 @@ public class Guild {
 
     public String getFormattedName() { return formattedName; }
 
+    public void setFormattedName(String formattedName) {
+        this.formattedName = formattedName;
+    }
+
     public UUID getOwner() {
         return ownerUUID;
+    }
+
+    public void setOwner(UUID ownerUUID) {
+        this.ownerUUID = ownerUUID;
     }
 
     public List<UUID> getMembers() {
@@ -47,6 +55,14 @@ public class Guild {
 
     public War getLastWar() {
         return lastWar;
+    }
+
+    public void removeMember(UUID memberUUID) {
+        memberUUIDs.remove(memberUUID);
+    }
+
+    public void addMember(UUID memberUUID) {
+        memberUUIDs.add(memberUUID);
     }
 
     public static Builder builder() { return new Builder(); }

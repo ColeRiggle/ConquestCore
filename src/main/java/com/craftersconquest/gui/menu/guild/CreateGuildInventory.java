@@ -1,4 +1,4 @@
-package com.craftersconquest.gui.menu;
+package com.craftersconquest.gui.menu.guild;
 
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.gui.ConquestInventory;
@@ -15,6 +15,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class CreateGuildInventory implements ConquestInventory, InventoryProvider {
 
@@ -62,7 +66,11 @@ public class CreateGuildInventory implements ConquestInventory, InventoryProvide
             Messaging.sendErrorMessage(player, "Guild names must be one word.");
         } else if (instance.getGuildManager().getGuild(name) == null) {
             Messaging.sendPlayerSpecificMessage(player, "Creating guild: " + name + ".");
-            Guild guild = Guild.builder().name(name).formattedName(name).ownerUUID(player.getUniqueId()).build();
+
+            List<UUID> memberUUIDs = new ArrayList<>();
+            memberUUIDs.add(player.getUniqueId());
+
+            Guild guild = Guild.builder().name(name).formattedName(name).ownerUUID(player.getUniqueId()).memberUUIDs(memberUUIDs).build();
 
             Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
                 instance.getGuildManager().createWorld(guild);
