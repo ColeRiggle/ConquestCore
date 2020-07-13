@@ -3,6 +3,7 @@ package com.craftersconquest.gui.menu.guild;
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.gui.ConquestInventory;
 import com.craftersconquest.object.guild.Guild;
+import com.craftersconquest.player.ConquestPlayer;
 import com.craftersconquest.util.InventoryUtil;
 import de.domedd.developerapi.itembuilder.ItemBuilder;
 import fr.minuskube.inv.ClickableItem;
@@ -66,8 +67,12 @@ public class GuildMembersInventory implements ConquestInventory, InventoryProvid
             Bukkit.getScheduler().runTaskAsynchronously(instance,
                     () -> {
                         ItemStack head = instance.getItemManager().getPlayerHeadCache().getPlayerHead(memberUUID);
+                        ItemStack member = getMemberItemStack(memberUUID, head);
+                        ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(memberUUID);
                         Bukkit.getScheduler().runTask(instance,
-                                () -> inventoryContents.set(1, currentColumn, ClickableItem.empty(getMemberItemStack(memberUUID, head))));
+                                () -> inventoryContents.set(1, currentColumn,
+                                        ClickableItem.of(getMemberItemStack(memberUUID, head),
+                                                event -> new MemberManagementInventory(instance, inventory, guild, conquestPlayer, member).getInventory().open(player))));
 
                     });
 

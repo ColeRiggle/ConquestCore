@@ -1,11 +1,13 @@
 package com.craftersconquest.gui.menu.guild;
 
 import com.craftersconquest.core.ConquestCore;
+import com.craftersconquest.core.Settings;
 import com.craftersconquest.gui.ConquestInventory;
 import com.craftersconquest.messaging.Messaging;
 import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.player.ConquestPlayer;
 import com.craftersconquest.util.InventoryUtil;
+import com.craftersconquest.util.StringUtil;
 import de.domedd.developerapi.itembuilder.ItemBuilder;
 import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.SmartInventory;
@@ -58,13 +60,20 @@ public class CreateGuildInventory implements ConquestInventory, InventoryProvide
     private void onCreateClick(Player player) {
         Messaging.sendPlayerSpecificMessage(player, "Please type in the name of the guild you'd like to create.");
         player.closeInventory();
-        instance.getInputManager().addPendingInput(player,  message -> attemptGuildCreation(player, message));
+        instance.getInputManager().addPendingInputRequest(player, message -> attemptGuildCreation(player, message));
     }
 
     private void attemptGuildCreation(Player player, String name) {
         if (name.contains(" ")) {
             Messaging.sendErrorMessage(player, "Guild names must be one word.");
-        } else if (instance.getGuildManager().getGuild(name) == null) {
+        } else if (!StringUtil.isAlphaNumeric(name)) {
+            Messaging.sendErrorMessage(player, "Guild names can only include numbers and letters.");
+        } else if (instance.getGuildManager().getGuild(name) != null) {
+            Messaging.sendErrorMessage(player, "The name " + name + " is already taken.");
+        } else if (name.length() > Settings.MAX_GUILD_NAME_LENGTH) {
+            Messaging.sendErrorMessage(player, "Guild names cannot exceed " +
+                    Settings.MAX_GUILD_NAME_LENGTH + " characters.");
+        } else {
             Messaging.sendPlayerSpecificMessage(player, "Creating guild: " + name + ".");
 
             List<UUID> memberUUIDs = new ArrayList<>();
@@ -83,8 +92,6 @@ public class CreateGuildInventory implements ConquestInventory, InventoryProvide
                 });
 
             });
-        } else {
-            Messaging.sendErrorMessage(player, "The name: " + name + " is already taken.");
         }
     }
 

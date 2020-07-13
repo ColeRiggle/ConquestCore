@@ -39,7 +39,6 @@
             <id>CodeMC</id>
             <url>https://repo.codemc.org/repository/maven-public</url>
         </repository>
-
     </repositories>
 
     <dependencies>
@@ -112,8 +111,6 @@
             <artifactId>NBTEditor</artifactId>
             <version>7.16</version>
         </dependency>
-
-
     </dependencies>
 
     <build>

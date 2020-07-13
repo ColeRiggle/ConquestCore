@@ -1,10 +1,10 @@
 package com.craftersconquest.core;
 
 import com.craftersconquest.blocklist.Blocklist;
+import com.craftersconquest.core.input.InputManager;
 import com.craftersconquest.database.Configuration;
 import com.craftersconquest.database.ConquestDataSource;
 import com.craftersconquest.database.ConquestSQLSource;
-import com.craftersconquest.gui.itembuyer.ItemBuyerInventory;
 import com.craftersconquest.guilds.GuildManager;
 import com.craftersconquest.horses.HorseManager;
 import com.craftersconquest.items.ItemManager;
@@ -14,6 +14,7 @@ import com.craftersconquest.object.Component;
 import com.craftersconquest.player.cache.ConquestPlayerCacheManager;
 import com.craftersconquest.skills.SkillsManager;
 import com.craftersconquest.time.TimeManager;
+import com.craftersconquest.util.StringUtil;
 import com.craftersconquest.visual.ScoreboardManager;
 import com.craftersconquest.visual.VisualsManager;
 import net.milkbowl.vault.economy.Economy;
@@ -53,6 +54,12 @@ public class ConquestCore extends JavaPlugin {
         enableComponents();
 
         Bukkit.getLogger().info(timeManager.getDate().toString());
+
+        test();
+    }
+
+    private void test() {
+
     }
 
     private void setupEconomy() {
@@ -69,6 +76,7 @@ public class ConquestCore extends JavaPlugin {
         components.add(itemManager);
         components.add(guildManager);
         components.add(horseManager);
+        components.add(inputManager);
     }
 
     private void enableComponents() {

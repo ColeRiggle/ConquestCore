@@ -1,7 +1,10 @@
 package com.craftersconquest.gui.menu.guild;
 
 import com.craftersconquest.core.ConquestCore;
+import com.craftersconquest.core.Settings;
+import com.craftersconquest.core.input.SelectionRequest;
 import com.craftersconquest.gui.ConquestInventory;
+import com.craftersconquest.messaging.Messaging;
 import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.player.ConquestPlayer;
 import com.craftersconquest.util.InventoryUtil;
@@ -46,9 +49,6 @@ public class InvitePlayerInventory implements ConquestInventory, InventoryProvid
 
     @Override
     public void init(Player player, InventoryContents inventoryContents) {
-
-        Bukkit.getLogger().info("Init called.");
-
         baseInitialization(inventoryContents);
         Pagination pagination = inventoryContents.pagination();
 
@@ -73,6 +73,7 @@ public class InvitePlayerInventory implements ConquestInventory, InventoryProvid
         pagination.setItems(clickableItems);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private ClickableItem createClickableItemFromPlayer(Player player) {
         ItemStack playerHead = instance.getItemManager().getPlayerHeadCache().getPlayerHead(player.getUniqueId());
         String displayName = ChatColor.YELLOW + playerHead.getItemMeta().getDisplayName();
@@ -80,34 +81,80 @@ public class InvitePlayerInventory implements ConquestInventory, InventoryProvid
                 ChatColor.GREEN + "Click to invite this player");
         ItemStack modifiedPlayerHead = new ItemBuilder(playerHead).setDisplayName(displayName).setLore(lore).build();
 
-        return ClickableItem.empty(modifiedPlayerHead);
+        return ClickableItem.of(modifiedPlayerHead, event -> attemptPlayerInvite((Player) event.getWhoClicked(), player));
+    }
+
+    private void attemptPlayerInvite(Player sender, Player recipient) {
+        if (!recipient.isOnline()) {
+            Messaging.sendErrorMessage(sender, "That player is no longer online.");
+
+            return;
+        } else {
+            ConquestPlayer targetPlayer = instance.getCacheManager().getConquestPlayer(recipient);
+            ConquestPlayer sendingPlayer = instance.getCacheManager().getConquestPlayer(sender);
+            Guild guild = sendingPlayer.getGuild();
+
+            if (targetPlayer.getGuild() != null) {
+                Messaging.sendErrorMessage(sender, "That player is already a member of a guild.");
+            } else if (guild == null) {
+                Messaging.sendErrorMessage(sender, "You are not a member of a guild.");
+            } else if (guild.getMembers().size() >= Settings.MAX_GUILD_MEMBERS) {
+                Messaging.sendErrorMessage(sender, "Your guild is already full.");
+            } else {
+                sendGuildInvitation(sender, recipient);
+            }
+        }
+    }
+
+    private void sendGuildInvitation(Player sender, Player recipient) {
+        String prompt = sender.getName() + " invited you to join " + guild.getName() + ".";
+        SelectionRequest request =
+                new SelectionRequest(prompt, () -> onAccept(sender, recipient), () -> onDecline(sender, recipient));
+        instance.getInputManager().addPendingSelectionRequest(recipient, request);
+    }
+
+    private void onAccept(Player sender, Player recipient) {
+        ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(recipient);
+
+        if (guild.getMembers().size() >= Settings.MAX_GUILD_MEMBERS) {
+            Messaging.sendErrorMessage(recipient, "The guild is already full.");
+        } else if (conquestPlayer.getGuild() != null) {
+            Messaging.sendErrorMessage(recipient, "You are already a member of a guild.");
+        } else {
+            guild.addMember(recipient.getUniqueId());
+            conquestPlayer.setGuild(guild);
+            Messaging.sendPlayerSpecificMessage(recipient, "You joined " + guild.getName() + ".");
+            Messaging.sendPlayerSpecificMessage(sender, recipient.getName() + " joined the guild.");
+        }
+    }
+
+    private void onDecline(Player sender, Player recipient) {
+        Messaging.sendPlayerSpecificMessage(sender, recipient.getName() + " declined your request.");
+        Messaging.sendPlayerSpecificMessage(recipient, "You declined the request.");
     }
 
     private void addNavigationButtons(Player player, Pagination pagination, InventoryContents inventoryContents, int playerCount) {
         int page = pagination.getPage();
         if (page != 0) {
             inventoryContents.set(5, 3, ClickableItem.of(InventoryUtil.LAST_PAGE_BUTTON,
-                    e -> attemptPageOpen(player, pagination, false)));
+                    e -> attemptPageOpen(player, inventoryContents, pagination, false)));
         }
 
         if (playerCount - (page * 28) > 28) {
             inventoryContents.set(5, 5, ClickableItem.of(InventoryUtil.NEXT_PAGE_BUTTON,
-                    e -> attemptPageOpen(player, pagination, true)));
+                    e -> attemptPageOpen(player, inventoryContents, pagination,true)));
         }
     }
 
-    private void attemptPageOpen(Player player, Pagination pagination, boolean nextPage) {
+    private void attemptPageOpen(Player player, InventoryContents inventoryContents, Pagination pagination, boolean nextPage) {
         List<Player> players = getOnlinePlayersWithoutAGuild();
-        if (pagination.getPageItems().length != players.size()) {
-            fillWithPlayers(pagination, players);
-        }
+        fillWithPlayers(pagination, players);
+
         Pagination page = nextPage ? pagination.next() : pagination.previous();
-
-        Bukkit.getLogger().info("C: " + (page.getPage() * 28));
-        Bukkit.getLogger().info("C: " + (players.size()));
-
-        if (page != null &&  players.size() > (page.getPage() + 1) * 28) {
+        if (page != null && players.size() > (page.getPage() + 1) * 28) {
             inventory.open(player, page.getPage());
+        } else {
+            onRefreshClick(player, inventoryContents);
         }
     }
 
