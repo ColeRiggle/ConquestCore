@@ -7,14 +7,13 @@ import com.craftersconquest.database.ConquestDataSource;
 import com.craftersconquest.database.ConquestSQLSource;
 import com.craftersconquest.guilds.GuildManager;
 import com.craftersconquest.horses.HorseManager;
-import com.craftersconquest.items.ItemManager;
+import com.craftersconquest.items.ItemLoader;
 import com.craftersconquest.listeners.ListenerManager;
 import com.craftersconquest.menu.MenuManager;
 import com.craftersconquest.object.Component;
 import com.craftersconquest.player.cache.ConquestPlayerCacheManager;
 import com.craftersconquest.skills.SkillsManager;
 import com.craftersconquest.time.TimeManager;
-import com.craftersconquest.util.StringUtil;
 import com.craftersconquest.visual.ScoreboardManager;
 import com.craftersconquest.visual.VisualsManager;
 import net.milkbowl.vault.economy.Economy;
@@ -37,7 +36,7 @@ public class ConquestCore extends JavaPlugin {
     private final Blocklist blocklist = new Blocklist(this);
     private final ScoreboardManager scoreboardManager = new ScoreboardManager(this);
     private final VisualsManager visualsManager = new VisualsManager(this);
-    private final ItemManager itemManager = new ItemManager(this);
+    private final ItemLoader itemLoader = new ItemLoader(this);
     private final MenuManager menuManager = new MenuManager(this);
     private final TimeManager timeManager = new TimeManager(this);
     private final GuildManager guildManager = new GuildManager(this);
@@ -73,7 +72,7 @@ public class ConquestCore extends JavaPlugin {
         components.add(cacheManager);
         components.add(listenerManager);
         components.add(scoreboardManager);
-        components.add(itemManager);
+        components.add(itemLoader);
         components.add(guildManager);
         components.add(horseManager);
         components.add(inputManager);
@@ -117,7 +116,7 @@ public class ConquestCore extends JavaPlugin {
 
     public TimeManager getTimeManager() { return timeManager; }
 
-    public ItemManager getItemManager() { return itemManager; }
+    public ItemLoader getItemLoader() { return itemLoader; }
 
     public MenuManager getMenuManager() { return menuManager; }
 

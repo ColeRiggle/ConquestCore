@@ -121,7 +121,7 @@ public class TransactionInventory implements ConquestInventory, InventoryProvide
     }
 
     private ItemStack getIncreaseButton(int quantity) {
-        ItemStack item = instance.getItemManager().getItem("gui_increase");
+        ItemStack item = instance.getItemLoader().getItem("gui_increase");
         item.setAmount(quantity);
         return item;
     }
@@ -141,7 +141,7 @@ public class TransactionInventory implements ConquestInventory, InventoryProvide
     }
 
     private ItemStack getDecreaseButton(int quantity) {
-        ItemStack item = instance.getItemManager().getItem("gui_decrease");
+        ItemStack item = instance.getItemLoader().getItem("gui_decrease");
         item.setAmount(quantity);
         return item;
     }
@@ -195,14 +195,14 @@ public class TransactionInventory implements ConquestInventory, InventoryProvide
     }
 
     private ItemStack getInsufficientFundsButton() {
-        ItemStack item = instance.getItemManager().getItem("gui_insufficient");
+        ItemStack item = instance.getItemLoader().getItem("gui_insufficient");
         SkullMeta meta = InventoryUtil.createSkullMeta(item, ChatColor.RED + "Insufficient funds");
         item.setItemMeta(meta);
         return item;
     }
 
     private ItemStack getConfirmationButton() {
-        ItemStack item = instance.getItemManager().getItem("gui_confirmation");
+        ItemStack item = instance.getItemLoader().getItem("gui_confirmation");
         SkullMeta meta = InventoryUtil.createSkullMeta(item, ChatColor.GREEN + "Confirm purchase");
         item.setItemMeta(meta);
         return item;

@@ -66,7 +66,7 @@ public class GuildMembersInventory implements ConquestInventory, InventoryProvid
 
             Bukkit.getScheduler().runTaskAsynchronously(instance,
                     () -> {
-                        ItemStack head = instance.getItemManager().getPlayerHeadCache().getPlayerHead(memberUUID);
+                        ItemStack head = instance.getItemLoader().getPlayerHeadCache().getPlayerHead(memberUUID);
                         ItemStack member = getMemberItemStack(memberUUID, head);
                         ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(memberUUID);
                         Bukkit.getScheduler().runTask(instance,
@@ -96,7 +96,7 @@ public class GuildMembersInventory implements ConquestInventory, InventoryProvid
                 "As a guild leader, click on a player head",
                 "to manage their guild status or promote",
                 "a player to owner.");
-        return new ItemBuilder(instance.getItemManager().getItem("gui_information")).
+        return new ItemBuilder(instance.getItemLoader().getItem("gui_information")).
                 setDisplayName(displayName).
                 setLore(lore).
                 build();
@@ -106,7 +106,7 @@ public class GuildMembersInventory implements ConquestInventory, InventoryProvid
         String displayName = ChatColor.YELLOW + "Invite Player";
         List<String> lore = InventoryUtil.createLore("",
                 "Click to invite an online player to your guild");
-        return new ItemBuilder(instance.getItemManager().getItem("gui_create")).
+        return new ItemBuilder(instance.getItemLoader().getItem("gui_create")).
                 setDisplayName(displayName).
                 setLore(lore).
                 build();

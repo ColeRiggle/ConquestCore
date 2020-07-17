@@ -75,7 +75,7 @@ public class InvitePlayerInventory implements ConquestInventory, InventoryProvid
 
     @SuppressWarnings("ConstantConditions")
     private ClickableItem createClickableItemFromPlayer(Player player) {
-        ItemStack playerHead = instance.getItemManager().getPlayerHeadCache().getPlayerHead(player.getUniqueId());
+        ItemStack playerHead = instance.getItemLoader().getPlayerHeadCache().getPlayerHead(player.getUniqueId());
         String displayName = ChatColor.YELLOW + playerHead.getItemMeta().getDisplayName();
         List<String> lore = InventoryUtil.createLore("", ChatColor.RED + "No guild", "",
                 ChatColor.GREEN + "Click to invite this player");
@@ -166,9 +166,9 @@ public class InvitePlayerInventory implements ConquestInventory, InventoryProvid
     private List<Player> getOnlinePlayersWithoutAGuild() {
         List<Player> players = new ArrayList<>();
         for (Player player : Bukkit.getOnlinePlayers()) {
-            ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(player);
-            if (conquestPlayer.getGuild() == null) {
-                for (int x = 0; x < 200; x++) {
+            if (instance.getCacheManager().isCached(player.getUniqueId())) {
+                ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(player);
+                if (conquestPlayer.getGuild() == null) {
                     players.add(player);
                 }
             }

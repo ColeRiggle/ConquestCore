@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ItemManager implements Component {
+public class ItemLoader implements Component {
 
     private final ConquestCore instance;
     private final HeaddatabaseLoader headsLoader;
@@ -41,7 +41,7 @@ public class ItemManager implements Component {
             Map.entry("gui_up_arrow", "7928")
     );
 
-    public ItemManager(ConquestCore instance) {
+    public ItemLoader(ConquestCore instance) {
         this.instance = instance;
         headsLoader = new HeaddatabaseLoader();
         converter = new ItemConverter();

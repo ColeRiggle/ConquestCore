@@ -96,7 +96,7 @@ public class CreateGuildInventory implements ConquestInventory, InventoryProvide
     }
 
     private ItemStack getInformationItemStack() {
-        ItemStack item = instance.getItemManager().getItem("gui_information");
+        ItemStack item = instance.getItemLoader().getItem("gui_information");
         return new ItemBuilder(item).
                 setDisplayName(ChatColor.BLUE + "Information").
                 setLore(InventoryUtil.createLore("",
@@ -107,7 +107,7 @@ public class CreateGuildInventory implements ConquestInventory, InventoryProvide
     }
 
     private ItemStack getCreateItemStack() {
-        ItemStack item = instance.getItemManager().getItem("gui_create");
+        ItemStack item = instance.getItemLoader().getItem("gui_create");
         return new ItemBuilder(item).
                 setDisplayName(ChatColor.RED + "Create a guild").
                 setLore(InventoryUtil.createLore("",
@@ -117,7 +117,7 @@ public class CreateGuildInventory implements ConquestInventory, InventoryProvide
     }
 
     private ItemStack getJoinItemStack() {
-        ItemStack item = instance.getItemManager().getItem("gui_confirmation");
+        ItemStack item = instance.getItemLoader().getItem("gui_confirmation");
         return new ItemBuilder(item).
                 setDisplayName(ChatColor.YELLOW + "Join a guild").
                 setLore(InventoryUtil.createLore("",

@@ -68,7 +68,7 @@ public class MemberManagementInventory implements ConquestInventory, InventoryPr
     }
 
     private ItemStack getPromoteItemStack() {
-        ItemStack baseItemStack = instance.getItemManager().getItem("gui_up_arrow");
+        ItemStack baseItemStack = instance.getItemLoader().getItem("gui_up_arrow");
         String displayName = ChatColor.YELLOW + "Promote to leader";
         List<String> lore = InventoryUtil.createLore("", "This will transfer ownership of", "the guild to this player.");
         return new ItemBuilder(baseItemStack).setDisplayName(displayName).setLore(lore).build();

@@ -42,6 +42,10 @@ public class ConquestPlayerCacheManager implements Component {
         cache.removePlayer(playerUUID);
     }
 
+    public boolean isCached(UUID playerUUID) {
+        return cache.isCached(playerUUID);
+    }
+
     public ConquestPlayer getConquestPlayer(UUID playerUUID) { return cache.getCachedConquestPlayer(playerUUID); }
 
     public ConquestPlayer getConquestPlayer(Player player) { return getConquestPlayer(player.getUniqueId()); }

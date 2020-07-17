@@ -305,7 +305,7 @@ public class ConquestSQLSource extends ConquestDataSource {
         String name = resultSet.getString("name");
         String formattedName = resultSet.getString("formatted_name");
         UUID ownerUUID = UUID.fromString(resultSet.getString("owner"));
-        List<UUID> memberUUIDs = sqlGuildParser.readMembers(resultSet.getString("members"));
+        List<UUID> memberUUIDs = sqlGuildParser.deserializeMembers(resultSet.getString("members"));
 
         return Guild.builder().name(name).formattedName(formattedName).ownerUUID(ownerUUID).memberUUIDs(memberUUIDs).build();
     }

@@ -30,8 +30,12 @@ public class ConquestPlayerCache {
         }, 200, 3600);
     }
 
+    public boolean isCached(UUID playerUUID) {
+        return cachedPlayers.containsKey(playerUUID);
+    }
+
     public ConquestPlayer getCachedConquestPlayer(UUID playerUUID) {
-        if (!cachedPlayers.containsKey(playerUUID)) {
+        if (!isCached(playerUUID)) {
             addPlayer(playerUUID);
         }
 

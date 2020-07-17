@@ -1,5 +1,6 @@
 package com.craftersconquest.object.guild;
 
+import com.craftersconquest.object.forge.Forge;
 import com.craftersconquest.object.guild.upgrade.Upgrades;
 
 import java.util.List;
@@ -63,6 +64,18 @@ public class Guild {
 
     public void addMember(UUID memberUUID) {
         memberUUIDs.add(memberUUID);
+    }
+
+    public List<Forge> getForges() {
+        return List.of();
+    }
+
+    public void addForge(Forge forge) {
+
+    }
+
+    public void removeForge(Forge forge) {
+
     }
 
     public static Builder builder() { return new Builder(); }
