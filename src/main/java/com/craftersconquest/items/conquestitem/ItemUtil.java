@@ -39,9 +39,15 @@ public class ItemUtil {
     }
 
     public static final Category getCategory(ItemStack itemStack) {
-        String category = NBTEditor.getString(CATEGORY_NBT_LOCATION);
+        String categoryString = NBTEditor.getString(itemStack, CATEGORY_NBT_LOCATION);
+
+        if (categoryString == null) {
+            return Category.VANILLA;
+        }
+
         try {
-            return Category.valueOf(category);
+            Category category = Category.valueOf(categoryString);
+            return category;
         } catch (IllegalArgumentException exception) {
             return Category.VANILLA;
         }

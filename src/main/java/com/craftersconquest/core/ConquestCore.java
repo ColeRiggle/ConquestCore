@@ -8,6 +8,8 @@ import com.craftersconquest.database.ConquestSQLSource;
 import com.craftersconquest.guilds.GuildManager;
 import com.craftersconquest.horses.HorseManager;
 import com.craftersconquest.items.ItemLoader;
+import com.craftersconquest.items.conquestitem.Item;
+import com.craftersconquest.items.conquestitem.ItemUtil;
 import com.craftersconquest.listeners.ListenerManager;
 import com.craftersconquest.menu.MenuManager;
 import com.craftersconquest.object.Component;
@@ -18,6 +20,7 @@ import com.craftersconquest.visual.ScoreboardManager;
 import com.craftersconquest.visual.VisualsManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -58,7 +61,12 @@ public class ConquestCore extends JavaPlugin {
     }
 
     private void test() {
+        ItemStack item = Bukkit.getPlayer("Sqi").getItemInHand();
 
+        Bukkit.getLogger().info("SAME TYPE: " + ItemUtil.isSameType(item, Item.METAL_FORGE.getConquestItem().getItemStack()));
+        Bukkit.getLogger().info("NOT SAME TYPE: " + ItemUtil.isSameType(item, Item.GRAIN_FORGE.getConquestItem().getItemStack()));
+        Bukkit.getLogger().info("SAME CAT: " +
+                (ItemUtil.getCategory(item) == ItemUtil.getCategory(Item.GRAIN_FORGE.getConquestItem().getItemStack())));
     }
 
     private void setupEconomy() {

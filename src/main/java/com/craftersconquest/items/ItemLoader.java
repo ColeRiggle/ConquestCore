@@ -111,6 +111,7 @@ public class ItemLoader implements Component {
     @Override
     public void onEnable() {
         instance.getCommand("ccadmingenerate").setExecutor(commandExecutor);
+        instance.getCommand("ccitemgive").setExecutor(commandExecutor);
         load();
     }
 

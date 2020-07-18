@@ -8,6 +8,9 @@ commands:
   ccadmingenerate:
     description: "Generates custom items."
     permission:  com.craftersconquest.admin
+  ccitemgive:
+    description: "Gives a custom item."
+    permission:  com.craftersconquest.admin
   accept:
     description: "Accepts a pending request."
     permission:  com.craftersconquest.player
