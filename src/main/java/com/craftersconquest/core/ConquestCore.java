@@ -18,6 +18,8 @@ import com.craftersconquest.skills.SkillsManager;
 import com.craftersconquest.time.TimeManager;
 import com.craftersconquest.visual.ScoreboardManager;
 import com.craftersconquest.visual.VisualsManager;
+import me.arasple.mc.trhologram.api.TrHologramAPI;
+import me.arasple.mc.trhologram.hologram.Hologram;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
@@ -61,12 +63,8 @@ public class ConquestCore extends JavaPlugin {
     }
 
     private void test() {
-        ItemStack item = Bukkit.getPlayer("Sqi").getItemInHand();
-
-        Bukkit.getLogger().info("SAME TYPE: " + ItemUtil.isSameType(item, Item.METAL_FORGE.getConquestItem().getItemStack()));
-        Bukkit.getLogger().info("NOT SAME TYPE: " + ItemUtil.isSameType(item, Item.GRAIN_FORGE.getConquestItem().getItemStack()));
-        Bukkit.getLogger().info("SAME CAT: " +
-                (ItemUtil.getCategory(item) == ItemUtil.getCategory(Item.GRAIN_FORGE.getConquestItem().getItemStack())));
+        Hologram hologram = TrHologramAPI.createHologram(this, "testholo", Bukkit.getPlayer("Sqi").getLocation(), "Hello Sqi");
+        hologram.display(Bukkit.getPlayer("Sqi"));
     }
 
     private void setupEconomy() {

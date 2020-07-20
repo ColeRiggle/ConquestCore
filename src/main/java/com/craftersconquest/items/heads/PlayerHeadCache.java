@@ -1,4 +1,4 @@
-package com.craftersconquest.items;
+package com.craftersconquest.items.heads;
 
 import com.craftersconquest.core.ConquestCore;
 import org.bukkit.Bukkit;

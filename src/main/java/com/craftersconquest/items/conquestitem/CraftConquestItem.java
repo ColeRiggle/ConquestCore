@@ -2,6 +2,9 @@ package com.craftersconquest.items.conquestitem;
 
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.List;
 
 public abstract class CraftConquestItem extends ConquestItem {
 
@@ -22,6 +25,20 @@ public abstract class CraftConquestItem extends ConquestItem {
         NBTEditor.set(baseItemStack, ConquestItem.ID_NBT_LOCATION, id);
         NBTEditor.set(baseItemStack, ConquestItem.CATEGORY_NBT_LOCATION, category.toString());
         NBTEditor.set(baseItemStack, ConquestItem.RARITY_NBT_LOCATION, rarity.toString());
+        addRarityToLore();
+    }
+
+    private void addRarityToLore() {
+        List<String> baseLore = baseItemStack.getItemMeta().getLore();
+        List<String> modified = baseLore == null ? List.of("") : baseLore;
+
+        if (!modified.contains(rarity.getText())) {
+            modified.add("");
+            modified.add(rarity.getText());
+            ItemMeta modifiedItemMeta = baseItemStack.getItemMeta();
+            modifiedItemMeta.setLore(modified);
+            baseItemStack.setItemMeta(modifiedItemMeta);
+        }
     }
 
     public ItemStack getBaseItemStack() {

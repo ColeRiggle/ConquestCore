@@ -4,10 +4,13 @@ import com.craftersconquest.forges.ForgeUtil;
 import com.craftersconquest.object.forge.Forge;
 import com.craftersconquest.object.forge.Tier;
 import com.craftersconquest.object.forge.Type;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public enum Item {
     METAL_FORGE(getBaseForge(Type.METAL)),
@@ -27,12 +30,19 @@ public enum Item {
         return conquestItem;
     }
 
-    public static final Item fromId(String id) {
-        if (idItemPairs.containsKey(id)) {
-            return idItemPairs.get(id);
+    public static final Optional<Item> fromId(String id) {
+        Item item = null;
+
+        if (id != null && idItemPairs.containsKey(id)) {
+            item = idItemPairs.get(id);
         }
 
-        return null;
+        return Optional.ofNullable(item);
+    }
+
+    public static Optional<Item> fromItemStack(ItemStack itemStack) {
+        String id = NBTEditor.getString(itemStack, ConquestItem.ID_NBT_LOCATION);
+        return fromId(id);
     }
 
     private static Map<String, Item> initializeMapping() {
@@ -47,4 +57,5 @@ public enum Item {
     private static ConquestItem getBaseForge(Type type) {
         return ForgeUtil.getForgeConquestItem(new Forge(type, Tier.I));
     }
+
 }

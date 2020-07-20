@@ -4,11 +4,11 @@ import org.bukkit.ChatColor;
 
 public enum Rarity {
     NONE("None"),
-    COMMON(ChatColor.GRAY + "Common"),
-    RARE(ChatColor.BLUE  + "Rare"),
-    STELLAR(ChatColor.LIGHT_PURPLE + "Stellar"),
-    RELIC(ChatColor.GOLD + "Relic"),
-    MYTHIC(ChatColor.AQUA + "Mythic");
+    COMMON(ChatColor.GRAY + "" + ChatColor.BOLD + "Common"),
+    RARE(ChatColor.BLUE + "" + ChatColor.BOLD + "Rare"),
+    STELLAR(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Stellar"),
+    RELIC(ChatColor.GOLD + "" + ChatColor.BOLD + "Relic"),
+    MYTHIC(ChatColor.AQUA + "" + ChatColor.BOLD + "Mythic");
 
     private final String text;
 

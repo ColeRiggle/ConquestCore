@@ -15,12 +15,12 @@ public enum Category {
     }
 
     public boolean isSubcategoryOf(Category category) {
-        Category currentParent = this.parent;
-        while (currentParent != null) {
-            if (currentParent == category) {
+        Category currentCategory = this;
+        while (currentCategory != null) {
+            if (currentCategory == category) {
                 return true;
             }
-            currentParent = currentParent.parent;
+            currentCategory = currentCategory.parent;
         }
 
         return false;

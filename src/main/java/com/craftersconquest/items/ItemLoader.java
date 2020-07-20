@@ -2,6 +2,7 @@ package com.craftersconquest.items;
 
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.items.heads.HeaddatabaseLoader;
+import com.craftersconquest.items.heads.PlayerHeadCache;
 import com.craftersconquest.object.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
