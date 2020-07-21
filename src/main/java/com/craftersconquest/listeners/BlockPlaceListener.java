@@ -1,6 +1,8 @@
 package com.craftersconquest.listeners;
 
 import com.craftersconquest.core.ConquestCore;
+import com.craftersconquest.items.conquestitem.Item;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -16,6 +18,9 @@ public class BlockPlaceListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockPlaceEvent(BlockPlaceEvent event) {
-        instance.getBlocklist().addIfNecessary(event.getBlockPlaced().getType(), event.getBlockPlaced().getLocation());
+        Material type = event.getBlockPlaced().getType();
+
+        instance.getBlocklist().addIfNecessary(type, event.getBlockPlaced().getLocation());
+        instance.getForgeManager().onBlockPlace(event);
     }
 }

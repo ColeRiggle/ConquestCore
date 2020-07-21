@@ -20,4 +20,6 @@ public final class Settings {
 
     public static final int MAX_GUILD_MEMBERS = 4;
 
+    public static final int MAX_FORGES_PER_TYPE = 6;
+
 }

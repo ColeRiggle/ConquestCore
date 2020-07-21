@@ -16,6 +16,7 @@ public class Guild {
     private Upgrades upgrades;
     private int elo;
     private War lastWar;
+    private List<Forge> forges;
 
     private Guild() {
     }
@@ -67,15 +68,15 @@ public class Guild {
     }
 
     public List<Forge> getForges() {
-        return List.of();
+        return forges;
     }
 
     public void addForge(Forge forge) {
-
+        forges.add(forge);
     }
 
     public void removeForge(Forge forge) {
-
+        forges.remove(forge);
     }
 
     public static Builder builder() { return new Builder(); }
@@ -90,6 +91,7 @@ public class Guild {
         private Upgrades upgrades;
         private int elo;
         private War lastWar;
+        private List<Forge> forges;
 
         private Builder() {}
 
@@ -133,6 +135,11 @@ public class Guild {
             return this;
         }
 
+        public Builder forges(List<Forge> forges) {
+            this.forges = forges;
+            return this;
+        }
+
         public Guild build() {
             Guild guild = new Guild();
             guild.name = name;
@@ -143,6 +150,7 @@ public class Guild {
             guild.upgrades = upgrades;
             guild.elo = elo;
             guild.lastWar = lastWar;
+            guild.forges = forges;
             return guild;
         }
     }

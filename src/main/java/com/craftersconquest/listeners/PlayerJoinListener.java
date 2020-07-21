@@ -16,6 +16,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.UUID;
+
 public class PlayerJoinListener implements Listener {
 
     private final ConquestCore instance;
@@ -26,11 +28,16 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onAsyncPlayerPreLoginEvent(AsyncPlayerPreLoginEvent event) {
-        long startTime = System.currentTimeMillis();
+        UUID playerUUID = event.getUniqueId();
         Bukkit.getServer().getScheduler().runTaskAsynchronously(instance,
-                () -> instance.getCacheManager().addToCache(event.getUniqueId()));
-
-        Bukkit.getLogger().info("Took: " + (System.currentTimeMillis() - startTime));
+                () -> {
+                    instance.getCacheManager().addToCache(playerUUID);
+                    Bukkit.getServer().getScheduler().runTask(instance,
+                            () -> {
+                                instance.getGuildManager().onPlayerJoin(playerUUID);
+                                instance.getForgeManager().onPlayerJoin(playerUUID);
+                            });
+                });
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -80,7 +87,5 @@ public class PlayerJoinListener implements Listener {
 
 //        ShopInventory inventory = new ShopInventory(instance, shop);
 //        inventory.getInventory().open(player);
-
-        instance.getGuildManager().onPlayerJoin(player);
     }
 }

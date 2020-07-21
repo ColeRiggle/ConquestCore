@@ -21,8 +21,10 @@ public final class ForgeUtil {
     private ForgeUtil() {}
 
     public static final ConquestItem getForgeConquestItem(Forge forge) {
-        String id = "forge:" + forge.getType().toString() + ":" + forge.getType().toString();
-        return new NormalConquestItem(id, Category.FORGE, Rarity.STELLAR, getForgeItemStack(forge));
+        String id = "forge:" + forge.getType().toString() + ":" + forge.getTier().toString();
+
+        Category category = Category.valueOf(forge.getType().toString().toUpperCase() + "_FORGE");
+        return new NormalConquestItem(id, category, Rarity.STELLAR, getForgeItemStack(forge));
     }
 
     private static final ItemStack getForgeItemStack(Forge forge) {

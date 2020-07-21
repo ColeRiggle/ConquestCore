@@ -1,6 +1,7 @@
 package com.craftersconquest.items.conquestitem;
 
 import io.github.bananapuncher714.nbteditor.NBTEditor;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -11,7 +12,7 @@ public abstract class CraftConquestItem extends ConquestItem {
     private final String id;
     private final Category category;
     private final Rarity rarity;
-    private final ItemStack baseItemStack;
+    private ItemStack baseItemStack;
 
     public CraftConquestItem(String id, Category category, Rarity rarity, ItemStack baseItemStack) {
         this.id = id;
@@ -22,9 +23,9 @@ public abstract class CraftConquestItem extends ConquestItem {
     }
 
     private void configureBaseItemStack() {
-        NBTEditor.set(baseItemStack, ConquestItem.ID_NBT_LOCATION, id);
-        NBTEditor.set(baseItemStack, ConquestItem.CATEGORY_NBT_LOCATION, category.toString());
-        NBTEditor.set(baseItemStack, ConquestItem.RARITY_NBT_LOCATION, rarity.toString());
+        baseItemStack = NBTEditor.set(baseItemStack, id, ConquestItem.ID_NBT_LOCATION);
+        baseItemStack = NBTEditor.set(baseItemStack, category.toString(), ConquestItem.CATEGORY_NBT_LOCATION);
+        baseItemStack = NBTEditor.set(baseItemStack, rarity.toString(), ConquestItem.RARITY_NBT_LOCATION);
         addRarityToLore();
     }
 

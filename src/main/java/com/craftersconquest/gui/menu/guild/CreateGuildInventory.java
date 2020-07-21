@@ -4,6 +4,7 @@ import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.core.Settings;
 import com.craftersconquest.gui.ConquestInventory;
 import com.craftersconquest.messaging.Messaging;
+import com.craftersconquest.object.forge.Forge;
 import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.player.ConquestPlayer;
 import com.craftersconquest.util.InventoryUtil;
@@ -79,7 +80,15 @@ public class CreateGuildInventory implements ConquestInventory, InventoryProvide
             List<UUID> memberUUIDs = new ArrayList<>();
             memberUUIDs.add(player.getUniqueId());
 
-            Guild guild = Guild.builder().name(name).formattedName(name).ownerUUID(player.getUniqueId()).memberUUIDs(memberUUIDs).build();
+            List<Forge> forges = new ArrayList<>();
+
+            Guild guild = Guild.builder().
+                    name(name).
+                    formattedName(name).
+                    ownerUUID(player.getUniqueId()).
+                    memberUUIDs(memberUUIDs).
+                    forges(forges).
+                    build();
 
             Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
                 instance.getGuildManager().createWorld(guild);

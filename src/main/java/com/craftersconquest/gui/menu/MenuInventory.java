@@ -63,13 +63,13 @@ public class MenuInventory implements ConquestInventory, InventoryProvider {
         ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(player.getUniqueId());
         Guild guild = conquestPlayer.getGuild();
 
-        if (guild == null) {
-            new CreateGuildInventory(instance, inventory).getInventory().open(player);
-        } else {
-            new MainGuildInventory(instance, inventory, guild).getInventory().open(player);
-        }
+//        if (guild == null) {
+//            new CreateGuildInventory(instance, inventory).getInventory().open(player);
+//        } else {
+//            new MainGuildInventory(instance, inventory, guild).getInventory().open(player);
+//        }
 //
-//        new CreateGuildInventory(instance, inventory).getInventory().open(player);
+        new CreateGuildInventory(instance, inventory).getInventory().open(player);
     }
 
     @Override

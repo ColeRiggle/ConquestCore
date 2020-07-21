@@ -6,10 +6,12 @@ import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.player.ConquestPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class GuildManager implements Component {
 
@@ -39,10 +41,12 @@ public class GuildManager implements Component {
             }
         }
 
+        Bukkit.getLogger().info("Couldn't find player guild: " + name);
         return null;
     }
 
     public void createWorld(Guild guild) {
+        guilds.add(guild);
         loader.createWorld(guild);
     }
 
@@ -51,13 +55,17 @@ public class GuildManager implements Component {
         loader.unload(guild);
     }
 
+    public World getWorld(Guild guild) {
+        return loader.getWorld(guild);
+    }
+
     public void teleportPlayerToGuild(Player player, Guild guild) {
         Location location = new Location(loader.getWorld(guild), 0, 50, 0);
         player.teleport(location);
     }
 
-    public void onPlayerJoin(Player player) {
-        ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(player);
+    public void onPlayerJoin(UUID playerUUID) {
+        ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(playerUUID);
         Guild guild = conquestPlayer.getGuild();
         if (conquestPlayer.getGuild() != null) {
             loadGuildIfApplicable(guild);
@@ -90,7 +98,7 @@ public class GuildManager implements Component {
 
     @Override
     public void onEnable() {
-        loader = new GuildWorldLoader();
+        loader = new GuildWorldLoader(instance);
         loadGuilds();
     }
 

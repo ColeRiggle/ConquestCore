@@ -23,7 +23,7 @@ public class UniqueConquestItem extends CraftConquestItem {
 //        int halfWay = itemUUID.length() / 2;
 //        String firstHalf = itemUUID.substring(0, halfWay);
 //        String secondHalf = itemUUID.substring(halfWay);
-        NBTEditor.set(itemStack, ConquestItem.UUID_NBT_LOCATION, itemUUID);
+        itemStack = NBTEditor.set(itemStack, ConquestItem.UUID_NBT_LOCATION, itemUUID);
 //        NBTEditor.set(itemStack, ConquestItem.UUID_2_NBT_LOCATION, secondHalf);
     }
 }

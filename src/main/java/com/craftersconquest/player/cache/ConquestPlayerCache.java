@@ -46,11 +46,10 @@ public class ConquestPlayerCache {
         Bukkit.getLogger().info("Adding: " + playerUUID + " to the cache.");
         ConquestPlayer player = instance.getDataSource().loadPlayer(playerUUID);
         cachedPlayers.putIfAbsent(playerUUID, player);
-        Bukkit.getLogger().info("Cache size: " + cachedPlayers.size());
     }
 
     public void removePlayer(UUID playerUUID) {
-        if (cachedPlayers.contains(playerUUID)) {
+        if (cachedPlayers.containsKey(playerUUID)) {
             savePlayer(getCachedConquestPlayer(playerUUID));
             cachedPlayers.remove(playerUUID);
         }

@@ -1,6 +1,7 @@
 package com.craftersconquest.database;
 
 import com.craftersconquest.core.ConquestCore;
+import com.craftersconquest.object.forge.Forge;
 import com.craftersconquest.util.Errors;
 import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.object.skill.Skill;
@@ -306,8 +307,15 @@ public class ConquestSQLSource extends ConquestDataSource {
         String formattedName = resultSet.getString("formatted_name");
         UUID ownerUUID = UUID.fromString(resultSet.getString("owner"));
         List<UUID> memberUUIDs = sqlGuildParser.deserializeMembers(resultSet.getString("members"));
+        List<Forge> forges = sqlGuildParser.deserializeForges(resultSet.getString("forges"));
 
-        return Guild.builder().name(name).formattedName(formattedName).ownerUUID(ownerUUID).memberUUIDs(memberUUIDs).build();
+        return Guild.builder().
+                name(name).
+                formattedName(formattedName).
+                ownerUUID(ownerUUID).
+                memberUUIDs(memberUUIDs).
+                forges(forges).
+                build();
     }
 
     @Override
@@ -321,13 +329,13 @@ public class ConquestSQLSource extends ConquestDataSource {
         try (Connection connection = getConnection()) {
             PreparedStatement preparedStatement =
                     connection.prepareStatement("REPLACE INTO guilds (name,formatted_name,owner,members,elo,forges,stockpile_id,upgrades_id,last_war_date) " +
-                                    "VALUES(?,?,?,?,?,?,?,?,?,?)");
+                                    "VALUES(?,?,?,?,?,?,?,?,?)");
             preparedStatement.setString(1, guild.getName());
             preparedStatement.setString(2, guild.getFormattedName());
             preparedStatement.setString(3, guild.getOwner().toString());
             preparedStatement.setString(4, sqlGuildParser.serializeMembers(guild.getMembers()));
             preparedStatement.setInt(5, 1000);
-            preparedStatement.setString(6, "");
+            preparedStatement.setString(6, sqlGuildParser.serializeForges(guild.getForges()));
             preparedStatement.setString(7, "id");
             preparedStatement.setString(8, "id");
             preparedStatement.setString(9, "never");

@@ -3,6 +3,8 @@ package com.craftersconquest.database;
 import com.craftersconquest.object.forge.Forge;
 import com.craftersconquest.object.forge.Tier;
 import com.craftersconquest.object.forge.Type;
+import com.craftersconquest.object.guild.SimpleLocation;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,7 +18,9 @@ public class SQLGuildParser {
     public List<UUID> deserializeMembers(String value) {
         List<UUID> members = new ArrayList<>();
         for (String entry : value.split(ENTRY_DELIMITER)) {
-            members.add(UUID.fromString(entry));
+            if (entry.length() > 0) {
+                members.add(UUID.fromString(entry));
+            }
         }
 
         return members;
@@ -42,7 +46,9 @@ public class SQLGuildParser {
     public List<Forge> deserializeForges(String value) {
         List<Forge> forges = new ArrayList<>();
         for (String entry : value.split(ENTRY_DELIMITER)) {
-            forges.add(createForgeFromEntry(entry));
+            if (entry.length() > 0) {
+                forges.add(createForgeFromEntry(entry));
+            }
         }
         return forges;
     }
@@ -51,7 +57,13 @@ public class SQLGuildParser {
         String[] components = entry.split(":");
         Type type = Type.valueOf(components[0]);
         Tier tier = Tier.valueOf(components[1]);
-        return new Forge(type, tier);
+
+        String[] locationComponents = components[2].split("|");
+        SimpleLocation location = new SimpleLocation(Integer.valueOf(locationComponents[0]),
+                Integer.valueOf(locationComponents[1]),
+                Integer.valueOf(locationComponents[2]));
+
+        return new Forge(type, tier, location);
     }
 
     public String serializeForges(List<Forge> forges) {
@@ -59,7 +71,7 @@ public class SQLGuildParser {
         Iterator<Forge> iterator = forges.iterator();
         while(iterator.hasNext()) {
             Forge forge = iterator.next();
-            value.append(forge.getType().toString() + ":" + forge.getTier().toString());
+            value.append(forge.toString());
             if (iterator.hasNext()) {
                 value.append(ENTRY_DELIMITER);
             }

@@ -1,5 +1,6 @@
 package com.craftersconquest.guilds;
 
+import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.object.guild.Guild;
 import com.grinderwolf.swm.api.exceptions.*;
 import com.grinderwolf.swm.api.loaders.SlimeLoader;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 
 public class GuildWorldLoader {
 
+    private final ConquestCore instance;
     private final ArrayList<Guild> loadedGuilds;
 
     private final static String TEMPLATE_NAME = "guild";
@@ -25,12 +27,15 @@ public class GuildWorldLoader {
 
     private final WorldData worldData;
     private final WorldsConfig worldsConfig;
+    private final SlimeLoader templateLoader;
     private final SlimeLoader slimeLoader;
 
-    public GuildWorldLoader() {
+    public GuildWorldLoader(ConquestCore instance) {
+        this.instance = instance;
         loadedGuilds = new ArrayList<>();
         worldData = new WorldData();
         worldsConfig = ConfigManager.getWorldConfig();
+        templateLoader = SWMPlugin.getInstance().getLoader("file");
         slimeLoader = SWMPlugin.getInstance().getLoader(DATASOURCE);
         setupWorldData();
     }
@@ -52,7 +57,7 @@ public class GuildWorldLoader {
         String worldName = getStorageName(guild);
 
         try {
-            SlimeWorld slimeWorld = SWMPlugin.getInstance().loadWorld(slimeLoader, TEMPLATE_NAME, true,
+            SlimeWorld slimeWorld = SWMPlugin.getInstance().loadWorld(templateLoader, TEMPLATE_NAME, true,
                     worldData.toPropertyMap()).clone(worldName, slimeLoader);
             generateWorld(slimeWorld, worldName);
 
@@ -106,9 +111,20 @@ public class GuildWorldLoader {
     public void unload(Guild guild) {
         loadedGuilds.remove(guild);
         World world = Bukkit.getWorld(getStorageName(guild));
-        Bukkit.unloadWorld(world, true);
-        worldsConfig.getWorlds().remove(getStorageName(guild));
-        worldsConfig.save();
+
+        Bukkit.getScheduler().runTaskLater(instance, new Runnable() {
+            @Override
+            public void run() {
+                if (Bukkit.unloadWorld(world, true)) {
+                    Bukkit.getLogger().info("Unloaded world...");
+                } else {
+                    Bukkit.getLogger().info("Failed to unload world");
+                }
+
+                worldsConfig.getWorlds().remove(getStorageName(guild));
+                worldsConfig.save();
+            }
+        }, 200L);
     }
 
     public World getWorld(Guild guild) {
