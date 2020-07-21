@@ -117,6 +117,8 @@ public class MemberManagementInventory implements ConquestInventory, InventoryPr
 
         Player kickedPlayer = Bukkit.getPlayer(member.getUUID());
         if (kickedPlayer != null) {
+            member.setGuild(null);
+            guild.removeMember(member.getUUID());
             Messaging.sendPlayerSpecificMessage(kickedPlayer, "You were kicked from your guild.");
         }
     }
