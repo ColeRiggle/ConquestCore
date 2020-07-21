@@ -16,6 +16,7 @@ import com.craftersconquest.menu.MenuManager;
 import com.craftersconquest.object.Component;
 import com.craftersconquest.player.cache.ConquestPlayerCacheManager;
 import com.craftersconquest.skills.SkillsManager;
+import com.craftersconquest.teleporter.Teleporter;
 import com.craftersconquest.time.TimeManager;
 import com.craftersconquest.visual.ScoreboardManager;
 import com.craftersconquest.visual.VisualsManager;
@@ -50,6 +51,7 @@ public class ConquestCore extends JavaPlugin {
     private final InputManager inputManager = new InputManager(this);
     private final ForgeManager forgeManager = new ForgeManager(this);
 
+    private final Teleporter teleporter = new Teleporter(this);
     private Economy economy;
 
     @Override
@@ -136,6 +138,10 @@ public class ConquestCore extends JavaPlugin {
     public InputManager getInputManager() { return inputManager; }
 
     public ForgeManager getForgeManager() { return forgeManager; }
+
+    public Teleporter getTeleporter() {
+        return teleporter;
+    }
 
     public Economy getEconomy() { return economy; }
 

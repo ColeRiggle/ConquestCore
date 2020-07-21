@@ -1,11 +1,11 @@
 package com.craftersconquest.guilds;
 
 import com.craftersconquest.core.ConquestCore;
+import com.craftersconquest.core.Settings;
 import com.craftersconquest.object.Component;
 import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.player.ConquestPlayer;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -45,23 +45,20 @@ public class GuildManager implements Component {
         return null;
     }
 
-    public void createWorld(Guild guild) {
+    public void create(Guild guild) {
         guilds.add(guild);
         loader.createWorld(guild);
+        instance.getForgeManager().loadHologramsForGuild(guild);
     }
 
-    public void unloadWorld(Guild guild) {
+    public void unload(Guild guild) {
         Bukkit.getLogger().info("Unloading world for: " + guild.getName());
         loader.unload(guild);
+        instance.getForgeManager().unloadHologramsForGuild(guild);
     }
 
     public World getWorld(Guild guild) {
         return loader.getWorld(guild);
-    }
-
-    public void teleportPlayerToGuild(Player player, Guild guild) {
-        Location location = new Location(loader.getWorld(guild), 0, 50, 0);
-        player.teleport(location);
     }
 
     public void onPlayerJoin(UUID playerUUID) {
@@ -73,26 +70,38 @@ public class GuildManager implements Component {
     }
 
     private void loadGuildIfApplicable(Guild guild) {
-        if (!hasWorldLoaded(guild)) {
-            loadWorld(guild);
+        if (!loader.isLoaded(guild)) {
+            Bukkit.getLogger().info("Loading if applicable...");
+            load(guild);
         }
     }
 
-    private boolean hasWorldLoaded(Guild guild) {
-        return loader.isLoaded(guild);
-    }
-
-    private void loadWorld(Guild guild) {
-        if (loader.isLoaded(guild)) {
-            loader.load(guild);
-        }
+    private void load(Guild guild) {
+        loader.load(guild);
     }
 
     public void onPlayerQuit(Player player) {
+        Bukkit.getLogger().info("Player quit detected");
+
         ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(player);
         Guild guild = conquestPlayer.getGuild();
-        if (guild != null) {
-            unloadWorld(guild);
+        teleportPlayerFromGuild(conquestPlayer, player);
+
+        List<Player> onlineGuildMembers = guild.getOnlinePlayers();
+        onlineGuildMembers.remove(player);
+
+        if (onlineGuildMembers.size() == 0) {
+            Bukkit.getLogger().info("Unloading guild world...");
+            unload(guild);
+        }
+    }
+
+    private void teleportPlayerFromGuild(ConquestPlayer conquestPlayer, Player player) {
+        if (conquestPlayer.getLastLocation().isPresent()) {
+            instance.getTeleporter().teleport(player, conquestPlayer.getLastLocation().get(), false);
+        } else {
+            instance.getTeleporter().
+                    teleport(player, Bukkit.getWorld(Settings.RPG_WORLD_NAME).getSpawnLocation(), false);
         }
     }
 
@@ -110,7 +119,12 @@ public class GuildManager implements Component {
 
         Bukkit.getLogger().info("Unloading guild worlds...");
         for (Guild guild : guilds) {
-            if (hasWorldLoaded(guild)) {
+
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                Bukkit.getLogger().info("HERE IN ONDISABLE OF GUILDMAN");
+            }
+
+            if (loader.isLoaded(guild)) {
                 loader.unload(guild);
             }
         }

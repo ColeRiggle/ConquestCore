@@ -1,7 +1,6 @@
 package com.craftersconquest.listeners;
 
 import com.craftersconquest.core.ConquestCore;
-import com.craftersconquest.gui.menu.MenuInventory;
 import com.craftersconquest.object.shop.Shop;
 import com.craftersconquest.object.shop.currency.Coins;
 import com.craftersconquest.object.shop.currency.Currency;
@@ -35,7 +34,6 @@ public class PlayerJoinListener implements Listener {
                     Bukkit.getServer().getScheduler().runTask(instance,
                             () -> {
                                 instance.getGuildManager().onPlayerJoin(playerUUID);
-                                instance.getForgeManager().onPlayerJoin(playerUUID);
                             });
                 });
     }

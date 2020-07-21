@@ -50,6 +50,8 @@ public class MainGuildInventory implements ConquestInventory, InventoryProvider 
                 (event) -> openMembersInventory(player, guild)));
         inventoryContents.set(1, 5, ClickableItem.empty(getUpgradesItemStack()));
         inventoryContents.set(1, 7, ClickableItem.empty(getStockpileItemStack()));
+        inventoryContents.set(2, 7, ClickableItem.of(getStockpileItemStack(),
+                (event) -> instance.getTeleporter().teleportToGuild(player)));
         inventoryContents.set(3, 8, ClickableItem.empty(getLeaveItemStack()));
     }
 

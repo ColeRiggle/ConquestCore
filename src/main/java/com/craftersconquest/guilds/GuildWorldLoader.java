@@ -59,7 +59,7 @@ public class GuildWorldLoader {
         try {
             SlimeWorld slimeWorld = SWMPlugin.getInstance().loadWorld(templateLoader, TEMPLATE_NAME, true,
                     worldData.toPropertyMap()).clone(worldName, slimeLoader);
-            generateWorld(slimeWorld, worldName);
+            generateWorld(guild, slimeWorld, worldName);
 
         } catch (IOException | CorruptedWorldException | WorldInUseException |
                 NewerFormatException | WorldAlreadyExistsException | UnknownWorldException exception) {
@@ -71,33 +71,36 @@ public class GuildWorldLoader {
     public void load(Guild guild) {
         loadedGuilds.add(guild);
         String worldName = getStorageName(guild);
-        loadWorld(worldName);
+        loadWorld(guild, worldName);
     }
 
-    private void loadWorld(String worldName) {
+    private void loadWorld(Guild guild, String worldName) {
         // World has to be loaded asynchronously, then generated synchronously
         Bukkit.getScheduler().runTaskAsynchronously(SWMPlugin.getInstance(), () -> {
             try {
                 SlimePropertyMap propertyMap = worldData.toPropertyMap();
                 SlimeWorld slimeWorld = SWMPlugin.getInstance().loadWorld(slimeLoader, worldName, false, propertyMap);
-                generateWorld(slimeWorld, worldName);
+                generateWorld(guild, slimeWorld, worldName);
 
             } catch (IOException | CorruptedWorldException | WorldInUseException |
                     NewerFormatException | UnknownWorldException exception) {
-                Bukkit.getLogger().severe("Fatal error occurred while loading: " + worldName);
+                Bukkit.getLogger().severe("Fatal error occurred while loading " + worldName + ": " + exception.toString());
             }
         });
     }
 
-    private void generateWorld(SlimeWorld slimeWorld, String worldName) {
+    private void generateWorld(Guild guild, SlimeWorld slimeWorld, String worldName) {
         Bukkit.getScheduler().runTask(SWMPlugin.getInstance(), () -> {
+            long time = System.currentTimeMillis();
             try {
-                SWMPlugin.getInstance().generateWorld(slimeWorld);
-
                 worldsConfig.getWorlds().put(worldName, worldData);
                 worldsConfig.save();
 
-                Bukkit.getLogger().info("Generated: " + worldName);
+                SWMPlugin.getInstance().generateWorld(slimeWorld);
+
+                Bukkit.getLogger().info("Generated: " + worldName + " in " + (System.currentTimeMillis() - time) + "ms.");
+
+                instance.getForgeManager().loadHologramsForGuild(guild);
             } catch (IllegalArgumentException ex) {
                 Bukkit.getLogger().severe("Fatal error occurred while generating: " + worldName);
             }
@@ -112,19 +115,14 @@ public class GuildWorldLoader {
         loadedGuilds.remove(guild);
         World world = Bukkit.getWorld(getStorageName(guild));
 
-        Bukkit.getScheduler().runTaskLater(instance, new Runnable() {
-            @Override
-            public void run() {
-                if (Bukkit.unloadWorld(world, true)) {
-                    Bukkit.getLogger().info("Unloaded world...");
-                } else {
-                    Bukkit.getLogger().info("Failed to unload world");
-                }
+        if (Bukkit.unloadWorld(world, true)) {
+            Bukkit.getLogger().info("Unloaded world...");
+        } else {
+            Bukkit.getLogger().info("Failed to unload world");
+        }
 
-                worldsConfig.getWorlds().remove(getStorageName(guild));
-                worldsConfig.save();
-            }
-        }, 200L);
+        worldsConfig.getWorlds().remove(getStorageName(guild));
+        worldsConfig.save();
     }
 
     public World getWorld(Guild guild) {

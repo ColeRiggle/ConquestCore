@@ -58,7 +58,7 @@ public class SQLGuildParser {
         Type type = Type.valueOf(components[0]);
         Tier tier = Tier.valueOf(components[1]);
 
-        String[] locationComponents = components[2].split("|");
+        String[] locationComponents = components[2].split("%");
         SimpleLocation location = new SimpleLocation(Integer.valueOf(locationComponents[0]),
                 Integer.valueOf(locationComponents[1]),
                 Integer.valueOf(locationComponents[2]));

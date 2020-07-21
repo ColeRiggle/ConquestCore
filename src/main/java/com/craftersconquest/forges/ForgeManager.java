@@ -30,6 +30,7 @@ public class ForgeManager implements Component {
     private final ConquestCore instance;
     private final ForgeConverter forgeConverter;
     private final ArrayList<Forge> forges;
+    private final ArrayList<Player> loadedPlayers;
 
     private final HashMap<Guild, List<Hologram>> holograms;
 
@@ -38,6 +39,7 @@ public class ForgeManager implements Component {
         forgeConverter = new ForgeConverter();
         holograms = new HashMap<>();
         forges = new ArrayList<>();
+        loadedPlayers = new ArrayList<>();
     }
 
     public void onBlockPlace(BlockPlaceEvent event) {
@@ -112,12 +114,24 @@ public class ForgeManager implements Component {
         return location.add(0, 2, 0);
     }
 
-    public void onPlayerJoin(UUID playerUUID) {
-        ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(playerUUID);
-        if (conquestPlayer.hasGuild()) {
-            Guild guild = conquestPlayer.getGuild();
-            holograms.put(guild, getHologramsForGuild(guild));
+    public void setupGuildHologramsForPlayer(Player player) {
+        if (!loadedPlayers.contains(player)) {
+            UUID playerUUID = player.getUniqueId();
+            ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(playerUUID);
+            if (conquestPlayer.hasGuild()) {
+                Guild guild = conquestPlayer.getGuild();
+                for (Hologram hologram : holograms.get(guild)) {
+                    Bukkit.getLogger().info(hologram.getLocation().toString());
+                    hologram.display(Bukkit.getPlayer(playerUUID));
+                }
+            }
+            loadedPlayers.add(player);
         }
+    }
+
+    public void loadHologramsForGuild(Guild guild) {
+        Bukkit.getLogger().info("Loading holograms...");
+        holograms.put(guild, getHologramsForGuild(guild));
     }
 
     private List<Hologram> getHologramsForGuild(Guild guild) {
@@ -126,6 +140,18 @@ public class ForgeManager implements Component {
             holograms.add(getHologramForForge(guild, forge));
         }
         return holograms;
+    }
+
+    public void unloadHologramsForGuild(Guild guild) {
+        for (Hologram hologram : holograms.get(guild)) {
+            hologram.delete();
+        }
+
+        holograms.remove(guild);
+    }
+
+    public void onPlayerQuit(Player player) {
+        loadedPlayers.remove(player);
     }
 
     @Override

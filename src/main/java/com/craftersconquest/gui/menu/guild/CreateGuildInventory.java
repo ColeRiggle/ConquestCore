@@ -16,6 +16,7 @@ import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -91,13 +92,12 @@ public class CreateGuildInventory implements ConquestInventory, InventoryProvide
                     build();
 
             Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
-                instance.getGuildManager().createWorld(guild);
+                instance.getGuildManager().create(guild);
 
                 Bukkit.getScheduler().runTask(instance, () -> {
                     ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(player.getUniqueId());
                     conquestPlayer.setGuild(guild);
-                    Messaging.sendPlayerSpecificMessage(player, "Teleporting to your guild...");
-                    instance.getGuildManager().teleportPlayerToGuild(player, guild);
+                    instance.getTeleporter().teleportToGuild(player);
                 });
 
             });

@@ -3,8 +3,10 @@ package com.craftersconquest.player;
 import com.craftersconquest.object.Bounty;
 import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.object.skill.Skill;
+import org.bukkit.Location;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class CraftConquestPlayer extends ConquestPlayer {
@@ -13,6 +15,7 @@ public class CraftConquestPlayer extends ConquestPlayer {
     private List<Skill> skills;
     private Guild guild;
     private Bounty bounty;
+    private Location lastLocation;
 
     public CraftConquestPlayer(UUID playerUUID, List<Skill> skills, Guild guild, Bounty bounty) {
         this.playerUUID = playerUUID;
@@ -69,5 +72,15 @@ public class CraftConquestPlayer extends ConquestPlayer {
     @Override
     public Bounty getBounty() {
         return null;
+    }
+
+    @Override
+    public Optional<Location> getLastLocation() {
+        return Optional.ofNullable(lastLocation);
+    }
+
+    @Override
+    public void setLastLocation(Location location) {
+        this.lastLocation = location;
     }
 }

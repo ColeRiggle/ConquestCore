@@ -3,9 +3,11 @@ package com.craftersconquest.player;
 import com.craftersconquest.object.Bounty;
 import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.object.skill.Skill;
+import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public abstract class ConquestPlayer {
@@ -32,4 +34,7 @@ public abstract class ConquestPlayer {
     public abstract Guild getGuild();
     public abstract void setGuild(Guild guild);
     public abstract Bounty getBounty();
+
+    public abstract Optional<Location> getLastLocation();
+    public abstract void setLastLocation(Location location);
 }

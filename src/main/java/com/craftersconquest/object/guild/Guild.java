@@ -2,7 +2,10 @@ package com.craftersconquest.object.guild;
 
 import com.craftersconquest.object.forge.Forge;
 import com.craftersconquest.object.guild.upgrade.Upgrades;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -77,6 +80,20 @@ public class Guild {
 
     public void removeForge(Forge forge) {
         forges.remove(forge);
+    }
+
+    public List<Player> getOnlinePlayers() {
+        List<Player> players = new ArrayList<>();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            for (UUID uuid : getMembers()) {
+                if (player.getUniqueId().equals(uuid)) {
+                    players.add(player);
+                    continue;
+                }
+            }
+        }
+
+        return players;
     }
 
     public static Builder builder() { return new Builder(); }
