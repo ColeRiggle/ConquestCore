@@ -10,13 +10,15 @@ import com.craftersconquest.object.forge.Forge;
 import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.object.guild.SimpleLocation;
 import com.craftersconquest.player.ConquestPlayer;
-import com.craftersconquest.util.StringUtil;
 import me.arasple.mc.trhologram.api.TrHologramAPI;
 import me.arasple.mc.trhologram.hologram.Hologram;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockPistonEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -80,18 +82,6 @@ public class ForgeManager implements Component {
         return typeCount + 1 <= Settings.MAX_FORGES_PER_TYPE;
     }
 
-    // When do holograms need to be shown
-    // 1. When placed
-    //      - shown to placer and all members of the guild currently online
-    // 2. On player join
-    //      - show all forges to player who joins
-    // 3. On player quit
-    //      - Hide all forges to the quitter
-    // 4. On enable
-    //      - Show to all online guild members
-    // 5. On disable
-    //      - Hide to all online guild members
-
     private void addAndPlaceForge(Location location, Guild guild, Forge forge) {
         forge.setLocation(SimpleLocation.fromLocation(location));
         forges.add(forge);
@@ -99,19 +89,25 @@ public class ForgeManager implements Component {
         List<Hologram> currentGuildForges = holograms.get(guild);
         Hologram hologram = getHologramForForge(guild, forge);
         currentGuildForges.add(hologram);
-        hologram.display(Bukkit.getPlayer("Sqi"));
+        displayHologramToOnlineGuildMembers(hologram, guild);
     }
 
     private Hologram getHologramForForge(Guild guild, Forge forge) {
-        String firstLine = ChatColor.GOLD + StringUtil.getProperNounForm(forge.getType().toString()) + " Forge";
-        String secondLine = ChatColor.WHITE + "Tier " + forge.getTier().toString();
-        String thirdLine = ChatColor.WHITE + "Production rate: " + forge.getTier().getProductionRate();
+        String firstLine = forge.getType().getDisplayName() + " Forge";
+        String secondLine = ChatColor.AQUA + "Tier " + forge.getTier().toString();
+        String thirdLine = ChatColor.RED + "Production rate: " + forge.getTier().getProductionRate();
         return TrHologramAPI.createHologram(instance, "forgeHolo", getOptimalHologramLocation(guild, forge), firstLine, secondLine, thirdLine);
     }
 
     private Location getOptimalHologramLocation(Guild guild, Forge forge) {
         Location location = forge.getLocation().getLocation(instance.getGuildManager().getWorld(guild));
-        return location.add(0, 2, 0);
+        return location.add(0.5, 2, 0.5);
+    }
+
+    private void displayHologramToOnlineGuildMembers(Hologram hologram, Guild guild) {
+        for (Player player : guild.getOnlinePlayers()) {
+            hologram.display(player);
+        }
     }
 
     public void setupGuildHologramsForPlayer(Player player) {
@@ -121,7 +117,6 @@ public class ForgeManager implements Component {
             if (conquestPlayer.hasGuild()) {
                 Guild guild = conquestPlayer.getGuild();
                 for (Hologram hologram : holograms.get(guild)) {
-                    Bukkit.getLogger().info(hologram.getLocation().toString());
                     hologram.display(Bukkit.getPlayer(playerUUID));
                 }
             }
@@ -152,6 +147,29 @@ public class ForgeManager implements Component {
 
     public void onPlayerQuit(Player player) {
         loadedPlayers.remove(player);
+    }
+
+    public void onPistonEvent(BlockPistonEvent event, List<Block> blocks) {
+        if (blocks.size() >= 1) {
+            Location location = blocks.get(0).getLocation();
+            String worldName = location.getWorld().getName();
+
+            if (worldName.contains("guild")) {
+                int cutoffIndex = worldName.indexOf('_');
+                String guildName = worldName.substring(cutoffIndex + 1);
+                Guild guild = instance.getGuildManager().getGuild(guildName);
+                World world = instance.getGuildManager().getWorld(guild);
+
+                for (Block block : blocks) {
+                    for (Forge forge : guild.getForges()) {
+                        if (forge.getLocation().getLocation(world).equals(block.getLocation())) {
+                            event.setCancelled(true);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override

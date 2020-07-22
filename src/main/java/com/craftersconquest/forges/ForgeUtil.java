@@ -8,7 +8,6 @@ import com.craftersconquest.object.forge.Forge;
 import com.craftersconquest.object.forge.Tier;
 import com.craftersconquest.object.forge.Type;
 import com.craftersconquest.util.InventoryUtil;
-import com.craftersconquest.util.StringUtil;
 import de.domedd.developerapi.itembuilder.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -30,10 +29,9 @@ public final class ForgeUtil {
     private static final ItemStack getForgeItemStack(Forge forge) {
         Type type = forge.getType();
         Tier tier = forge.getTier();
-        String formattedType = StringUtil.getProperNounForm(type.toString());
-        String displayName = ChatColor.GOLD + formattedType + " Forge";
+        String displayName = type.getDisplayName() + " Forge";
         List<String> lore = InventoryUtil.createLore("Place this forge in your guild",
-                "to begin generating " + formattedType + ".",
+                "to begin generating " + type.getDisplayName() + ChatColor.GRAY + ".",
                 "",
                 ChatColor.AQUA + "Tier: " + tier.toString(),
                 ChatColor.RED + "Production Rate: " + tier.getProductionRate());
