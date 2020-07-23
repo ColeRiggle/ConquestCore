@@ -17,5 +17,6 @@ public class BlockBreakListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreakEvent(BlockBreakEvent event) {
         instance.getSkillsManager().onValidBlockBreak(event);
+        instance.getForgeManager().onBlockBreak(event);
     }
 }

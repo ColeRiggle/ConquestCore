@@ -2,6 +2,7 @@ package com.craftersconquest.forges;
 
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.core.Settings;
+import com.craftersconquest.gui.forge.MainForgeInventory;
 import com.craftersconquest.items.conquestitem.Category;
 import com.craftersconquest.items.conquestitem.ItemUtil;
 import com.craftersconquest.messaging.Messaging;
@@ -18,14 +19,14 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPistonEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ForgeManager implements Component {
 
@@ -42,6 +43,35 @@ public class ForgeManager implements Component {
         holograms = new HashMap<>();
         forges = new ArrayList<>();
         loadedPlayers = new ArrayList<>();
+    }
+
+    public void onBlockBreak(BlockBreakEvent event) {
+        Block block = event.getBlock();
+
+        Player player = event.getPlayer();
+        Location location = block.getLocation();
+        Guild guild = instance.getCacheManager().getConquestPlayer(player).getGuild();
+        World world = instance.getGuildManager().getWorld(guild);
+
+        Iterator<Forge> iterator = guild.getForges().iterator();
+        while (iterator.hasNext()) {
+            Forge forge = iterator.next();
+            if (forge.getLocation().getLocation(world).equals(location)) {
+                event.setDropItems(false);
+                world.dropItemNaturally(location, ForgeUtil.getForgeConquestItem(forge).getItemStack());
+                iterator.remove();
+                refreshHolograms(guild);
+                break;
+            }
+        }
+    }
+
+    private void refreshHolograms(Guild guild) {
+        unloadHologramsForGuild(guild);
+        loadHologramsForGuild(guild);
+        for (Hologram hologram : holograms.get(guild)) {
+            displayHologramToOnlineGuildMembers(hologram, guild);
+        }
     }
 
     public void onBlockPlace(BlockPlaceEvent event) {
@@ -96,7 +126,9 @@ public class ForgeManager implements Component {
         String firstLine = forge.getType().getDisplayName() + " Forge";
         String secondLine = ChatColor.AQUA + "Tier " + forge.getTier().toString();
         String thirdLine = ChatColor.RED + "Production rate: " + forge.getTier().getProductionRate();
-        return TrHologramAPI.createHologram(instance, "forgeHolo", getOptimalHologramLocation(guild, forge), firstLine, secondLine, thirdLine);
+        String forthLine = ChatColor.GRAY + "Right-click to manage";
+        return TrHologramAPI.createHologram(instance, "forgeHolo", getOptimalHologramLocation(guild, forge),
+                firstLine, secondLine, thirdLine, forthLine);
     }
 
     private Location getOptimalHologramLocation(Guild guild, Forge forge) {
@@ -166,6 +198,27 @@ public class ForgeManager implements Component {
                             event.setCancelled(true);
                             return;
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    public void onPlayerInteractEvent(PlayerInteractEvent event) {
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            Block block = event.getClickedBlock();
+            Player player = event.getPlayer();
+            ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(player);
+            Guild guild = conquestPlayer.getGuild();
+
+            if (guild != null) {
+                World world = instance.getGuildManager().getWorld(guild);
+
+                for (Forge forge : guild.getForges()) {
+                    if (forge.getLocation().getLocation(world).equals(block.getLocation())) {
+                        new MainForgeInventory(null, forge).getInventory().open(player);
+                        event.setCancelled(true);
+                        return;
                     }
                 }
             }

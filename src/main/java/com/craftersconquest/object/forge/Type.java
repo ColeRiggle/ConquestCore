@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 public enum Type {
     GRAIN(ChatColor.GOLD + "Grain"),
     CRYSTAL(ChatColor.DARK_AQUA + "Crystal"),
-    METAL(ChatColor.GRAY + "Metal"),
+    METAL(ChatColor.WHITE + "Metal"),
     ESSENCE(ChatColor.LIGHT_PURPLE + "Essence");
 
     private final String displayName;
