@@ -122,7 +122,7 @@
     </dependencies>
 
     <build>
-        <directory>/Users/coleriggle/Desktop/Dev Server/plugins</directory>
+        <directory>C:\Users\coler\Desktop\Dev Server\plugins</directory>
 
         <plugins>
             <plugin>

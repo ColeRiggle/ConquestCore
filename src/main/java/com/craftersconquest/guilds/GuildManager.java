@@ -119,11 +119,6 @@ public class GuildManager implements Component {
 
         Bukkit.getLogger().info("Unloading guild worlds...");
         for (Guild guild : guilds) {
-
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                Bukkit.getLogger().info("HERE IN ONDISABLE OF GUILDMAN");
-            }
-
             if (loader.isLoaded(guild)) {
                 loader.unload(guild);
             }

@@ -3,6 +3,7 @@ package com.craftersconquest.visual.scoreboard;
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.core.Settings;
 import com.craftersconquest.util.NumbersUtil;
+import com.craftersconquest.visual.scoreboard.format.FormatBehavior;
 import com.craftersconquest.visual.tracker.AutomaticRecordTrackerManager;
 import com.craftersconquest.visual.tracker.BalanceTracker;
 import org.bukkit.Bukkit;
@@ -17,30 +18,25 @@ public class BaseScoreboard extends ConquestScoreboard {
 
     private final ConquestCore instance;
 
-    private final static String scoreboardIndent = "   ";
-
     private AutomaticRecordTrackerManager trackerManager;
     private BalanceTracker balanceTracker;
 
-    private List<Player> players;
-
-    public BaseScoreboard(ConquestCore instance) {
+    public BaseScoreboard(ConquestCore instance, FormatBehavior formatBehavior) {
+        super(formatBehavior);
         this.instance = instance;
-        this.players = new ArrayList<>();
         this.trackerManager = new AutomaticRecordTrackerManager(instance);
         this.balanceTracker = new BalanceTracker(instance);
         trackerManager.registerTracker(balanceTracker);
     }
 
     @Override
-    public void update() {
-        for (Player player : players) {
-            update(player);
-        }
-        trackerManager.update();
+    public void setupPlayer(Player player) {
+        trackerManager.addPlayer(player);
+        setScoreboard(player);
     }
 
-    private void update(Player player) {
+    @Override
+    public void updatePlayer(Player player) {
         Scoreboard scoreboard = player.getScoreboard();
         scoreboard.getTeam("dateTracker").setPrefix(getDate());
         scoreboard.getTeam("timeTracker").setPrefix(getTime());
@@ -49,22 +45,14 @@ public class BaseScoreboard extends ConquestScoreboard {
     }
 
     @Override
-    public void addPlayer(Player player) {
-        players.add(player);
-        trackerManager.addPlayer(player);
-        setScoreboard(player);
-    }
-
-    @Override
     public void removePlayer(Player player) {
-        players.remove(player);
         trackerManager.removePlayer(player);
     }
 
     private void setScoreboard(Player player) {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
-        Objective obj = scoreboard.registerNewObjective("craftersconquest", player.getName(), Settings.SCOREBOARD_HEADER);
+        Objective obj = scoreboard.registerNewObjective("craftersconquest", player.getName(), getFormatBehavior().getServerTitle());
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         Score blank1 = obj.getScore(" ");
@@ -118,7 +106,7 @@ public class BaseScoreboard extends ConquestScoreboard {
     }
 
     private String getLocation(Player player) {
-        return scoreboardIndent + ChatColor.AQUA + "► " + Settings.RPG_WORLD_NAME;
+        return getFormatBehavior().getElementPrefix() + ChatColor.AQUA + Settings.RPG_WORLD_NAME;
     }
 
     private String getFormattedCoinsBalance(Player player) {
@@ -133,6 +121,6 @@ public class BaseScoreboard extends ConquestScoreboard {
             change = " (" + NumbersUtil.formatInt(balanceDifference) + ")";
         }
 
-        return scoreboardIndent + ChatColor.GOLD + "► " + NumbersUtil.formatDouble(balance) + change;
+        return getFormatBehavior().getElementPrefix() + ChatColor.GOLD + NumbersUtil.formatDouble(balance) + change;
     }
 }

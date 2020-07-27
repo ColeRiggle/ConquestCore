@@ -24,6 +24,4 @@ public final class Settings {
 
     public static final int MAX_FORGES_PER_TYPE = 6;
 
-    public static final String SCOREBOARD_HEADER = ChatColor.RED + "Conquest";
-
 }

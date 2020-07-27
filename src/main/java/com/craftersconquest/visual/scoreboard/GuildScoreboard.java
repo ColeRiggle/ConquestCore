@@ -5,6 +5,7 @@ import com.craftersconquest.core.Settings;
 import com.craftersconquest.object.forge.Type;
 import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.player.ConquestPlayer;
+import com.craftersconquest.visual.scoreboard.format.FormatBehavior;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -17,41 +18,36 @@ public class GuildScoreboard extends ConquestScoreboard {
 
     private final ConquestCore instance;
 
-    private List<Player> players;
-
-    public GuildScoreboard(ConquestCore instance) {
+    public GuildScoreboard(ConquestCore instance, FormatBehavior formatBehavior) {
+        super(formatBehavior);
         this.instance = instance;
-        players = new ArrayList<>();
-    }
-
-
-    @Override
-    public void update() {
-        for (Player player : players) {
-            update(player);
-        }
-    }
-
-    private void update(Player player) {
-
     }
 
     @Override
-    public void addPlayer(Player player) {
-        players.add(player);
+    public void setupPlayer(Player player) {
         setScoreboard(player);
     }
 
-    private void setScoreboard(Player player) {
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+    @Override
+    public void updatePlayer(Player player) {
 
-        Objective obj = scoreboard.registerNewObjective("craftersconquest", player.getName(), Settings.SCOREBOARD_HEADER);
+    }
+
+    @Override
+    public void removePlayer(Player player) {
+
+    }
+
+    private void setScoreboard(Player player) {
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+
+        Objective obj = scoreboard.registerNewObjective("guildScoreboard", player.getName(), getFormatBehavior().getServerTitle());
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         Score blank1 = obj.getScore(" ");
         blank1.setScore(15);
 
-        Team dateTracker = scoreboard.registerNewTeam("nameTracker");
+        Team dateTracker = scoreboard.registerNewTeam("guildNameTracker");
         dateTracker.addEntry(ChatColor.YELLOW + "");
         dateTracker.setPrefix(getGuildName(player));
         obj.getScore(ChatColor.YELLOW + "").setScore(14);
@@ -67,29 +63,38 @@ public class GuildScoreboard extends ConquestScoreboard {
         coinsTracker.setPrefix(getGrainCount());
         obj.getScore(ChatColor.GOLD + "").setScore(11);
 
+        Score blank3 = obj.getScore("   ");
+        blank3.setScore(10);
+
         Score metalHeader = obj.getScore(Type.METAL.getDisplayName());
-        metalHeader.setScore(10);
+        metalHeader.setScore(9);
 
         Team metalTracker = scoreboard.registerNewTeam("metalTracker");
         metalTracker.addEntry(ChatColor.AQUA + "");
         metalTracker.setPrefix(getGrainCount());
-        obj.getScore(ChatColor.AQUA + "").setScore(9);
+        obj.getScore(ChatColor.AQUA + "").setScore(8);
+
+        Score blank4 = obj.getScore("    ");
+        blank4.setScore(7);
 
         Score crystalHeader = obj.getScore(Type.CRYSTAL.getDisplayName());
-        crystalHeader.setScore(8);
+        crystalHeader.setScore(6);
 
         Team crystalTracker = scoreboard.registerNewTeam("crystalTracker");
         crystalTracker.addEntry(ChatColor.BLUE + "");
         crystalTracker.setPrefix(getGrainCount());
-        obj.getScore(ChatColor.BLUE + "").setScore(7);
+        obj.getScore(ChatColor.BLUE + "").setScore(5);
 
-        Score essenceHeader = obj.getScore(Type.CRYSTAL.getDisplayName());
-        essenceHeader.setScore(6);
+        Score blank5 = obj.getScore("     ");
+        blank5.setScore(4);
+
+        Score essenceHeader = obj.getScore(Type.ESSENCE.getDisplayName());
+        essenceHeader.setScore(3);
 
         Team essenceTracker = scoreboard.registerNewTeam("essenceTracker");
         essenceTracker.addEntry(ChatColor.RED + "");
         essenceTracker.setPrefix(getGrainCount());
-        obj.getScore(ChatColor.RED + "").setScore(5);
+        obj.getScore(ChatColor.RED + "").setScore(2);
 
         player.setScoreboard(scoreboard);
     }
@@ -102,11 +107,6 @@ public class GuildScoreboard extends ConquestScoreboard {
     }
 
     private String getGrainCount() {
-        return ChatColor.WHITE + "0/0";
-    }
-
-    @Override
-    public void removePlayer(Player player) {
-        players.remove(player);
+        return getFormatBehavior().getPreferredElementColor() + getFormatBehavior().getElementPrefix() + "0 / 0";
     }
 }
