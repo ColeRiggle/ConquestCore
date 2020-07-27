@@ -25,12 +25,8 @@ public class Teleporter {
         Messaging.sendPlayerSpecificMessage(player, "Teleporting to your guild...");
         Location destination = new Location(instance.getGuildManager().getWorld(conquestPlayer.getGuild()), 0, 28.5, 0);
         instance.getTeleporter().teleport(player, destination, false);
-
-        Bukkit.getScheduler().runTaskLater(instance, new Runnable() {
-            @Override
-            public void run() {
-                instance.getForgeManager().setupGuildHologramsForPlayer(player);
-            }
-        }, 100L);
+        Bukkit.getScheduler().runTaskLater(instance,
+                () -> instance.getForgeManager().setupGuildHologramsForPlayer(player), 100L);
+        instance.getScoreboardManager().showGuildScoreboard(player);
     }
 }

@@ -18,7 +18,6 @@ public class BaseScoreboard extends ConquestScoreboard {
     private final ConquestCore instance;
 
     private final static String scoreboardIndent = "   ";
-    private static final String scoreboardTitle = ChatColor.RED + "Conquest";
 
     private AutomaticRecordTrackerManager trackerManager;
     private BalanceTracker balanceTracker;
@@ -65,7 +64,7 @@ public class BaseScoreboard extends ConquestScoreboard {
     private void setScoreboard(Player player) {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
-        Objective obj = scoreboard.registerNewObjective("craftersconquest", player.getName(), scoreboardTitle);
+        Objective obj = scoreboard.registerNewObjective("craftersconquest", player.getName(), Settings.SCOREBOARD_HEADER);
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         Score blank1 = obj.getScore(" ");

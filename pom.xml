@@ -22,11 +22,6 @@
         </repository>
 
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-
-        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
@@ -49,7 +44,8 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.14.4-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/spigot.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -126,7 +122,7 @@
     </dependencies>
 
     <build>
-        <directory>C:\Users\coler\Desktop\Dev Server\plugins</directory>
+        <directory>/Users/coleriggle/Desktop/Dev Server/plugins</directory>
 
         <plugins>
             <plugin>

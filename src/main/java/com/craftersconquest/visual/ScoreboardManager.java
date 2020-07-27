@@ -11,6 +11,7 @@ public class ScoreboardManager implements Component {
     private final ConquestCore instance;
 
     private ConquestScoreboard baseScoreboard;
+    private ConquestScoreboard guildScoreboard;
 
     private final static int UPDATE_INTERVAL = 80;
 
@@ -20,14 +21,25 @@ public class ScoreboardManager implements Component {
 
     private void updateScoreboards() {
         baseScoreboard.update();
+        guildScoreboard.update();
     }
 
     public void addPlayer(Player player) {
-        baseScoreboard.addPlayer(player);
+        showBaseScoreboard(player);
     }
 
     public void removePlayer(Player player) {
         baseScoreboard.removePlayer(player);
+    }
+
+    public void showGuildScoreboard(Player player) {
+        baseScoreboard.removePlayer(player);
+        guildScoreboard.addPlayer(player);
+    }
+
+    public void showBaseScoreboard(Player player) {
+        guildScoreboard.removePlayer(player);
+        baseScoreboard.addPlayer(player);
     }
 
     @Override
@@ -38,17 +50,14 @@ public class ScoreboardManager implements Component {
     }
 
     private void scheduleAutomaticUpdates() {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new Runnable() {
-            @Override
-            public void run() {
-                updateScoreboards();
-            }
-        }, 0 , UPDATE_INTERVAL);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(instance,
+                () -> updateScoreboards(), 0 , UPDATE_INTERVAL);
     }
 
 
     private void setupScoreboards() {
         baseScoreboard = ConquestScoreboard.getBaseScoreboard(instance);
+        guildScoreboard = ConquestScoreboard.getGuildScoreboard(instance);
     }
 
     private void addOnlinePlayers() {

@@ -1,5 +1,7 @@
 package com.craftersconquest.core;
 
+import org.bukkit.ChatColor;
+
 public final class Settings {
 
     private Settings() { }
@@ -21,5 +23,7 @@ public final class Settings {
     public static final int MAX_GUILD_MEMBERS = 4;
 
     public static final int MAX_FORGES_PER_TYPE = 6;
+
+    public static final String SCOREBOARD_HEADER = ChatColor.RED + "Conquest";
 
 }
