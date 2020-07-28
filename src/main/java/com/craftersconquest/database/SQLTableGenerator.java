@@ -73,7 +73,7 @@ public class SQLTableGenerator {
         columns.add("`members` VARCHAR(200)");
         columns.add("`elo` int(11)");
         columns.add("`forges` VARCHAR(3000)");
-        columns.add("`stockpile_id` VARCHAR(36)");
+        columns.add("`stockpile` VARCHAR(150)");
         columns.add("`upgrades_id` VARCHAR(36)");
         columns.add("`last_war_date` VARCHAR(50)");
 

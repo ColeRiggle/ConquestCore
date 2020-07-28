@@ -2,7 +2,11 @@ package com.craftersconquest.gui.menu.guild;
 
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.gui.ConquestInventory;
+import com.craftersconquest.messaging.Messaging;
+import com.craftersconquest.object.forge.Type;
 import com.craftersconquest.object.guild.Guild;
+import com.craftersconquest.object.guild.Stockpile;
+import com.craftersconquest.player.ConquestPlayer;
 import com.craftersconquest.util.InventoryUtil;
 import de.domedd.developerapi.itembuilder.ItemBuilder;
 import fr.minuskube.inv.ClickableItem;
@@ -75,7 +79,15 @@ public class MainGuildInventory implements ConquestInventory, InventoryProvider 
 
     private ItemStack getStockpileItemStack() {
         String displayName = ChatColor.YELLOW + "Stockpile";
-        List<String> lore = InventoryUtil.createLore("", "Click to view your guild's resources.");
+
+        Stockpile stockpile = guild.getStockpile();
+
+        String grain = stockpile.getGrain() + " / " + stockpile.getResourceCapacity() + " " + Type.GRAIN.getDisplayName();
+        String metal = stockpile.getMetal() + " / " + stockpile.getResourceCapacity() + " " + Type.METAL.getDisplayName();
+        String crystal = stockpile.getCrystal() + " / " + stockpile.getResourceCapacity() + " " + Type.CRYSTAL.getDisplayName();
+        String essence = stockpile.getEssence() + " / " + stockpile.getEssenceCapacity() + " " + Type.ESSENCE.getDisplayName();
+
+        List<String> lore = InventoryUtil.createLore("", grain, metal, crystal, essence, ChatColor.AQUA + "Tier I");
         return new ItemBuilder(Material.CHEST).setDisplayName(displayName).setLore(lore).build();
     }
 
@@ -87,6 +99,17 @@ public class MainGuildInventory implements ConquestInventory, InventoryProvider 
 
     private void openMembersInventory(Player player, Guild guild) {
         new GuildMembersInventory(instance, inventory, guild).getInventory().open(player);
+    }
+
+    private void onLeaveClick(Player player) {
+        if (guild.getOwner().equals(player.getUniqueId()) && guild.getMembers().size() != 1) {
+            player.getOpenInventory().close();
+            Messaging.sendErrorMessage(player, "You must promote another member of your guild before leaving.");
+        } else {
+            ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(player);
+            conquestPlayer.setGuild(null);
+            guild.removeMember(player.getUniqueId());
+        }
     }
 
     @Override

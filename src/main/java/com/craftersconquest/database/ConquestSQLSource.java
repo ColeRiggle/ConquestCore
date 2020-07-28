@@ -2,6 +2,7 @@ package com.craftersconquest.database;
 
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.object.forge.Forge;
+import com.craftersconquest.object.guild.Stockpile;
 import com.craftersconquest.util.Errors;
 import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.object.skill.Skill;
@@ -308,6 +309,7 @@ public class ConquestSQLSource extends ConquestDataSource {
         UUID ownerUUID = UUID.fromString(resultSet.getString("owner"));
         List<UUID> memberUUIDs = sqlGuildParser.deserializeMembers(resultSet.getString("members"));
         List<Forge> forges = sqlGuildParser.deserializeForges(resultSet.getString("forges"));
+        Stockpile stockpile = sqlGuildParser.createStockpileFromEntry(resultSet.getString("stockpile"));
 
         return Guild.builder().
                 name(name).
@@ -315,6 +317,7 @@ public class ConquestSQLSource extends ConquestDataSource {
                 ownerUUID(ownerUUID).
                 memberUUIDs(memberUUIDs).
                 forges(forges).
+                stockpile(stockpile).
                 build();
     }
 
@@ -328,7 +331,7 @@ public class ConquestSQLSource extends ConquestDataSource {
     private void saveGuild(Guild guild) {
         try (Connection connection = getConnection()) {
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("REPLACE INTO guilds (name,formatted_name,owner,members,elo,forges,stockpile_id,upgrades_id,last_war_date) " +
+                    connection.prepareStatement("REPLACE INTO guilds (name,formatted_name,owner,members,elo,forges,stockpile,upgrades_id,last_war_date) " +
                                     "VALUES(?,?,?,?,?,?,?,?,?)");
             preparedStatement.setString(1, guild.getName());
             preparedStatement.setString(2, guild.getFormattedName());
@@ -336,7 +339,7 @@ public class ConquestSQLSource extends ConquestDataSource {
             preparedStatement.setString(4, sqlGuildParser.serializeMembers(guild.getMembers()));
             preparedStatement.setInt(5, 1000);
             preparedStatement.setString(6, sqlGuildParser.serializeForges(guild.getForges()));
-            preparedStatement.setString(7, "id");
+            preparedStatement.setString(7, guild.getStockpile().toString());
             preparedStatement.setString(8, "id");
             preparedStatement.setString(9, "never");
             preparedStatement.execute();

@@ -4,6 +4,7 @@ import com.craftersconquest.object.forge.Forge;
 import com.craftersconquest.object.forge.Tier;
 import com.craftersconquest.object.forge.Type;
 import com.craftersconquest.object.guild.SimpleLocation;
+import com.craftersconquest.object.guild.Stockpile;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -78,5 +79,16 @@ public class SQLGuildParser {
         }
 
         return value.toString();
+    }
+
+    public Stockpile createStockpileFromEntry(String entry) {
+        String[] components = entry.split(":");
+        int resourceCapacity = Integer.valueOf(components[0]);
+        int essenceCapacity = Integer.valueOf(components[1]);
+        double grain = Double.valueOf(components[2]);
+        double metal = Double.valueOf(components[3]);
+        double crystal = Double.valueOf(components[4]);
+        double essence = Double.valueOf(components[5]);
+        return new Stockpile(resourceCapacity, essenceCapacity, grain, metal, crystal, essence);
     }
 }

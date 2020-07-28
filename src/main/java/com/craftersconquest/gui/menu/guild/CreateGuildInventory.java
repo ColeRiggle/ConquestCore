@@ -6,6 +6,7 @@ import com.craftersconquest.gui.ConquestInventory;
 import com.craftersconquest.messaging.Messaging;
 import com.craftersconquest.object.forge.Forge;
 import com.craftersconquest.object.guild.Guild;
+import com.craftersconquest.object.guild.Stockpile;
 import com.craftersconquest.player.ConquestPlayer;
 import com.craftersconquest.util.InventoryUtil;
 import com.craftersconquest.util.StringUtil;
@@ -80,8 +81,8 @@ public class CreateGuildInventory implements ConquestInventory, InventoryProvide
 
             List<UUID> memberUUIDs = new ArrayList<>();
             memberUUIDs.add(player.getUniqueId());
-
             List<Forge> forges = new ArrayList<>();
+            Stockpile stockpile = new Stockpile(128, 128, 0, 0, 0, 0);
 
             Guild guild = Guild.builder().
                     name(name).
@@ -89,6 +90,7 @@ public class CreateGuildInventory implements ConquestInventory, InventoryProvide
                     ownerUUID(player.getUniqueId()).
                     memberUUIDs(memberUUIDs).
                     forges(forges).
+                    stockpile(stockpile).
                     build();
 
             Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {

@@ -72,11 +72,17 @@ public class GuildMembersInventory implements ConquestInventory, InventoryProvid
                         Bukkit.getScheduler().runTask(instance,
                                 () -> inventoryContents.set(1, currentColumn,
                                         ClickableItem.of(getMemberItemStack(memberUUID, head),
-                                                event -> new MemberManagementInventory(instance, inventory, guild, conquestPlayer, member).getInventory().open(player))));
+                                                event -> onMemberHeadClick(player, conquestPlayer, member))));
 
                     });
 
             memberColumn++;
+        }
+    }
+
+    private void onMemberHeadClick(Player player, ConquestPlayer conquestPlayer, ItemStack member) {
+        if (guild.getOwner().equals(player.getUniqueId()) && !conquestPlayer.getUUID().equals(player.getUniqueId())) {
+            new MemberManagementInventory(instance, inventory, guild, conquestPlayer, member).getInventory().open(player);
         }
     }
 

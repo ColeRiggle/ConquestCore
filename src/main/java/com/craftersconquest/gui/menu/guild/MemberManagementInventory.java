@@ -81,11 +81,16 @@ public class MemberManagementInventory implements ConquestInventory, InventoryPr
     }
 
     private void onPromote(Player player) {
-        SelectionRequest selectionRequest = new SelectionRequest("Would you like to promote " + memberName + " to leader?",
-                () -> onPromoteAccept(player, member),
-                () -> onPromoteDecline(player));
-        instance.getInputManager().addPendingSelectionRequest(player, selectionRequest);
-        player.getOpenInventory().close();
+        if (member.getUUID().equals(guild.getOwner())) {
+            player.getOpenInventory().close();
+            Messaging.sendErrorMessage(player, "You are already the owner.");
+        } else {
+            SelectionRequest selectionRequest = new SelectionRequest("Would you like to promote " + memberName + " to leader?",
+                    () -> onPromoteAccept(player, member),
+                    () -> onPromoteDecline(player));
+            instance.getInputManager().addPendingSelectionRequest(player, selectionRequest);
+            player.getOpenInventory().close();
+        }
     }
 
     private void onPromoteAccept(Player player, ConquestPlayer newOwner) {

@@ -1,6 +1,5 @@
 package com.craftersconquest.visual.scoreboard;
 
-import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.visual.scoreboard.format.FormatBehavior;
 import org.bukkit.entity.Player;
 

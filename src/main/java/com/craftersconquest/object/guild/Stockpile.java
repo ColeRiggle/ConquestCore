@@ -5,12 +5,12 @@ public class Stockpile {
     private int resourceCapacity;
     private int essenceCapacity;
 
-    private int metal;
-    private int grain;
-    private int crystal;
-    private int essence;
+    private double metal;
+    private double grain;
+    private double crystal;
+    private double essence;
 
-    public Stockpile(int resourceCapacity, int essenceCapacity, int metal, int grain, int crystal, int essence) {
+    public Stockpile(int resourceCapacity, int essenceCapacity, double metal, double grain, double crystal, double essence) {
         this.resourceCapacity = resourceCapacity;
         this.essenceCapacity = essenceCapacity;
         this.metal = metal;
@@ -35,35 +35,39 @@ public class Stockpile {
         this.essenceCapacity = essenceCapacity;
     }
 
-    public int getMetal() {
+    public double getMetal() {
         return metal;
     }
 
-    public void setMetal(int metal) {
+    public void setMetal(double metal) {
         this.metal = metal;
     }
 
-    public int getGrain() {
+    public double getGrain() {
         return grain;
     }
 
-    public void setGrain(int grain) {
+    public void setGrain(double grain) {
         this.grain = grain;
     }
 
-    public int getCrystal() {
+    public double getCrystal() {
         return crystal;
     }
 
-    public void setCrystal(int crystal) {
+    public void setCrystal(double crystal) {
         this.crystal = crystal;
     }
 
-    public int getEssence() {
+    public double getEssence() {
         return essence;
     }
 
-    public void setEssence(int essence) {
+    public void setEssence(double essence) {
         this.essence = essence;
+    }
+
+    public String toString() {
+        return resourceCapacity + ":" + essenceCapacity + ":" + grain + ":" + metal + ":" + crystal + ":" + essence;
     }
 }

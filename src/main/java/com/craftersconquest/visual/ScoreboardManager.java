@@ -48,7 +48,8 @@ public class ScoreboardManager implements Component {
 
     public void showGuildScoreboard(Player player) {
         removeFromScoreboardIfApplicable(player);
-        baseScoreboard.setupPlayer(player);
+        players.put(player, guildScoreboard);
+        guildScoreboard.setupPlayer(player);
     }
 
     private void removeFromScoreboardIfApplicable(Player player) {
@@ -59,7 +60,8 @@ public class ScoreboardManager implements Component {
 
     public void showBaseScoreboard(Player player) {
         removeFromScoreboardIfApplicable(player);
-        guildScoreboard.setupPlayer(player);
+        players.put(player, baseScoreboard);
+        baseScoreboard.setupPlayer(player);
     }
 
     @Override
