@@ -1,5 +1,7 @@
 package com.craftersconquest.object.forge;
 
+import java.util.Arrays;
+
 public enum Tier {
     I(1, 3),
     II(1.25, 10),
@@ -27,7 +29,23 @@ public enum Tier {
         return upgradeCost;
     }
 
+    public static Tier getMax() {
+        return tierValues[tierValues.length - 1];
+    }
+
     public static Tier fromInt(int value) {
         return tierValues[value - 1];
+    }
+
+    public int toInt() {
+        return Arrays.asList(tierValues).indexOf(this) + 1;
+    }
+
+    public Tier next() {
+        if (this == getMax()) {
+            return null;
+        } else {
+            return fromInt(toInt() + 1);
+        }
     }
 }

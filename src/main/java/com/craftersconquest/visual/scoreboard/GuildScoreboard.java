@@ -28,7 +28,15 @@ public class GuildScoreboard extends ConquestScoreboard {
 
     @Override
     public void updatePlayer(Player player) {
+        Scoreboard scoreboard = player.getScoreboard();
+        ConquestPlayer conquestPlayer = instance.getCacheManager().getConquestPlayer(player);
+        Guild guild = conquestPlayer.getGuild();
 
+        scoreboard.getTeam("guildNameTracker").setPrefix(getGuildName(guild));
+        scoreboard.getTeam("grainTracker").setPrefix(getFormattedQuantity(guild, Type.GRAIN));
+        scoreboard.getTeam("metalTracker").setPrefix(getFormattedQuantity(guild, Type.METAL));
+        scoreboard.getTeam("crystalTracker").setPrefix(getFormattedQuantity(guild, Type.CRYSTAL));
+        scoreboard.getTeam("essenceTracker").setPrefix(getFormattedQuantity(guild, Type.ESSENCE));
     }
 
     @Override
@@ -61,7 +69,7 @@ public class GuildScoreboard extends ConquestScoreboard {
 
         Team coinsTracker = scoreboard.registerNewTeam("grainTracker");
         coinsTracker.addEntry(ChatColor.GOLD + "");
-        coinsTracker.setPrefix(getGrain(guild));
+        coinsTracker.setPrefix(getFormattedQuantity(guild, Type.GRAIN));
         obj.getScore(ChatColor.GOLD + "").setScore(11);
 
         Score blank3 = obj.getScore("   ");
@@ -72,7 +80,7 @@ public class GuildScoreboard extends ConquestScoreboard {
 
         Team metalTracker = scoreboard.registerNewTeam("metalTracker");
         metalTracker.addEntry(ChatColor.AQUA + "");
-        metalTracker.setPrefix(getMetal(guild));
+        coinsTracker.setPrefix(getFormattedQuantity(guild, Type.METAL));
         obj.getScore(ChatColor.AQUA + "").setScore(8);
 
         Score blank4 = obj.getScore("    ");
@@ -83,7 +91,7 @@ public class GuildScoreboard extends ConquestScoreboard {
 
         Team crystalTracker = scoreboard.registerNewTeam("crystalTracker");
         crystalTracker.addEntry(ChatColor.BLUE + "");
-        crystalTracker.setPrefix(getCrystal(guild));
+        coinsTracker.setPrefix(getFormattedQuantity(guild, Type.CRYSTAL));
         obj.getScore(ChatColor.BLUE + "").setScore(5);
 
         Score blank5 = obj.getScore("     ");
@@ -94,7 +102,7 @@ public class GuildScoreboard extends ConquestScoreboard {
 
         Team essenceTracker = scoreboard.registerNewTeam("essenceTracker");
         essenceTracker.addEntry(ChatColor.RED + "");
-        essenceTracker.setPrefix(getEssence(guild));
+        coinsTracker.setPrefix(getFormattedQuantity(guild, Type.ESSENCE));
         obj.getScore(ChatColor.RED + "").setScore(2);
 
         player.setScoreboard(scoreboard);
@@ -105,19 +113,7 @@ public class GuildScoreboard extends ConquestScoreboard {
         return ChatColor.YELLOW + name;
     }
 
-    private String getGrain(Guild guild) {
-        return resourcePrefix + guild.getStockpile().getGrain() + guild.getStockpile().getResourceCapacity();
-    }
-
-    private String getMetal(Guild guild) {
-        return resourcePrefix + guild.getStockpile().getMetal() + guild.getStockpile().getResourceCapacity();
-    }
-
-    private String getCrystal(Guild guild) {
-        return resourcePrefix + guild.getStockpile().getCrystal() + guild.getStockpile().getResourceCapacity();
-    }
-
-    private String getEssence(Guild guild) {
-        return resourcePrefix + guild.getStockpile().getEssence() + guild.getStockpile().getEssenceCapacity();
+    private String getFormattedQuantity(Guild guild, Type type) {
+        return resourcePrefix + guild.getStockpile().getBalance(type) + " / " + guild.getStockpile().getCapacity(type);
     }
 }

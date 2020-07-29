@@ -82,10 +82,10 @@ public class MainGuildInventory implements ConquestInventory, InventoryProvider 
 
         Stockpile stockpile = guild.getStockpile();
 
-        String grain = stockpile.getGrain() + " / " + stockpile.getResourceCapacity() + " " + Type.GRAIN.getDisplayName();
-        String metal = stockpile.getMetal() + " / " + stockpile.getResourceCapacity() + " " + Type.METAL.getDisplayName();
-        String crystal = stockpile.getCrystal() + " / " + stockpile.getResourceCapacity() + " " + Type.CRYSTAL.getDisplayName();
-        String essence = stockpile.getEssence() + " / " + stockpile.getEssenceCapacity() + " " + Type.ESSENCE.getDisplayName();
+        String grain = stockpile.getBalance(Type.GRAIN) + " / " + stockpile.getCapacity(Type.GRAIN) + " " + Type.GRAIN.getDisplayName();
+        String metal = stockpile.getBalance(Type.METAL) + " / " + stockpile.getCapacity(Type.METAL) + " " + Type.METAL.getDisplayName();
+        String crystal = stockpile.getBalance(Type.CRYSTAL) + " / " + stockpile.getCapacity(Type.CRYSTAL) + " " + Type.CRYSTAL.getDisplayName();
+        String essence = stockpile.getBalance(Type.ESSENCE) + " / " + stockpile.getCapacity(Type.ESSENCE) + " " + Type.ESSENCE.getDisplayName();
 
         List<String> lore = InventoryUtil.createLore("", grain, metal, crystal, essence, ChatColor.AQUA + "Tier I");
         return new ItemBuilder(Material.CHEST).setDisplayName(displayName).setLore(lore).build();

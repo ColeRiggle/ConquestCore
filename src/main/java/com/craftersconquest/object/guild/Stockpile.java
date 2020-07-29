@@ -1,73 +1,57 @@
 package com.craftersconquest.object.guild;
 
+import com.craftersconquest.object.forge.Type;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class Stockpile {
 
     private int resourceCapacity;
     private int essenceCapacity;
-
-    private double metal;
-    private double grain;
-    private double crystal;
-    private double essence;
+    private final Map<Type, Double> amounts;
 
     public Stockpile(int resourceCapacity, int essenceCapacity, double metal, double grain, double crystal, double essence) {
         this.resourceCapacity = resourceCapacity;
         this.essenceCapacity = essenceCapacity;
-        this.metal = metal;
-        this.grain = grain;
-        this.crystal = crystal;
-        this.essence = essence;
+        amounts = new HashMap<>();
+        amounts.put(Type.METAL, metal);
+        amounts.put(Type.GRAIN, grain);
+        amounts.put(Type.CRYSTAL, crystal);
+        amounts.put(Type.ESSENCE, essence);
     }
 
-    public int getResourceCapacity() {
-        return resourceCapacity;
+    public double getBalance(Type type) {
+        return amounts.get(type);
     }
 
-    public void setResourceCapacity(int resourceCapacity) {
-        this.resourceCapacity = resourceCapacity;
+    public void add(Type type, double amount) {
+        double base = amounts.get(type);
+        double newAmount = base + amount;
+        if (newAmount < getCapacity(type)) {
+            amounts.put(type, newAmount);
+        }
     }
 
-    public int getEssenceCapacity() {
-        return essenceCapacity;
+    public int getCapacity(Type type) {
+        if (type == Type.ESSENCE) {
+            return essenceCapacity;
+        } else {
+            return resourceCapacity;
+        }
     }
 
-    public void setEssenceCapacity(int essenceCapacity) {
-        this.essenceCapacity = essenceCapacity;
-    }
-
-    public double getMetal() {
-        return metal;
-    }
-
-    public void setMetal(double metal) {
-        this.metal = metal;
-    }
-
-    public double getGrain() {
-        return grain;
-    }
-
-    public void setGrain(double grain) {
-        this.grain = grain;
-    }
-
-    public double getCrystal() {
-        return crystal;
-    }
-
-    public void setCrystal(double crystal) {
-        this.crystal = crystal;
-    }
-
-    public double getEssence() {
-        return essence;
-    }
-
-    public void setEssence(double essence) {
-        this.essence = essence;
+    public void setCapacity(Type type, int capacity) {
+        if (type == Type.ESSENCE) {
+            essenceCapacity = capacity;
+        } else {
+            resourceCapacity = capacity;
+        }
     }
 
     public String toString() {
-        return resourceCapacity + ":" + essenceCapacity + ":" + grain + ":" + metal + ":" + crystal + ":" + essence;
+        return resourceCapacity + ":" + essenceCapacity + ":" +
+                amounts.get(Type.GRAIN) + ":" + amounts.get(Type.METAL) + ":" +
+                amounts.get(Type.CRYSTAL) + ":" + amounts.get(Type.ESSENCE);
     }
 }

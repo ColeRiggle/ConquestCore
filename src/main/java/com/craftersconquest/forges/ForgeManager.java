@@ -8,8 +8,10 @@ import com.craftersconquest.items.conquestitem.ItemUtil;
 import com.craftersconquest.messaging.Messaging;
 import com.craftersconquest.object.Component;
 import com.craftersconquest.object.forge.Forge;
+import com.craftersconquest.object.forge.Type;
 import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.object.guild.SimpleLocation;
+import com.craftersconquest.object.guild.Stockpile;
 import com.craftersconquest.player.ConquestPlayer;
 import me.arasple.mc.trhologram.api.TrHologramAPI;
 import me.arasple.mc.trhologram.hologram.Hologram;
@@ -32,16 +34,16 @@ public class ForgeManager implements Component {
 
     private final ConquestCore instance;
     private final ForgeConverter forgeConverter;
-    private final ArrayList<Forge> forges;
+    private final Map<Guild, List<Forge>> forges;
     private final ArrayList<Player> loadedPlayers;
 
-    private final HashMap<Guild, List<Hologram>> holograms;
+    private final Map<Guild, List<Hologram>> holograms;
 
     public ForgeManager(ConquestCore instance) {
         this.instance = instance;
         forgeConverter = new ForgeConverter();
         holograms = new HashMap<>();
-        forges = new ArrayList<>();
+        forges = new HashMap<>();
         loadedPlayers = new ArrayList<>();
     }
 
@@ -66,7 +68,7 @@ public class ForgeManager implements Component {
         }
     }
 
-    private void refreshHolograms(Guild guild) {
+    public void refreshHolograms(Guild guild) {
         unloadHologramsForGuild(guild);
         loadHologramsForGuild(guild);
         for (Hologram hologram : holograms.get(guild)) {
@@ -114,7 +116,7 @@ public class ForgeManager implements Component {
 
     private void addAndPlaceForge(Location location, Guild guild, Forge forge) {
         forge.setLocation(SimpleLocation.fromLocation(location));
-        forges.add(forge);
+        forges.get(guild).add(forge);
         guild.addForge(forge);
         List<Hologram> currentGuildForges = holograms.get(guild);
         Hologram hologram = getHologramForForge(guild, forge);
@@ -216,7 +218,7 @@ public class ForgeManager implements Component {
 
                 for (Forge forge : guild.getForges()) {
                     if (forge.getLocation().getLocation(world).equals(block.getLocation())) {
-                        new MainForgeInventory(null, forge).getInventory().open(player);
+                        new MainForgeInventory(instance, null, forge).getInventory().open(player);
                         event.setCancelled(true);
                         return;
                     }
@@ -228,14 +230,34 @@ public class ForgeManager implements Component {
     @Override
     public void onEnable() {
         registerForgesFromGuilds();
+        scheduleForgeProduction();
     }
 
     private void registerForgesFromGuilds() {
         for (Guild guild : instance.getGuildManager().getGuilds()) {
+            List<Forge> guildForges = new ArrayList<>();
             for (Forge forge : guild.getForges()) {
-                forges.add(forge);
+                guildForges.add(forge);
             }
+            forges.put(guild, guildForges);
         }
+    }
+
+    private void scheduleForgeProduction() {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, () -> {
+            for (Map.Entry<Guild, List<Forge>> entry : forges.entrySet()) {
+                Guild guild = entry.getKey();
+                List<Forge> forges = entry.getValue();
+                for (Forge forge : forges) {
+                    updateStockpileFromForge(guild, forge);
+                }
+            }
+        }, Settings.FORGE_PRODUCTION_INTERVAL, Settings.FORGE_PRODUCTION_INTERVAL);
+    }
+
+    private void updateStockpileFromForge(Guild guild, Forge forge) {
+        Stockpile stockpile = guild.getStockpile();
+        stockpile.add(forge.getType(), forge.getTier().getProductionRate());
     }
 
     @Override
