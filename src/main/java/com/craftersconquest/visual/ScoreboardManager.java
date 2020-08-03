@@ -3,6 +3,7 @@ package com.craftersconquest.visual;
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.object.Component;
 import com.craftersconquest.object.guild.Guild;
+import com.craftersconquest.object.guild.StockpileFormatter;
 import com.craftersconquest.visual.scoreboard.BaseScoreboard;
 import com.craftersconquest.visual.scoreboard.ConquestScoreboard;
 import com.craftersconquest.visual.scoreboard.GuildScoreboard;
@@ -79,7 +80,7 @@ public class ScoreboardManager implements Component {
 
     private void setupScoreboards() {
         baseScoreboard = new BaseScoreboard(instance, formatBehavior);
-        guildScoreboard = new GuildScoreboard(instance, formatBehavior);
+        guildScoreboard = new GuildScoreboard(instance, formatBehavior, new StockpileFormatter());
     }
 
     private void addOnlinePlayers() {

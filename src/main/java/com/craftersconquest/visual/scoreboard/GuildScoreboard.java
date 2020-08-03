@@ -3,6 +3,8 @@ package com.craftersconquest.visual.scoreboard;
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.object.forge.Type;
 import com.craftersconquest.object.guild.Guild;
+import com.craftersconquest.object.guild.Stockpile;
+import com.craftersconquest.object.guild.StockpileFormatter;
 import com.craftersconquest.player.ConquestPlayer;
 import com.craftersconquest.visual.scoreboard.format.FormatBehavior;
 import org.bukkit.Bukkit;
@@ -14,10 +16,12 @@ public class GuildScoreboard extends ConquestScoreboard {
 
     private final ConquestCore instance;
     private final String resourcePrefix;
+    private final StockpileFormatter stockpileFormatter;
 
-    public GuildScoreboard(ConquestCore instance, FormatBehavior formatBehavior) {
+    public GuildScoreboard(ConquestCore instance, FormatBehavior formatBehavior, StockpileFormatter stockpileFormatter) {
         super(formatBehavior);
         this.instance = instance;
+        this.stockpileFormatter = stockpileFormatter;
         resourcePrefix = getFormatBehavior().getPreferredElementColor() + getFormatBehavior().getElementPrefix();
     }
 
@@ -114,6 +118,6 @@ public class GuildScoreboard extends ConquestScoreboard {
     }
 
     private String getFormattedQuantity(Guild guild, Type type) {
-        return resourcePrefix + guild.getStockpile().getBalance(type) + " / " + guild.getStockpile().getCapacity(type);
+        return resourcePrefix + stockpileFormatter.getResourceQuantity(guild.getStockpile(), type, getFormatBehavior().getPreferredElementColor());
     }
 }

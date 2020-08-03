@@ -8,6 +8,8 @@ public enum Type {
     METAL(ChatColor.GREEN + "Metal"),
     ESSENCE(ChatColor.LIGHT_PURPLE + "Essence");
 
+    private static final Type[] values = Type.values();
+
     private final String displayName;
 
     Type(String displayName) {
@@ -16,5 +18,9 @@ public enum Type {
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public static Type[] getValues() {
+        return values;
     }
 }

@@ -6,6 +6,7 @@ import com.craftersconquest.messaging.Messaging;
 import com.craftersconquest.object.forge.Type;
 import com.craftersconquest.object.guild.Guild;
 import com.craftersconquest.object.guild.Stockpile;
+import com.craftersconquest.object.guild.StockpileFormatter;
 import com.craftersconquest.player.ConquestPlayer;
 import com.craftersconquest.util.InventoryUtil;
 import de.domedd.developerapi.itembuilder.ItemBuilder;
@@ -19,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainGuildInventory implements ConquestInventory, InventoryProvider {
@@ -26,10 +28,12 @@ public class MainGuildInventory implements ConquestInventory, InventoryProvider 
     private final ConquestCore instance;
     private final SmartInventory inventory;
     private final Guild guild;
+    private final StockpileFormatter stockpileFormatter;
 
     public MainGuildInventory(ConquestCore instance, SmartInventory parent, Guild guild) {
         this.instance = instance;
         this.guild = guild;
+        stockpileFormatter = new StockpileFormatter();
         inventory = SmartInventory.builder()
                 .id("mainGuildInventory")
                 .provider(this)
@@ -56,7 +60,7 @@ public class MainGuildInventory implements ConquestInventory, InventoryProvider 
         inventoryContents.set(1, 7, ClickableItem.empty(getStockpileItemStack()));
         inventoryContents.set(2, 7, ClickableItem.of(getStockpileItemStack(),
                 (event) -> instance.getTeleporter().teleportToGuild(player)));
-        inventoryContents.set(3, 8, ClickableItem.empty(getLeaveItemStack()));
+        inventoryContents.set(3, 8, ClickableItem.of(getLeaveItemStack(), event -> onLeaveClick(player)));
     }
 
     private ItemStack getGuildInfoItemStack() {
@@ -82,12 +86,14 @@ public class MainGuildInventory implements ConquestInventory, InventoryProvider 
 
         Stockpile stockpile = guild.getStockpile();
 
-        String grain = stockpile.getBalance(Type.GRAIN) + " / " + stockpile.getCapacity(Type.GRAIN) + " " + Type.GRAIN.getDisplayName();
-        String metal = stockpile.getBalance(Type.METAL) + " / " + stockpile.getCapacity(Type.METAL) + " " + Type.METAL.getDisplayName();
-        String crystal = stockpile.getBalance(Type.CRYSTAL) + " / " + stockpile.getCapacity(Type.CRYSTAL) + " " + Type.CRYSTAL.getDisplayName();
-        String essence = stockpile.getBalance(Type.ESSENCE) + " / " + stockpile.getCapacity(Type.ESSENCE) + " " + Type.ESSENCE.getDisplayName();
+        List<String> formattedTypes = new ArrayList<>();
+        for (Type type : Type.getValues()) {
+            formattedTypes.add(stockpileFormatter.getResourceQuantity(stockpile, type, ChatColor.GRAY + "") + " " + type.getDisplayName());
+        }
 
-        List<String> lore = InventoryUtil.createLore("", grain, metal, crystal, essence, ChatColor.AQUA + "Tier I");
+        List<String> lore = new ArrayList<>();
+        lore.addAll(InventoryUtil.createLore("", ChatColor.AQUA + "Tier I", ""));
+        lore.addAll(formattedTypes);
         return new ItemBuilder(Material.CHEST).setDisplayName(displayName).setLore(lore).build();
     }
 

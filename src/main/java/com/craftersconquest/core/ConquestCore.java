@@ -22,6 +22,12 @@ import com.craftersconquest.visual.ScoreboardManager;
 import com.craftersconquest.visual.VisualsManager;
 import me.arasple.mc.trhologram.api.TrHologramAPI;
 import me.arasple.mc.trhologram.hologram.Hologram;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.model.data.NodeMap;
+import net.luckperms.api.model.group.Group;
+import net.luckperms.api.node.Node;
+import net.luckperms.api.node.NodeEqualityPredicate;
+import net.luckperms.api.util.Tristate;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
@@ -53,11 +59,13 @@ public class ConquestCore extends JavaPlugin {
 
     private final Teleporter teleporter = new Teleporter(this);
     private Economy economy;
+    private LuckPerms luckPerms;
 
     @Override
     public void onEnable() {
         dataSource.open();
         setupEconomy();
+        setupPerms();
         registerComponents();
         enableComponents();
 
@@ -67,13 +75,46 @@ public class ConquestCore extends JavaPlugin {
     }
 
     private void test() {
-        Hologram hologram = TrHologramAPI.createHologram(this, "testholo", Bukkit.getPlayer("Sqi").getLocation(), "Hello Sqi");
-        hologram.display(Bukkit.getPlayer("Sqi"));
+
+        Bukkit.getScheduler().runTaskAsynchronously(this, new Runnable() {
+            @Override
+            public void run() {
+                long time = System.currentTimeMillis();
+
+                Group testGroup = luckPerms.getGroupManager().getGroup("game-master");
+                testGroup.data();
+                NodeMap map = testGroup.data();
+
+//                Bukkit.getLogger().info(luckPerms.getGroupManager().createAndLoadGroup());
+//                luckPerms.getGroupManager();
+
+//                Node node = Node.builder("com.craftersconquest.admin").build();
+//                if (map.contains(node, NodeEqualityPredicate.ONLY_KEY) == Tristate.TRUE) {
+//                    Bukkit.getLogger().info("Contains true");
+//                }
+
+//                Node node2 = Node.builder("com.craftersconquest.player").build();
+//                if (map.contains(node2, NodeEqualityPredicate.ONLY_KEY) == Tristate.TRUE) {
+//                    Bukkit.getLogger().info("Contains2 true");
+//                }
+
+//                Bukkit.getLogger().info(":::-> " + (System.currentTimeMillis() - time));
+            }
+        });
     }
 
     private void setupEconomy() {
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         economy = rsp.getProvider();
+    }
+
+    private void setupPerms() {
+        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+        if (provider != null) {
+            luckPerms = provider.getProvider();
+        } else {
+            Bukkit.getLogger().severe("A fatal error occurred while attempting to retrieve the LuckPerms API");
+        }
     }
 
     private void registerComponents() {
