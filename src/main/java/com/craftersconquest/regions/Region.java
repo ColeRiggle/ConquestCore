@@ -3,6 +3,7 @@ package com.craftersconquest.regions;
 import com.craftersconquest.regions.flags.Flag;
 import org.bukkit.Location;
 import javax.annotation.Nullable;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,18 +11,28 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Region {
 
     private String name;
+    private Region parent;
     private int priority;
-    private ConcurrentHashMap flags;
+    private Map<Flag<?>, Object> flags;
     private Set<Area> areas;
 
-    public Region(String name, int priority) {
+    public Region(String name, int priority, Map<Flag<?>, Object> flags, Set<Area> areas) {
         this.name = name;
         this.priority = priority;
-        flags = new ConcurrentHashMap<>();
+        this.flags = flags;
+        this.areas = areas;
     }
 
     public String getName() {
         return name;
+    }
+
+    public Region getParent() {
+        return parent;
+    }
+
+    public void setParent(Region parent) {
+        this.parent = parent;
     }
 
     public int getPriority() {
@@ -36,7 +47,11 @@ public class Region {
         Object object = flags.get(flag);
         V val;
 
-        val = (V) object;
+        if (object != null) {
+            val = (V) object;
+        } else {
+            return null;
+        }
 
         return val;
     }
@@ -70,5 +85,17 @@ public class Region {
         }
 
         return false;
+    }
+
+    public Set<Area> getAreas() {
+        return areas;
+    }
+
+    public void addArea(Area area) {
+        areas.add(area);
+    }
+
+    public void removeArea(Area area) {
+        areas.remove(area);
     }
 }

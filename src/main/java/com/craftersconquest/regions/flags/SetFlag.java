@@ -30,7 +30,7 @@ public class SetFlag<T> extends Flag<Set<T>> {
     }
 
     @Override
-    public String serialize(Set<T> value) {
+    public String serialize(Set value) {
         StringBuilder serialization = new StringBuilder();
 
         Iterator<T> iterator = value.iterator();

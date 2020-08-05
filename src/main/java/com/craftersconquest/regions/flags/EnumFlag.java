@@ -27,7 +27,7 @@ public class EnumFlag<T extends Enum<T>> extends Flag<T> {
     }
 
     @Override
-    public String serialize(T value) {
-        return null;
+    public String serialize(Enum value) {
+        return value.toString();
     }
 }

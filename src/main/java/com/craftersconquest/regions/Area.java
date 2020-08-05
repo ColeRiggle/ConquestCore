@@ -30,6 +30,8 @@ public class Area {
         return name;
     }
 
+    public String getWorldName() { return worldName; }
+
     public BlockVector getPos1() {
         return pos1;
     }
