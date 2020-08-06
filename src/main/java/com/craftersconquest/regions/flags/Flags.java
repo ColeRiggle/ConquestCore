@@ -10,8 +10,6 @@ import java.util.Set;
 public final class Flags {
 
     private static final Map<String, Flag> INBUILT_FLAGS_MAP = new HashMap<>();
-    public static final Map<String, Flag> INBUILT_FLAGS = Collections.unmodifiableMap(INBUILT_FLAGS_MAP);
-    public static final Set<Flag> INBUILT_FLAGS_SET = Sets.newHashSet(INBUILT_FLAGS.values());
 
     public static final StateFlag BLOCK_PLACE = register(new StateFlag("block-place"));
     public static final StateFlag BLOCK_BREAK = register(new StateFlag("block-break"));
@@ -34,6 +32,9 @@ public final class Flags {
 
     public static final StringFlag GREET_MESSAGE = register(new StringFlag("greeting"));
     public static final StringFlag FAREWELL_MESSAGE = register(new StringFlag("farewell"));
+
+    public static final Map<String, Flag> INBUILT_FLAGS = Collections.unmodifiableMap(INBUILT_FLAGS_MAP);
+    public static final Set<Flag> INBUILT_FLAGS_SET = Sets.newHashSet(INBUILT_FLAGS.values());
 
     private static <T extends Flag<?>> T register(final T flag) {
         INBUILT_FLAGS_MAP.put(flag.getName(), flag);
