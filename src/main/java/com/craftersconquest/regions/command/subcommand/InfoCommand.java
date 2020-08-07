@@ -27,7 +27,7 @@ public class InfoCommand implements SelectionSubcommand {
             ChatColor valueColor = ChatColor.GRAY;
 
             String regionName = args[0];
-            Region region = instance.getRegionManager().getRegion(regionName);
+            Region region = instance.getRegionManager().getRegionByName(regionName);
 
             if (region == null) {
                 Messaging.sendErrorMessage(sender, "Could not find region: " + regionName + ".");

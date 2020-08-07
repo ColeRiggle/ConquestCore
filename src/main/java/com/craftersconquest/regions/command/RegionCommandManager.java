@@ -1,6 +1,7 @@
 package com.craftersconquest.regions.command;
 
 import com.craftersconquest.core.ConquestCore;
+import com.craftersconquest.core.Settings;
 import com.craftersconquest.messaging.Messaging;
 import com.craftersconquest.object.Component;
 import com.craftersconquest.regions.Region;
@@ -20,7 +21,6 @@ public class RegionCommandManager implements TabExecutor, Component {
     private final Map<CommandSender, Region> selectedRegions = new HashMap<>();
 
     public RegionCommandManager(ConquestCore instance) {
-
         this.instance = instance;
         commands.put("list", new ListCommand(instance, this));
         commands.put("flags", new FlagsCommand());
@@ -28,6 +28,8 @@ public class RegionCommandManager implements TabExecutor, Component {
         commands.put("select", new SelectCommand(instance, this));
         commands.put("priority", new PriorityCommand(this));
         commands.put("setflag", new SetFlagCommand(this));
+        commands.put("getflag", new GetFlagCommand(this));
+        commands.put("removeflag", new RemoveFlagCommand(this));
     }
 
     @Override
@@ -80,7 +82,7 @@ public class RegionCommandManager implements TabExecutor, Component {
                 final Subcommand subcommand = entry.getValue();
 
                 if (name.startsWith(typed) && !subcommand.getPermission().equals("")
-                        && (sender.hasPermission(subcommand.getPermission()) || sender.hasPermission("swm.*"))) {
+                        && (sender.hasPermission(subcommand.getPermission()) || sender.hasPermission(Settings.ADMIN_PERMISSION))) {
 
                     if (name.equalsIgnoreCase("goto") && (sender instanceof ConsoleCommandSender)) {
                         continue;

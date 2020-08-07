@@ -6,9 +6,11 @@ import com.craftersconquest.regions.flags.Flag;
 import com.craftersconquest.regions.flags.Flags;
 import com.craftersconquest.regions.flags.InvalidFlagFormat;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.util.BlockVector;
 
 import java.io.File;
@@ -18,51 +20,21 @@ import java.util.*;
 public class RegionManager implements Component {
 
     private final ConquestCore instance;
-    private final static String STORAGE_NAME = "regions.yml";
 
     private final List<Region> regions;
+    private final Map<String, Region> lastKnownRegions;
 
+    private final static String STORAGE_NAME = "regions.yml";
     private File regionsFile;
     private FileConfiguration regionsConfiguration;
 
     public RegionManager(ConquestCore instance) {
         this.instance = instance;
         regions = new ArrayList<>();
+        lastKnownRegions = new HashMap<>();
     }
 
-
-    @Override
-    public void onEnable() {
-        setupRegionsFile();
-        loadRegions();
-    }
-
-    private void setupRegionsFile() {
-        regionsFile = new File(instance.getDataFolder(), STORAGE_NAME);
-        regionsConfiguration = YamlConfiguration.loadConfiguration(regionsFile);
-        if (!regionsFile.exists()) {
-            instance.saveResource(STORAGE_NAME, false);
-        }
-    }
-
-//    private void test() {
-//        Region region = new Region("sqiLand", 15);
-//        region.setFlag(Flags.BLOCK_BREAK, StateFlag.State.ALLOW);
-//        region.setFlag(Flags.BLOCKLIST, StateFlag.State.ALLOW);
-//
-//        BlockVector pos1 = new BlockVector(10, 10, 10);
-//        BlockVector pos2 = new BlockVector(15, 6, 4);
-//
-//        Area area = new Area("area1", "badlands", pos1, pos2);
-//        Area area2 = new Area("area2", "badlands", pos1, pos2);
-//
-//        region.addArea(area);
-//        region.addArea(area2);
-//
-//        saveRegion(region);
-//    }
-
-    public Region getRegion(String name) {
+    public Region getRegionByName(String name) {
         for (Region region : regions) {
             if (region.getName().equals(name)) {
                 return region;
@@ -84,16 +56,60 @@ public class RegionManager implements Component {
         regions.remove(region);
     }
 
+    public Region getRegionAt(Player player) {
+        Location playerLocation = player.getLocation();
+        String playerName = player.getName();
+        if (lastKnownRegions.containsKey(playerName)) {
+            Region lastKnownRegion = lastKnownRegions.get(playerName);
+            if (lastKnownRegion.contains(playerLocation)) {
+                return lastKnownRegion;
+            }
+        }
+
+        Region region = getRegionAt(playerLocation);
+        lastKnownRegions.put(playerName, region);
+
+        return getRegionAt(playerLocation);
+    }
+
+    public Region getRegionAt(Location location) {
+        Region highestPriorityRegion = null;
+        for (Region region : regions) {
+            if (region.contains(location)) {
+                if (highestPriorityRegion == null) {
+                    highestPriorityRegion = region;
+                } else {
+                    if (region.getPriority() > highestPriorityRegion.getPriority()) {
+                        highestPriorityRegion = region;
+                    }
+                }
+            }
+        }
+
+        return highestPriorityRegion;
+    }
+
+    @Override
+    public void onEnable() {
+        setupRegionsFile();
+        loadRegions();
+    }
+
+    private void setupRegionsFile() {
+        regionsFile = new File(instance.getDataFolder(), STORAGE_NAME);
+        regionsConfiguration = YamlConfiguration.loadConfiguration(regionsFile);
+        if (!regionsFile.exists()) {
+            instance.saveResource(STORAGE_NAME, false);
+        }
+    }
+
     private void loadRegions() {
         Set<String> regionNames = regionsConfiguration.getKeys(false);
         regionNames.forEach(value -> regions.add(loadRegion(value)));
         loadParents();
-
-        Bukkit.getLogger().info("Loaded " + regions.size() + " regions");
     }
 
     private Region loadRegion(String key) {
-        Bukkit.getLogger().info("Loading... " + key);
         String basePath = key + '.';
         String name = key;
         int priority = regionsConfiguration.getInt(basePath + "priority");
@@ -130,7 +146,6 @@ public class RegionManager implements Component {
     private Set<Area> getAreas(String regionBasePath) {
         ConfigurationSection configurationSection = regionsConfiguration.getConfigurationSection(regionBasePath + "areas");
         Set<String> areaNames = configurationSection.getKeys(false);
-        Bukkit.getLogger().info("ANs: " + areaNames.toString());
         Set<Area> areas = new HashSet<>();
         areaNames.forEach(name -> areas.add(loadArea(configurationSection, name)));
         return areas;
@@ -139,7 +154,6 @@ public class RegionManager implements Component {
     private Area loadArea(ConfigurationSection section, String name) {
         String basePath = name + ".";
         String worldName = section.getString(basePath + "worldName");
-        Bukkit.getLogger().info("WN: " + worldName + " " + section.getString(basePath + "pos1"));
 
         BlockVector pos1 = deserializeBlockVector(section.getString(basePath + "pos1"));
         BlockVector pos2 = deserializeBlockVector(section.getString(basePath + "pos2"));
@@ -161,7 +175,7 @@ public class RegionManager implements Component {
     private void loadParent(Region region) {
         String path = region.getName() + ".parent";
         if (regionsConfiguration.contains(path)) {
-            Region parent = getRegion(regionsConfiguration.getString(path));
+            Region parent = getRegionByName(regionsConfiguration.getString(path));
 
             if (parent != null) {
                 region.setParent(parent);
@@ -181,15 +195,10 @@ public class RegionManager implements Component {
     }
 
     private void saveRegions() {
-        Bukkit.getLogger().info("Saving " + regions.size() + " regions...");
-
         regions.forEach(this::saveRegion);
     }
 
     private void saveRegion(Region region) {
-
-        Bukkit.getLogger().info("Saving region: " + region.getName());
-
         String basePath = region.getName() + '.';
         regionsConfiguration.set(basePath + "priority", region.getPriority());
         for (Area area : region.getAreas()) {
@@ -222,8 +231,7 @@ public class RegionManager implements Component {
         try {
             regionsConfiguration.save(regionsFile);
         } catch (IOException ioException) {
-            ioException.printStackTrace();
-            Bukkit.getLogger().info("Saving error");
+            Bukkit.getLogger().info("Saving error: " + ioException.toString());
         }
     }
 }

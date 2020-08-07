@@ -21,7 +21,7 @@ public class SelectCommand implements SelectionSubcommand {
     public boolean onCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
             String regionName = args[0];
-            Region region = instance.getRegionManager().getRegion(regionName);
+            Region region = instance.getRegionManager().getRegionByName(regionName);
             if (region == null) {
                 Messaging.sendErrorMessage(sender, "Could not find region: " + regionName + ".");
                 return true;

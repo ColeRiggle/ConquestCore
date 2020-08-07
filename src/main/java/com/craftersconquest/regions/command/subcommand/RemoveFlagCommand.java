@@ -36,7 +36,7 @@ public class RemoveFlagCommand implements SelectionSubcommand {
             }
 
             region.removeFlag(flag);
-            Messaging.sendPlayerSpecificMessage(sender, "Flag " + flag + " removed from region " + region.getName() + ".");
+            Messaging.sendPlayerSpecificMessage(sender, "Flag " + flagName + " removed from region " + region.getName() + ".");
 
             return true;
         }
