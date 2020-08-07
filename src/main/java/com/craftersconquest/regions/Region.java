@@ -27,6 +27,7 @@ public class Region {
         return name;
     }
 
+    @Nullable
     public Region getParent() {
         return parent;
     }
@@ -41,6 +42,10 @@ public class Region {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public void removeFlag(Flag<?> flag) {
+        flags.remove(flag);
     }
 
     public <T extends Flag<V>, V> V getFlag(T flag) {

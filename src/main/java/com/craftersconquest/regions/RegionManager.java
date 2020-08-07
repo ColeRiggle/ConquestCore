@@ -72,6 +72,18 @@ public class RegionManager implements Component {
         return null;
     }
 
+    public List<Region> getRegions() {
+        return regions;
+    }
+
+    public void add(Region region) {
+        regions.add(region);
+    }
+
+    public void remove(Region region) {
+        regions.remove(region);
+    }
+
     private void loadRegions() {
         Set<String> regionNames = regionsConfiguration.getKeys(false);
         regionNames.forEach(value -> regions.add(loadRegion(value)));

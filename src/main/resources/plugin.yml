@@ -17,3 +17,6 @@ commands:
   decline:
     description: "Declines a pending request."
     permission:  com.craftersconquest.player
+  region:
+    description: "Region configuration commands."
+    permission:  com.craftersconquest.admin
