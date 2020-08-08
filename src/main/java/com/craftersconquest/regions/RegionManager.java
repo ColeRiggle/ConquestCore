@@ -89,6 +89,24 @@ public class RegionManager implements Component {
         return highestPriorityRegion;
     }
 
+    public List<Region> getRegionsAt(Player player) {
+        return getRegionsAt(player.getLocation());
+    }
+
+    public List<Region> getRegionsAt(Location location) {
+        List<Region> playerRegions = new ArrayList<>();
+
+        for (Region region : regions) {
+            if (region.contains(location)) {
+                playerRegions.add(region);
+            }
+        }
+
+        playerRegions.sort((o1, o2) -> o2.getPriority() - o1.getPriority());
+
+        return playerRegions;
+    }
+
     @Override
     public void onEnable() {
         setupRegionsFile();

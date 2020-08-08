@@ -30,6 +30,7 @@ public class RegionCommandManager implements TabExecutor, Component {
         commands.put("setflag", new SetFlagCommand(this));
         commands.put("getflag", new GetFlagCommand(this));
         commands.put("removeflag", new RemoveFlagCommand(this));
+        commands.put("current", new CurrentCommand(instance));
     }
 
     @Override

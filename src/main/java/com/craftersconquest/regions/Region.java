@@ -3,6 +3,7 @@ package com.craftersconquest.regions;
 import com.craftersconquest.regions.flags.Flag;
 import org.bukkit.Location;
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +16,10 @@ public class Region {
     private int priority;
     private Map<Flag<?>, Object> flags;
     private Set<Area> areas;
+
+    public Region(String name, int priority) {
+        this(name, priority, new HashMap<>(), new HashSet<>());
+    }
 
     public Region(String name, int priority, Map<Flag<?>, Object> flags, Set<Area> areas) {
         this.name = name;
