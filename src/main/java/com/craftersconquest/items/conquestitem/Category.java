@@ -2,6 +2,7 @@ package com.craftersconquest.items.conquestitem;
 
 public enum Category {
     VANILLA(null),
+    CUSTOM_TOOL(null),
     FORGE(null),
     METAL_FORGE(FORGE),
     GRAIN_FORGE(FORGE),

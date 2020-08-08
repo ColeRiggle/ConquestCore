@@ -37,9 +37,9 @@ public class CreateCommand implements SelectionSubcommand {
 
             } catch (NumberFormatException exception) {
                 Messaging.sendErrorMessage(sender, "Priority must be an integer.");
-                return true;
             }
 
+            return true;
         }
 
         return false;
@@ -47,11 +47,11 @@ public class CreateCommand implements SelectionSubcommand {
 
     @Override
     public String getUsage() {
-        return null;
+        return "create <name> <priority>";
     }
 
     @Override
     public String getDescription() {
-        return null;
+        return "Creates a new region with the specified name and priority.";
     }
 }

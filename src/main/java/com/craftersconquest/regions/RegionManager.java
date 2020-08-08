@@ -1,16 +1,24 @@
 package com.craftersconquest.regions;
 
 import com.craftersconquest.core.ConquestCore;
+import com.craftersconquest.items.conquestitem.Item;
+import com.craftersconquest.messaging.Messaging;
 import com.craftersconquest.object.Component;
 import com.craftersconquest.regions.flags.Flag;
 import com.craftersconquest.regions.flags.Flags;
 import com.craftersconquest.regions.flags.InvalidFlagFormat;
+import com.craftersconquest.regions.tool.RegionSelection;
+import com.craftersconquest.regions.tool.ToolSelectionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
 
 import java.io.File;
@@ -28,10 +36,13 @@ public class RegionManager implements Component {
     private File regionsFile;
     private FileConfiguration regionsConfiguration;
 
+    private final ToolSelectionManager toolSelectionManager;
+
     public RegionManager(ConquestCore instance) {
         this.instance = instance;
         regions = new ArrayList<>();
         lastKnownRegions = new HashMap<>();
+        toolSelectionManager = new ToolSelectionManager();
     }
 
     public Region getRegionByName(String name) {
@@ -251,5 +262,45 @@ public class RegionManager implements Component {
         } catch (IOException ioException) {
             Bukkit.getLogger().info("Saving error: " + ioException.toString());
         }
+    }
+
+    public ToolSelectionManager getToolSelectionManager() {
+        return toolSelectionManager;
+    }
+
+    public boolean onPlayerInteract(PlayerInteractEvent event) {
+        ItemStack clickedItem = event.getItem();
+        if (clickedItem != null) {
+            if (Item.itemStackIs(clickedItem, Item.REGION_TOOL)) {
+                Action action = event.getAction();
+                if (action == Action.LEFT_CLICK_BLOCK || action == Action.RIGHT_CLICK_BLOCK) {
+                    onToolClick(event.getPlayer(), action == Action.RIGHT_CLICK_BLOCK, event.getClickedBlock().getLocation());
+                }
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void onToolClick(Player player, boolean rightClick, Location target) {
+        if (!toolSelectionManager.hasSelection(player)) {
+            toolSelectionManager.createSelection(player);
+        }
+
+        RegionSelection selection = toolSelectionManager.getSelection(player);
+        String message = "";
+
+        if (rightClick) {
+            selection.setPos2(target);
+            message += "Pos2";
+        } else {
+            selection.setPos1(target);
+            message += "Pos1";
+        }
+
+        message += " set to " + target.getX() + ", " + target.getY() + ", " + target.getZ() + ".";
+        Messaging.sendPlayerSpecificMessage(player, message);
     }
 }

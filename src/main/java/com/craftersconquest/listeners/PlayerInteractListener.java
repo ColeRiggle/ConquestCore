@@ -27,6 +27,10 @@ public class PlayerInteractListener implements Listener {
         ItemStack item = event.getItem();
         ItemStack menu = instance.getMenuManager().getMenuItemStack();
 
+        if (instance.getRegionManager().onPlayerInteract(event)) {
+            return;
+        }
+
         if (item != null) {
             if (item.equals(menu)) {
                 event.setCancelled(true);

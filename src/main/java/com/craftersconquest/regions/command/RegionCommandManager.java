@@ -4,6 +4,7 @@ import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.core.Settings;
 import com.craftersconquest.messaging.Messaging;
 import com.craftersconquest.object.Component;
+import com.craftersconquest.regions.Area;
 import com.craftersconquest.regions.Region;
 import com.craftersconquest.regions.command.subcommand.*;
 import org.bukkit.command.Command;
@@ -19,6 +20,7 @@ public class RegionCommandManager implements TabExecutor, Component {
     private final ConquestCore instance;
     private final Map<String, SelectionSubcommand> commands = new HashMap<>();
     private final Map<CommandSender, Region> selectedRegions = new HashMap<>();
+    private final Set<Area> pendingAreas = new HashSet<>();
 
     public RegionCommandManager(ConquestCore instance) {
         this.instance = instance;
@@ -27,10 +29,18 @@ public class RegionCommandManager implements TabExecutor, Component {
         commands.put("info", new InfoCommand(instance));
         commands.put("select", new SelectCommand(instance, this));
         commands.put("priority", new PriorityCommand(this));
+        commands.put("setparent", new SetParentCommand(instance, this));
         commands.put("setflag", new SetFlagCommand(this));
         commands.put("getflag", new GetFlagCommand(this));
         commands.put("removeflag", new RemoveFlagCommand(this));
         commands.put("current", new CurrentCommand(instance));
+        commands.put("create", new CreateCommand(instance, this));
+        commands.put("copy", new CopyCommand(instance, this));
+        commands.put("tool", new ToolCommand());
+        commands.put("createarea", new CreateAreaCommand(instance, this));
+        commands.put("addarea", new AddAreaCommand(instance, this));
+        commands.put("removearea", new RemoveAreaCommand(instance, this));
+        commands.put("delete", new DeleteCommand(instance, this));
     }
 
     @Override
@@ -99,6 +109,24 @@ public class RegionCommandManager implements TabExecutor, Component {
         }
 
         return toReturn == null ? Collections.emptyList() : toReturn;
+    }
+
+    public Area getPendingAreaByName(String name) {
+        for (Area area : pendingAreas) {
+            if (area.getName().equals(name)) {
+                return area;
+            }
+        }
+
+        return null;
+    }
+
+    public void addPendingArea(Area area) {
+        pendingAreas.add(area);
+    }
+
+    public void removePendingArea(Area area) {
+        pendingAreas.remove(area);
     }
 
     public void setSelectedRegion(CommandSender sender, Region region) {

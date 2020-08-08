@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CraftConquestItem extends ConquestItem {
@@ -31,7 +32,7 @@ public abstract class CraftConquestItem extends ConquestItem {
 
     private void addRarityToLore() {
         List<String> baseLore = baseItemStack.getItemMeta().getLore();
-        List<String> modified = baseLore == null ? List.of("") : baseLore;
+        List<String> modified = baseLore == null ? new ArrayList<>() : baseLore;
 
         if (!modified.contains(rarity.getText())) {
             modified.add("");
