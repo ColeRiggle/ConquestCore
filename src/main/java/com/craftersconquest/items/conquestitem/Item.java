@@ -1,9 +1,11 @@
 package com.craftersconquest.items.conquestitem;
 
 import com.craftersconquest.forges.ForgeUtil;
+import com.craftersconquest.horses.HorseConverter;
 import com.craftersconquest.object.forge.Forge;
 import com.craftersconquest.object.forge.Tier;
 import com.craftersconquest.object.forge.Type;
+import com.craftersconquest.object.horse.Horse;
 import de.domedd.developerapi.itembuilder.ItemBuilder;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import org.bukkit.ChatColor;
@@ -21,7 +23,11 @@ public enum Item {
     METAL_FORGE(getBaseForge(Type.METAL)),
     GRAIN_FORGE(getBaseForge(Type.GRAIN)),
     CRYSTAL_FORGE(getBaseForge(Type.CRYSTAL)),
-    ESSENCE_FORGE(getBaseForge(Type.ESSENCE));
+    ESSENCE_FORGE(getBaseForge(Type.ESSENCE)),
+    HORSE_I(getHorse(com.craftersconquest.object.horse.Tier.I)),
+    HORSE_II(getHorse(com.craftersconquest.object.horse.Tier.II)),
+    HORSE_III(getHorse(com.craftersconquest.object.horse.Tier.III)),
+    HORSE_IV(getHorse(com.craftersconquest.object.horse.Tier.IV));
 
     private final ConquestItem conquestItem;
     private static final Item[] itemValues = Item.values();
@@ -73,5 +79,13 @@ public enum Item {
                 setDisplayName(ChatColor.YELLOW + "Region Tool").
                 build();
         return new NormalConquestItem("region_tool", Category.CUSTOM_TOOL, Rarity.COMMON, itemStack);
+    }
+
+    private static ConquestItem getHorse(com.craftersconquest.object.horse.Tier tier) {
+        HorseConverter converter = new HorseConverter();
+        return new UniqueConquestItem("horse_" + tier.toString(),
+                Category.HORSE,
+                Rarity.NONE,
+                converter.createItemStackFromHorse(new Horse("default", tier.getMaxLevel() - 10, 0, tier)));
     }
 }

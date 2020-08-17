@@ -34,6 +34,7 @@ public class ListenerManager implements Component {
         instance.getServer().getPluginManager().registerEvents(new InventoryClickListener(instance), instance);
         instance.getServer().getPluginManager().registerEvents(new AsyncPlayerChatListener(instance), instance);
         instance.getServer().getPluginManager().registerEvents(new PistonListener(instance), instance);
+        instance.getServer().getPluginManager().registerEvents(new PlayerMoveListener(instance), instance);
     }
 
     @Override

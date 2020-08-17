@@ -2,6 +2,7 @@ package com.craftersconquest.visual.scoreboard;
 
 import com.craftersconquest.core.ConquestCore;
 import com.craftersconquest.core.Settings;
+import com.craftersconquest.regions.flags.Flags;
 import com.craftersconquest.util.NumbersUtil;
 import com.craftersconquest.visual.scoreboard.format.FormatBehavior;
 import com.craftersconquest.visual.tracker.AutomaticRecordTrackerManager;
@@ -106,7 +107,8 @@ public class BaseScoreboard extends ConquestScoreboard {
     }
 
     private String getLocation(Player player) {
-        return getFormatBehavior().getElementPrefix() + ChatColor.AQUA + Settings.RPG_WORLD_NAME;
+        String regionName = instance.getRegionManager().getFlagValueAt(Flags.PRETTY_NAME, player.getLocation());
+        return getFormatBehavior().getElementPrefix() + ChatColor.AQUA + regionName;
     }
 
     private String getFormattedCoinsBalance(Player player) {

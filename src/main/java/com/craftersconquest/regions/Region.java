@@ -41,6 +41,16 @@ public class Region {
         this.parent = parent;
     }
 
+    public Set<Region> getParents() {
+        Set<Region> parents = new HashSet<>();
+        Region parent = this.parent;
+        while (parent != null) {
+            parents.add(parent);
+            parent = parent.parent;
+        }
+        return parents;
+    }
+
     public int getPriority() {
         return priority;
     }

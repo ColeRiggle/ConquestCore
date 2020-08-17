@@ -16,4 +16,12 @@ public class VisualsManager {
     public void sendActionBarMessage(Player player, String message) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
     }
+
+    public void sendTitleBarMessage(Player player, String message) {
+        player.sendTitle(message, "", 5, 55, 5);
+    }
+
+    public void sendTitleBarMessage(Player player, String message, String subtitle) {
+        player.sendTitle(message, subtitle, 5, 55, 5);
+    }
 }

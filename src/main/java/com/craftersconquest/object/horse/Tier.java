@@ -19,7 +19,7 @@ public enum Tier {
         this.color = color;
     }
 
-    public int getMax() {
+    public int getMaxLevel() {
         return max;
     }
 
@@ -33,5 +33,17 @@ public enum Tier {
 
     public static Tier fromInt(int value) {
         return tierValues[value - 1];
+    }
+
+    public static Tier getMax() {
+        return tierValues[tierValues.length - 1];
+    }
+
+    public Tier next() {
+        if (this == getMax()) {
+            return null;
+        } else {
+            return fromInt(toInt() + 1);
+        }
     }
 }

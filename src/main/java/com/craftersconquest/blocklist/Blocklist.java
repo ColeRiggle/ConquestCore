@@ -1,6 +1,8 @@
 package com.craftersconquest.blocklist;
 
 import com.craftersconquest.core.ConquestCore;
+import com.craftersconquest.regions.flags.Flags;
+import com.craftersconquest.regions.flags.StateFlag;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,11 +23,13 @@ public class Blocklist {
 
     public void addIfNecessary(Material material, Location location) {
         if (isTracked(material)) {
-            Bukkit.getServer().getScheduler().runTaskAsynchronously(instance, () -> {
-                if (isTracked(material) && !location.getWorld().getName().equals("Badlands")) {
-                    add(location);
-                }
-            });
+            if (instance.getRegionManager().getFlagValueAt(Flags.BLOCKLIST, location) == StateFlag.State.ALLOW) {
+                Bukkit.getServer().getScheduler().runTaskAsynchronously(instance, () -> {
+                    if (isTracked(material) && !location.getWorld().getName().equals("Badlands")) {
+                        add(location);
+                    }
+                });
+            }
         }
     }
 

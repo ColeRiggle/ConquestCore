@@ -1,8 +1,11 @@
 package com.craftersconquest.horses;
 
 import com.craftersconquest.core.ConquestCore;
+import com.craftersconquest.messaging.Messaging;
 import com.craftersconquest.object.Component;
 import com.craftersconquest.object.horse.Horse;
+import com.craftersconquest.regions.flags.Flags;
+import com.craftersconquest.regions.flags.StateFlag;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -81,7 +84,7 @@ public class HorseManager implements Component {
             }
         }
 
-        Block targetBlock =  event.getPlayer().getTargetBlock(null, 100);
+        Block targetBlock = event.getPlayer().getTargetBlock(null, 10);
         Location spawnLocation;
 
         if (targetBlock == null) {
@@ -92,10 +95,13 @@ public class HorseManager implements Component {
 
         spawnLocation.add(0, 1, 0);
 
-        Horse horse = converter.getHorseFromItemStack(horseItemStack);
-        org.bukkit.entity.Horse horseEntity = converter.spawnHorseEntity(spawnLocation, horse, player);
-
-        rides.add(new HorseRide(player, horseItemStack, horse, horseEntity));
+        if (instance.getRegionManager().getFlagValueAt(Flags.RIDE_HORSE, spawnLocation) == StateFlag.State.ALLOW) {
+            Horse horse = converter.getHorseFromItemStack(horseItemStack);
+            org.bukkit.entity.Horse horseEntity = converter.spawnHorseEntity(spawnLocation, horse, player);
+            rides.add(new HorseRide(player, horseItemStack, horse, horseEntity));
+        } else {
+            Messaging.sendErrorMessage(player, "A horses cannot be spawned there.");
+        }
     }
 
     private void endRide(HorseRide ride) {
@@ -148,4 +154,7 @@ public class HorseManager implements Component {
         return activeRides;
     }
 
+    public HorseConverter getConverter() {
+        return converter;
+    }
 }

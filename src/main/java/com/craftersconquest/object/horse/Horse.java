@@ -9,6 +9,10 @@ public class Horse implements Upgradable {
     private double xp;
     private Tier tier;
 
+    public Horse(int level, double xp, Tier tier) {
+        this("", level, xp, tier);
+    }
+
     public Horse(String name, int level, double xp, Tier tier) {
         this.name = name;
         this.level = level;
@@ -57,7 +61,7 @@ public class Horse implements Upgradable {
     private void incrementLevel() {
         level += 1;
         xp = 0;
-        if (level > tier.getMax()) {
+        if (level > tier.getMaxLevel()) {
             tier = Tier.fromInt(tier.toInt() + 1);
         }
     }

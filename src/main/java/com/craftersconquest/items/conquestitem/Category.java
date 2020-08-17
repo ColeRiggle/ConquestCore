@@ -7,7 +7,8 @@ public enum Category {
     METAL_FORGE(FORGE),
     GRAIN_FORGE(FORGE),
     CRYSTAL_FORGE(FORGE),
-    ESSENCE_FORGE(FORGE);
+    ESSENCE_FORGE(FORGE),
+    HORSE(null);
 
     private final Category parent;
 

@@ -31,7 +31,9 @@ public final class Flags {
     public static final BooleanFlag NOTIFY_LEAVE = register(new BooleanFlag("notify-leave"));
 
     public static final StringFlag GREET_MESSAGE = register(new StringFlag("greet-message"));
-    public static final StringFlag FAREWELL_MESSAGE = register(new StringFlag("farewell-message"));
+    public static final StringFlag PRETTY_NAME = register(new StringFlag("pretty-name"));
+
+    public static final IntegerFlag RECOMMENDED_LEVEL = register(new IntegerFlag("recommended-level"));
 
     public static final Map<String, Flag> INBUILT_FLAGS = Collections.unmodifiableMap(INBUILT_FLAGS_MAP);
     public static final Set<Flag> INBUILT_FLAGS_SET = Sets.newHashSet(INBUILT_FLAGS.values());

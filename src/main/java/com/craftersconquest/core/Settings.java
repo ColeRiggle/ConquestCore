@@ -12,7 +12,7 @@ public final class Settings {
 
     public static final int DAYS_PER_SEASON = DAYS_PER_YEAR / SEASONS_COUNT;
 
-    public static final String RPG_WORLD_NAME = "Lobby";
+    public static final String RPG_WORLD_NAME = "badlands";
 
     public static final String ADMIN_PERMISSION = "com.craftersconquest.admin";
 

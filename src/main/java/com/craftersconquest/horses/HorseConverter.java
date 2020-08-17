@@ -3,7 +3,6 @@ package com.craftersconquest.horses;
 import com.craftersconquest.object.horse.Horse;
 import com.craftersconquest.object.horse.Tier;
 import de.domedd.developerapi.itembuilder.ItemBuilder;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,7 +15,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class HorseConverter {
 
@@ -37,7 +35,6 @@ public class HorseConverter {
                 setLore(createHorseLore(horse)).
                 build();
 
-        baseItemStack = NBTEditor.set(baseItemStack, "horse_id", UUID.randomUUID().toString().substring(10));
         return baseItemStack;
     }
 
@@ -52,7 +49,7 @@ public class HorseConverter {
     private List<String> createHorseLore(Horse horse) {
         List<String> lore = new ArrayList<>();
         int currentValue = horse.getLevel();
-        int maxValue = horse.getTier().getMax();
+        int maxValue = horse.getTier().getMaxLevel();
         lore.add("");
         lore.add(SPEED_PREFIX + currentValue + "/" + maxValue);
         lore.add(JUMP_PREFIX + currentValue + "/" + maxValue);

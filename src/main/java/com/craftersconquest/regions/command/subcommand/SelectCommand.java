@@ -27,9 +27,7 @@ public class SelectCommand implements SelectionSubcommand {
                 return true;
             }
 
-            Player player = (Player) sender;
-            regionCommandManager.setSelectedRegion(player, region);
-
+            regionCommandManager.setSelectedRegion(sender, region);
             Messaging.sendPlayerSpecificMessage(sender, "Region " + regionName + " selected.");
 
             return true;
@@ -40,7 +38,7 @@ public class SelectCommand implements SelectionSubcommand {
 
     @Override
     public boolean inGameOnly() {
-        return true;
+        return false;
     }
 
     @Override

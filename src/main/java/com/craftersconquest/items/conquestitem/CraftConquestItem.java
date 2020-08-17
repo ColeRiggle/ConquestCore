@@ -35,11 +35,13 @@ public abstract class CraftConquestItem extends ConquestItem {
         List<String> modified = baseLore == null ? new ArrayList<>() : baseLore;
 
         if (!modified.contains(rarity.getText())) {
-            modified.add("");
-            modified.add(rarity.getText());
-            ItemMeta modifiedItemMeta = baseItemStack.getItemMeta();
-            modifiedItemMeta.setLore(modified);
-            baseItemStack.setItemMeta(modifiedItemMeta);
+            if (rarity != Rarity.NONE) {
+                modified.add("");
+                modified.add(rarity.getText());
+                ItemMeta modifiedItemMeta = baseItemStack.getItemMeta();
+                modifiedItemMeta.setLore(modified);
+                baseItemStack.setItemMeta(modifiedItemMeta);
+            }
         }
     }
 
