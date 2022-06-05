@@ -10,5 +10,3 @@ ___
 ConquestCore is licensed under GPL. The use of this codebase is not permitted for commercial purposes.
 ___
 
-### Building ConquestCore
-Due to the dependence on many projects with restricted usage rights, ConquestCore cannot easily be incoporated or ran.
